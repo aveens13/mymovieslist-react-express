@@ -7,7 +7,7 @@ export default function NavBar(){
             <nav>
                 <ul className="navItems">
                     <li className="listItem"><Link to="/list">My List</Link></li>
-                    <li className="listItem">Movies</li>
+                    <li className="listItem"><Link to="/movies">Movies</Link></li>
                     <li className="listItem">TV Shows</li>
                 </ul>
             </nav>
