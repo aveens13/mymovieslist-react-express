@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap");
+.movies ul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  list-style: none;
+}
+.movies ul div {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 1rem;
+}
+.movies ul div li {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  padding: 1rem 0;
+}
+.movies ul div img {
+  height: 300px;
+  width: 200px;
+}
