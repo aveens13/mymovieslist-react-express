@@ -39,10 +39,10 @@ header {
 a,
 button {
   font-weight: bold;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
-  font-size: 1.2rem;
-  color: #edf0f1;
+  font-size: 1.5rem;
+  color: #005dff;
   text-decoration: none;
 }
 .navItems li {

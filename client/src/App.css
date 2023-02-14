@@ -1,11 +1,11 @@
-
-  #root{
-    font-size: 16px;
-    margin: 10px;
-  }
-  body{
-    /* width: 100%; */
-    margin: 0 10%;
-    color: white;
-    background-color: #000235;
-  }
+#root {
+  font-size: 16px;
+  margin: 10px;
+}
+body {
+  /* width: 100%; */
+  margin: 0 10%;
+  color: white;
+  /* background-color: #000235; */
+  background-color: black;
+}

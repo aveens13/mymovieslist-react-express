@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 export default function NavBar() {
   return (
     <header className="navBar">
-      <div className="title">
+      <h1 className="title">
         <Link to="/">Movies Ridge</Link>
-      </div>
+      </h1>
       <form className="search">
         <input type="text" placeholder="Search..." />
         <button type="submit">
-          <span class="material-symbols-outlined">search</span>
+          <span className="material-symbols-outlined">search</span>
         </button>
       </form>
       <nav>
