@@ -6,12 +6,12 @@ export default function NavBar() {
       <h1 className="title">
         <Link to="/">Movies Ridge</Link>
       </h1>
-      <form className="search">
+      {/* <form className="search">
         <input type="text" placeholder="Search..." />
         <button type="submit">
           <span className="material-symbols-outlined">search</span>
         </button>
-      </form>
+      </form> */}
       <nav>
         <ul className="navItems">
           <li className="listItem">

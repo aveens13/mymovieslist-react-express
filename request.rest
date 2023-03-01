@@ -1,0 +1,9 @@
+POST http://localhost:5055/api/login
+Content-Type: application/json
+
+{
+    "userName" : "Kyle",
+}
+
+###
+GET http://localhost:5055/api/movies

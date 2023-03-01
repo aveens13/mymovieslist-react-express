@@ -9,16 +9,19 @@ header {
 }
 .navBar .title {
   font-family: "Montserrat", sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   align-items: center;
   cursor: pointer;
+}
+.navBar .title a{
+  font-size: 1.5rem;
 }
 .navBar .search {
   display: flex;
 }
 .navBar .search input[type="text"] {
-  border-radius: 1rem;
-  padding: 0.6rem;
+  border-radius: 0.6rem;
+  padding: 0.4rem;
   border: none;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
@@ -27,7 +30,7 @@ header {
 .navBar .search button {
   background-color: transparent;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.2  rem;
   margin-left: 1rem;
   border: none;
 }
@@ -35,15 +38,18 @@ header {
   list-style: none;
   display: flex;
 }
-.navBar ul li,
-a,
+.navBar ul li,a,
 button {
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #005dff;
   text-decoration: none;
+}
+.navBar ul li:hover{
+  transform: scale(1.2);
+  transition: all 0.5s ease;
 }
 .navItems li {
   cursor: pointer;

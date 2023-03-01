@@ -1,13 +1,12 @@
 //Loading Modules and Libraries
 const express = require("express");
-const handlers = require("./lib/handlers");
+const authenticationRoutes = require("./Router/authRoutes");
+const moviesRoutes = require("./Router/movieRoutes");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// const { credentials } = require("./Configurations/config");
-const { appendFile } = require("fs");
 const PORT = process.env.PORT || 5055;
 
-//Setting up express application
+//Setting up express application and prisma client
 const app = express();
 
 //Processing Request Logger
@@ -20,10 +19,11 @@ app.use(
     origin: "*",
   })
 );
+app.use(express.json());
 
 //Routes
-app.get("/", handlers.home);
-app.get("/api/movies", handlers.movies);
+app.use(moviesRoutes);
+app.use(authenticationRoutes);
 
 //Listening to the server
 app.listen(PORT, (req, res) => {
