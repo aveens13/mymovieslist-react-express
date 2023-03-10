@@ -12,6 +12,14 @@ export default function Movie() {
       });
     });
   }, []);
+
+  function handleWatched(event){
+    fetch(`/api/add-movie/${event.target.value}`, {
+      method: "POST",
+    }).then(response=>{
+      
+    })
+  }
   return (
     <>
       <section id="slider-container">
@@ -19,7 +27,7 @@ export default function Movie() {
         <div className="movie-slider">
           <div className="movie-list">
             {movie.map((movieData) => (
-              <div className="movie-card">
+              <div className="movie-card" key={movieData.id}>
                 <img
                   src={getPosterUrl(movieData.poster_path)}
                   alt="movie poster"
@@ -34,7 +42,7 @@ export default function Movie() {
                   </div>
 
                   <h1 className="movie-title">{movieData.title}</h1>
-                  <button className="btn-watch">
+                  <button className="btn-watch" value={movieData.id} onClick={handleWatched}>
                     <a href="#">
                       <i className="fas fa-plus"></i>
                     </a>
@@ -42,29 +50,6 @@ export default function Movie() {
                   </button>
                 </div>
               </div>
-              /* <div className="slider-box">
-                <div className="slider-image">
-                  <img src={getPosterUrl(movieData.poster_path)} />
-                </div>
-                <div className="slider-details">
-                  <strong>{movieData.title}</strong>
-                  <div className="rating">
-                    <a href="#">
-                      <i className="fas fa-star"></i>
-                    </a>
-                    <strong>{movieData.vote_average}</strong>
-                  </div>
-                  <p>{movieData.overview}</p>
-                  <div className="release-data">
-                    <strong>{movieData.release_date}</strong>
-                  </div>
-                  <div className="card-btns">
-                    <a href="#" className="mylist-btn">
-                      Watched
-                    </a>
-                  </div>
-                </div>
-              </div> */
             ))}
           </div>
         </div>

@@ -13,6 +13,15 @@ datasource db {
 model User {
   user_id  String  @id @default(uuid())
   name     String
-  email    String? @unique
-  password String?
+  email    String  @unique
+  password String
+  movies   Movie[]
+}
+
+model Movie {
+  movie_id  Int      @id
+  rating    Float?
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [user_id])
+  authorId  String
 }

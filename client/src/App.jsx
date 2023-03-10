@@ -5,6 +5,7 @@ import List from "./pages/List";
 import NavBar from "./pages/Navbar";
 import Movie from "./pages/Movie";
 import Component1 from "./pages/Tutorial";
+import Signup from "./pages/Signup";
 function App() {
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
           <Route path="/list" element={<List />} />
           <Route path="/movies" element={<Movie />} />
           <Route path="/tutorial" element={<Component1 />} />
+          <Route path="/signup" element={<Signup/>} />
         </Routes>
       </BrowserRouter>
     </>

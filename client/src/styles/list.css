@@ -1,0 +1,20 @@
+.listSection h1{
+    font-family: "Poppins", sans-serif;
+}
+.listSection .card--hero{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card--hero img{
+    width: 200px;
+}
+
+.card--hero .content{
+    display: flex;
+    flex-direction: column;
+    font-family: "Poppins", sans-serif;
+    justify-content: center;
+    padding: 1rem;
+    margin: 1rem;
+}
