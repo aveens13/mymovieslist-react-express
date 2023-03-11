@@ -2,10 +2,21 @@
 header {
   /* width: 100%; */
   display: flex;
+  height: 5rem;
   justify-content: space-between;
   align-items: center;
-  background-color: transparent;
-  padding: 30px 0;
+  position: sticky;
+  top: 0;
+  padding: 0 1rem;
+  border-radius: 1.5rem;
+  transition: background-color 0.4s ease-in-out;
+  z-index: 500;
+}
+.navBar{
+  background-color: black;
+}
+.navBar.scrolled{
+  background-color: rgb(229, 221, 221);
 }
 .navBar .title {
   font-family: "Montserrat", sans-serif;

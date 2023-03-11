@@ -1,8 +1,18 @@
 import "../styles/Navbar.css";
 import { Link } from "react-router-dom";
+import { useState, setState } from "react";
 export default function NavBar() {
+  const [fix, setFix] = useState(false);
+  const setFixed = () => {
+    if (window.scrollY > 0) {
+      setFix(true);
+    } else {
+      setFix(false);
+    }
+  };
+  window.addEventListener("scroll", setFixed);
   return (
-    <header className="navBar">
+    <header className={fix ? "navBar scrolled" : "navBar"}>
       <h1 className="title">
         <Link to="/">Movies Ridge</Link>
       </h1>
