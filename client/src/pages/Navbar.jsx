@@ -1,27 +1,21 @@
 import "../styles/Navbar.css";
-import { Link } from "react-router-dom";
-import { useState, setState } from "react";
-export default function NavBar() {
-  const [fix, setFix] = useState(false);
-  const setFixed = () => {
-    if (window.scrollY > 0) {
-      setFix(true);
-    } else {
-      setFix(false);
-    }
-  };
-  window.addEventListener("scroll", setFixed);
+import { Link, useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+export default function NavBar(props) {
+  let navigate = useNavigate();
+  function handleLogout() {
+    fetch("/api/logout").then((response) => {
+      if (response.ok) {
+        props.changeState();
+        navigate("/");
+      }
+    });
+  }
   return (
-    <header className={fix ? "navBar scrolled" : "navBar"}>
+    <header className="navBar">
       <h1 className="title">
         <Link to="/">Movies Ridge</Link>
       </h1>
-      {/* <form className="search">
-        <input type="text" placeholder="Search..." />
-        <button type="submit">
-          <span className="material-symbols-outlined">search</span>
-        </button>
-      </form> */}
       <nav>
         <ul className="navItems">
           <li className="listItem">
@@ -30,7 +24,12 @@ export default function NavBar() {
           <li className="listItem">
             <Link to="/movies">Movies</Link>
           </li>
-          <li className="listItem">TV Shows</li>
+          <li className="listItem">
+            <Link to="/tv-shows">TV Shows</Link>
+          </li>
+          <li className="userImage" onClick={handleLogout}>
+            <LogoutIcon fontSize="large" />
+          </li>
         </ul>
       </nav>
     </header>

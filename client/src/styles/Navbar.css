@@ -9,23 +9,21 @@ header {
   top: 0;
   padding: 0 1rem;
   border-radius: 1.5rem;
-  transition: background-color 0.4s ease-in-out;
+  transition: 0.4s ease-in-out;
   z-index: 500;
 }
 .navBar{
   background-color: black;
 }
-.navBar.scrolled{
-  background-color: rgb(229, 221, 221);
-}
 .navBar .title {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
   align-items: center;
   cursor: pointer;
 }
 .navBar .title a{
   font-size: 1.5rem;
+  color: #005dff;
 }
 .navBar .search {
   display: flex;
@@ -49,8 +47,7 @@ header {
   list-style: none;
   display: flex;
 }
-.navBar ul li,a,
-button {
+.navBar ul li a {
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
@@ -60,11 +57,17 @@ button {
 }
 .navBar ul li:hover{
   transform: scale(1.2);
-  transition: all 0.5s ease;
 }
 .navItems li {
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
 .navBar .listItem {
   padding: 0 1rem;
+}
+.navBar .userImage{
+  padding: 0 1rem;
+}
+.navBar nav .userImage:hover{
+  transform: scale(1.1);
 }

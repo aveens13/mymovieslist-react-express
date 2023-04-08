@@ -125,16 +125,17 @@ button {
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
-  background-color: #005dff;
+  /* background-color: #005dff; */
+  background-color: #2c2c2c;
   padding: 4px 20px;
   border-radius: 0.3rem;
   border: 1px solid transparent;
-  color: white;
+  color: #3b6ac1;
   position: absolute;
   bottom: 0;
   margin-bottom: 10px;
 }
 .btn-watch a i {
-  color: black;
+  color: #3b6ac1;
   margin-right: 1rem;
 }

@@ -3,9 +3,10 @@ const express = require("express");
 const authenticationRoutes = require("./Router/authRoutes");
 const moviesRoutes = require("./Router/movieRoutes");
 const bodyParser = require("body-parser");
+const cookieparser = require("cookie-parser");
 const cors = require("cors");
 const PORT = process.env.PORT || 5055;
-const middleware = require("./lib/middleware")
+const middleware = require("./lib/middleware");
 //Setting up express application and prisma client
 const app = express();
 
@@ -20,7 +21,8 @@ app.use(
   })
 );
 app.use(express.json());
-app.use('/api/signup', middleware.hashPassword)
+app.use(cookieparser());
+app.use("/api/signup", middleware.hashPassword);
 
 //Routes
 app.use(moviesRoutes);
@@ -30,4 +32,3 @@ app.use(authenticationRoutes);
 app.listen(PORT, (req, res) => {
   console.log(`Server Started on http://localhost:${PORT}`);
 });
-

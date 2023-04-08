@@ -1,5 +1,6 @@
-.listSection h1{
+.listSection h3{
     font-family: "Poppins", sans-serif;
+    padding-left: 2rem;
 }
 .listSection .card--hero{
     display: flex;
@@ -13,6 +14,11 @@
     border-radius: 2rem;
     padding: 2rem;
     margin: 1.5rem;
+    transition: all 0.15s ease-in-out;
+}
+.card--main:hover{
+    cursor: pointer;
+    transform: scale(1.01);
 }
 .card--hero img{
     width: 200px;
