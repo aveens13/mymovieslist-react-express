@@ -14,6 +14,7 @@ function App() {
   const [response, setResponse] = useState({});
 
   //check if the user is already logged in or not
+  //run this useeffect hook on every time the state is changed
   useEffect(() => {
     fetch("/api/verifyToken").then((result) => {
       if (result.ok) {
@@ -23,7 +24,7 @@ function App() {
         });
       }
     });
-  }, []);
+  }, [state]);
 
   //If user is verified then user can be redirected to following routes
   if (state == "verified") {

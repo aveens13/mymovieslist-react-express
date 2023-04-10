@@ -16,12 +16,25 @@ model User {
   email    String  @unique
   password String
   movies   Movie[]
+  shows    Show[]
 }
 
 model Movie {
-  movie_id  Int      @id
+  movie_id  Int
   rating    Float?
   createdAt DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [user_id])
   authorId  String
+
+  @@id([movie_id, authorId])
+}
+
+model Show {
+  show_id   Int
+  rating    Float?
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [user_id])
+  authorId  String
+
+  @@id([show_id, authorId])
 }

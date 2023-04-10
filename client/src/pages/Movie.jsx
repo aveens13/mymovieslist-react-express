@@ -1,12 +1,23 @@
+import * as React from "react";
 import { useRef, useState, useEffect } from "react";
 import "../styles/Movie.css";
 import MovieElement from "./MovieElement";
+import Snackbar from "@mui/material/Snackbar";
+import { Alert } from "@mui/material";
+
 export default function Movie({ userToken }) {
+  const [movie, setMovie] = useState([]);
+  const [snackbarprop, setSnackbarprop] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  //Get the image for the movie poster
   const getPosterUrl = (posterId) => {
     return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
   };
-  const [movie, setMovie] = useState([]);
-  const [buttonColor, setButtonColor] = useState(false);
+
   //Setting up the useeffect for movies
   useEffect(() => {
     fetch("/api/movies").then((response) => {
@@ -16,16 +27,58 @@ export default function Movie({ userToken }) {
     });
   }, []);
 
+  //handle closing snackbar
+  const handleClose = (reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackbarprop((prev) => {
+      return { ...prev, open: false };
+    });
+  };
+
+  //Add movie to the list
   function handleWatchedMovie(event) {
     console.log(event.target.value);
-    setButtonColor(true);
     fetch(`/api/add-movie/${event.target.value}/${userToken.id}`, {
       method: "POST",
-    }).then((response) => {});
+    }).then((response) => {
+      response.json().then((e) => {
+        if (response.ok) {
+          console.log("I am here");
+          setSnackbarprop({
+            open: true,
+            message: e.result,
+            severity: "success",
+          });
+        } else {
+          setSnackbarprop({
+            open: true,
+            message: e.result,
+            severity: "error",
+          });
+        }
+      });
+    });
   }
+
   return (
     <>
       <section id="slider-container">
+        <Snackbar
+          open={snackbarprop.open}
+          autoHideDuration={3000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={snackbarprop.severity}
+            sx={{ width: "100%" }}
+          >
+            {snackbarprop.message}
+          </Alert>
+        </Snackbar>
         <h1 className="main-header">Popular Movies Right Now</h1>
         <div className="movie-slider">
           <div className="movie-list">
@@ -34,7 +87,6 @@ export default function Movie({ userToken }) {
                 movieData={movieData}
                 getPosterUrl={getPosterUrl(movieData.poster_path)}
                 handleWatchedMovie={handleWatchedMovie}
-                buttonColor={buttonColor}
                 key={movieData.id}
               />
             ))}

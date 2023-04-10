@@ -18,7 +18,7 @@ export default function MovieElement(props) {
           <h1 className="movie-title">{props.movieData.title}</h1>
 
           <button
-            className={props.buttonColor ? "btn-watch primary" : "btn-watch"}
+            className="btn-watch"
             value={props.movieData.id}
             onClick={props.handleWatchedMovie}
           >
