@@ -35,7 +35,7 @@ export default function Shows() {
                     <strong>{showData.vote_average}</strong>
                   </div>
 
-                  <h1 className="movie-title">{showData.original_name}</h1>
+                  <h1 className="movie-title">{showData.name}</h1>
                   <button className="btn-watch" value={showData.id}>
                     <a href="#">
                       <i className="fas fa-plus"></i>

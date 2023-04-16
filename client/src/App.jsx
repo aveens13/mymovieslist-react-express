@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer, toast, Slide } from "react-toastify";
 import { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import List from "./pages/Movielist/List";
@@ -9,6 +10,8 @@ import Signup from "./pages/Signup";
 import Shows from "./pages/Shows";
 import Login from "./pages/Login";
 import Landingpage from "./Landingpage";
+const customToastId = "preventingDuplicate";
+
 function App() {
   const [state, setState] = useState("waiting");
   const [response, setResponse] = useState({});
@@ -21,17 +24,29 @@ function App() {
         result.json().then((e) => {
           setState("verified");
           setResponse(e.data);
+          if (!toast.isActive(customToastId)) {
+            toast.success("Logged In Successfully", {
+              toastId: customToastId,
+            });
+          }
         });
       }
     });
   }, [state]);
 
   //If user is verified then user can be redirected to following routes
-  if (state == "verified") {
+  if (state === "verified") {
     return (
       <>
         <BrowserRouter>
           <NavBar changeState={() => setState("waiting")} />
+          <ToastContainer
+            autoClose={1000}
+            hideProgressBar={true}
+            theme="dark"
+            position="top-center"
+            transition={Slide}
+          />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/list" element={<List userToken={response} />} />

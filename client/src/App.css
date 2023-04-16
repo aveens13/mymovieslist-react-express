@@ -203,3 +203,16 @@ body {
   background-color: #005eff;
   transform: scale(1.01);
 }
+.login--card form .noError{
+  visibility: hidden;
+  margin: 0;
+  line-height: 0;
+}
+.login--card form .error{
+  font-size: 0.9rem;
+  font-weight: 200;
+  letter-spacing: 0.1rem;
+  color: red;
+  /* visibility: hidden; */
+  margin: 0;
+}

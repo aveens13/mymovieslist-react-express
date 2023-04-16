@@ -46,7 +46,6 @@ export default function Movie({ userToken }) {
     }).then((response) => {
       response.json().then((e) => {
         if (response.ok) {
-          console.log("I am here");
           setSnackbarprop({
             open: true,
             message: e.result,
