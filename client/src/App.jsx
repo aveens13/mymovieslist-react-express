@@ -34,17 +34,24 @@ function App() {
     });
   }, [state]);
 
+  //handle the search query click
+  const handleClick = (result) => {
+    console.log(result.id);
+  };
   //If user is verified then user can be redirected to following routes
   if (state === "verified") {
     return (
       <>
         <BrowserRouter>
-          <NavBar changeState={() => setState("waiting")} />
+          <NavBar
+            changeState={() => setState("waiting")}
+            queryClick={handleClick}
+          />
           <ToastContainer
             autoClose={1000}
             hideProgressBar={true}
             theme="dark"
-            position="top-center"
+            position="bottom-left"
             transition={Slide}
           />
           <Routes>

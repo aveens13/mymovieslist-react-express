@@ -14,7 +14,7 @@ export default function Login({ changeState }) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const circulartoPlain = Object.fromEntries(formData.entries());
+    const circulartoPlain = Object.fromEntries(formData);
     const formDataJsonString = JSON.stringify(circulartoPlain);
     const response = await toast.promise(
       fetch("/api/login", {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function SearchResults({ query }) {
+function SearchResults({ query, queryClick }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,10 +37,14 @@ function SearchResults({ query }) {
       ) : results ? (
         <ul>
           {results.map((result) => (
-            <li key={result.id}>
-              <img src={getPosterUrl(result.poster_path)} alt="" />
+            <li key={result.id} onClick={() => queryClick(result)}>
+              {result.media_type == "person" ? (
+                <img src={getPosterUrl(result.profile_path)} alt="" />
+              ) : (
+                <img src={getPosterUrl(result.poster_path)} alt="" />
+              )}
               <div>
-                {result.title ? (
+                {result.media_type == "movie" && (
                   <div>
                     <h3>{result.title}</h3>
                     <h4>
@@ -54,7 +58,8 @@ function SearchResults({ query }) {
                       )}
                     </h4>
                   </div>
-                ) : (
+                )}
+                {result.media_type == "tv" && (
                   <div>
                     <h3>{result.name}</h3>
                     <h4>
@@ -69,6 +74,13 @@ function SearchResults({ query }) {
                     </h4>
                   </div>
                 )}
+                {result.media_type == "person" && (
+                  <div>
+                    <h3>{result.name}</h3>
+                    <h4>{result.known_for_department}</h4>
+                  </div>
+                )}
+
                 <h4>{result.media_type.toUpperCase()}</h4>
               </div>
             </li>

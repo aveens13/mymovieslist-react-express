@@ -14,14 +14,6 @@ export default function NavBar(props) {
   function handleChange(event) {
     setQuery(event.target.value);
     setShowResults(true);
-    // const response = await fetch(`/api/search?name=${movieName}`, {
-    //   method: "POST",
-    // });
-    // if (response.ok) {
-    //   response.json().then((e) => {
-    //     setSearchData(e.result);
-    //   });
-    // }
   }
 
   useEffect(() => {
@@ -65,7 +57,7 @@ export default function NavBar(props) {
       {showResults && (
         <div className="search-overlay">
           <div className="search-results-container" ref={overlayRef}>
-            <SearchResults query={query} />
+            <SearchResults query={query} queryClick={props.queryClick} />
           </div>
         </div>
       )}
