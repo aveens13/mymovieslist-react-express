@@ -1,4 +1,11 @@
+import { Button, Space } from "antd";
+import { useState } from "react";
 export default function MovieElement(props) {
+  const [loading, setLoading] = useState(false);
+  function handleClick() {
+    setLoading(true);
+    props.handleWatchedMovie(props.movieData.id).then(() => setLoading(false));
+  }
   return (
     <>
       <div className="movie-card" key={props.movieData.id}>
@@ -17,16 +24,18 @@ export default function MovieElement(props) {
 
           <h1 className="movie-title">{props.movieData.title}</h1>
 
-          <button
+          <Button
+            type="primary"
+            loading={loading}
             className="btn-watch"
             value={props.movieData.id}
-            onClick={props.handleWatchedMovie}
+            onClick={handleClick}
           >
             <a href="#">
               <i className="fas fa-plus"></i>
             </a>
             Add to list
-          </button>
+          </Button>
         </div>
       </div>
     </>

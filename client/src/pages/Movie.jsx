@@ -39,26 +39,30 @@ export default function Movie({ userToken }) {
   };
 
   //Add movie to the list
-  function handleWatchedMovie(event) {
-    console.log(event.target.value);
-    fetch(`/api/add-movie/${event.target.value}/${userToken.id}`, {
+  function handleWatchedMovie(id) {
+    return fetch(`/api/add-movie/${id}/${userToken.id}`, {
       method: "POST",
     }).then((response) => {
-      response.json().then((e) => {
-        if (response.ok) {
-          setSnackbarprop({
-            open: true,
-            message: e.result,
-            severity: "success",
-          });
-        } else {
-          setSnackbarprop({
-            open: true,
-            message: e.result,
-            severity: "error",
-          });
-        }
-      });
+      response
+        .json()
+        .then((e) => {
+          if (response.ok) {
+            setSnackbarprop({
+              open: true,
+              message: e.result,
+              severity: "success",
+            });
+          } else {
+            setSnackbarprop({
+              open: true,
+              message: e.result,
+              severity: "error",
+            });
+          }
+        })
+        .finally(() => {
+          resolve();
+        });
     });
   }
 
