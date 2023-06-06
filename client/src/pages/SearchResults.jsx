@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 function SearchResults({ query, queryClick }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,6 +9,7 @@ function SearchResults({ query, queryClick }) {
     return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
   };
 
+  const timerRef = useRef(null);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -26,8 +27,22 @@ function SearchResults({ query, queryClick }) {
         console.error(error);
       }
     }
+    function startTimer() {
+      clearTimer();
+      timerRef.current = setInterval(fetchData, 1000);
+    }
 
-    fetchData();
+    function clearTimer() {
+      clearInterval(timerRef.current);
+    }
+
+    // Start the timer when the component mounts or the query changes
+    startTimer();
+
+    // Clear the timer when the component unmounts or the query changes
+    return () => {
+      clearTimer();
+    };
   }, [query]);
 
   return (
@@ -37,53 +52,55 @@ function SearchResults({ query, queryClick }) {
       ) : results ? (
         <ul>
           {results.map((result) => (
-            <li key={result.id} onClick={() => queryClick(result)}>
-              {result.media_type == "person" ? (
-                <img src={getPosterUrl(result.profile_path)} alt="" />
-              ) : (
-                <img src={getPosterUrl(result.poster_path)} alt="" />
-              )}
-              <div>
-                {result.media_type == "movie" && (
-                  <div>
-                    <h3>{result.title}</h3>
-                    <h4>
-                      {new Date(result.release_date).toLocaleDateString(
-                        "en-US",
-                        {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        }
-                      )}
-                    </h4>
-                  </div>
+            <Link to={`/movies/${result.id}`}>
+              <li key={result.id} onClick={() => queryClick()}>
+                {result.media_type == "person" ? (
+                  <img src={getPosterUrl(result.profile_path)} alt="" />
+                ) : (
+                  <img src={getPosterUrl(result.poster_path)} alt="" />
                 )}
-                {result.media_type == "tv" && (
-                  <div>
-                    <h3>{result.name}</h3>
-                    <h4>
-                      {new Date(result.first_air_date).toLocaleDateString(
-                        "en-US",
-                        {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        }
-                      )}
-                    </h4>
-                  </div>
-                )}
-                {result.media_type == "person" && (
-                  <div>
-                    <h3>{result.name}</h3>
-                    <h4>{result.known_for_department}</h4>
-                  </div>
-                )}
+                <div>
+                  {result.media_type == "movie" && (
+                    <div>
+                      <h3>{result.title}</h3>
+                      <h4>
+                        {new Date(result.release_date).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        )}
+                      </h4>
+                    </div>
+                  )}
+                  {result.media_type == "tv" && (
+                    <div>
+                      <h3>{result.name}</h3>
+                      <h4>
+                        {new Date(result.first_air_date).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        )}
+                      </h4>
+                    </div>
+                  )}
+                  {result.media_type == "person" && (
+                    <div>
+                      <h3>{result.name}</h3>
+                      <h4>{result.known_for_department}</h4>
+                    </div>
+                  )}
 
-                <h4>{result.media_type.toUpperCase()}</h4>
-              </div>
-            </li>
+                  <h4>{result.media_type.toUpperCase()}</h4>
+                </div>
+              </li>
+            </Link>
           ))}
         </ul>
       ) : (

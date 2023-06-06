@@ -57,7 +57,10 @@ export default function NavBar(props) {
       {showResults && (
         <div className="search-overlay">
           <div className="search-results-container" ref={overlayRef}>
-            <SearchResults query={query} queryClick={props.queryClick} />
+            <SearchResults
+              query={query}
+              queryClick={() => setShowResults(false)}
+            />
           </div>
         </div>
       )}

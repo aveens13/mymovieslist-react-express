@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import Shows from "./pages/Shows";
 import Login from "./pages/Login";
 import Landingpage from "./Landingpage";
+import { MovieDetails } from "./pages/Moviedetails";
 const customToastId = "preventingDuplicate";
 
 function App() {
@@ -58,6 +59,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/list" element={<List userToken={response} />} />
             <Route path="/movies" element={<Movie userToken={response} />} />
+            <Route
+              path="/movies/:movieId"
+              element={<MovieDetails userToken={response} />}
+            />
             <Route path="/tv-shows" element={<Shows />} />
           </Routes>
         </BrowserRouter>
