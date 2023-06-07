@@ -1,6 +1,7 @@
 import { Button, Card, Space } from "antd";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import StarIcon from "@mui/icons-material/Star";
 import "../styles/Details.css";
 import image from "../assets/OIP.jpg";
 export const MovieDetails = () => {
@@ -20,7 +21,7 @@ export const MovieDetails = () => {
     };
 
     dataFetch();
-  }, []);
+  }, [id]);
 
   const getPosterUrl = (posterId) => {
     return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
@@ -35,7 +36,16 @@ export const MovieDetails = () => {
         <div className="movie-info">
           <ul>
             <li>
-              <p className="title">{data.info.title}</p>
+              <div className="title-section">
+                <p className="title">{data.info.title}</p>
+                <div className="ratings">
+                  <p>
+                    <StarIcon />
+                    {data.info.vote_average}
+                  </p>
+                  <p className="runtime">{data.info.runtime} minutes</p>
+                </div>
+              </div>
             </li>
             <li>
               <p className="bold">Type:</p>

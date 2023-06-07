@@ -9,6 +9,24 @@
     width: 100%;
     justify-content: flex-start;
 }
+.top--section .title-section{
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+}
+.top--section .title-section .ratings{
+    display: flex;
+    align-items: center;
+}
+.ratings p{
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+}
+.ratings .runtime{
+    background-color: #4666ff;
+    border-radius: 0.5rem;
+}
 .top--section .image--drop img{
     width: 300px;
 }
@@ -18,6 +36,7 @@
 }
 .top--section .movie-info ul li .title{
     font-weight: 700;
+    margin: 0;
     font-size: 2rem;
 }
 .movie-info ul li .bold{
@@ -27,4 +46,12 @@
 }
 .movie-info ul li .light{
     padding: 0 1rem;
+}
+.details-hero .details-section{
+    padding: 2rem 0;
+}
+.details-hero .details-section .description{
+    font-weight: 400;
+    font-size: 1.2rem;
+    letter-spacing: 0.1rem;
 }

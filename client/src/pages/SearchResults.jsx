@@ -29,7 +29,7 @@ function SearchResults({ query, queryClick }) {
     }
     function startTimer() {
       clearTimer();
-      timerRef.current = setInterval(fetchData, 1000);
+      timerRef.current = setInterval(fetchData, 500);
     }
 
     function clearTimer() {
