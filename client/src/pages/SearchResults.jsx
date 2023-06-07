@@ -52,7 +52,7 @@ function SearchResults({ query, queryClick }) {
       ) : results ? (
         <ul>
           {results.map((result) => (
-            <Link to={`/movies/${result.id}`}>
+            <Link to={`/details/${result.id}`}>
               <li key={result.id} onClick={() => queryClick()}>
                 {result.media_type == "person" ? (
                   <img src={getPosterUrl(result.profile_path)} alt="" />

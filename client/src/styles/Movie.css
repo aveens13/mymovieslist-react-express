@@ -86,7 +86,7 @@ button {
 .movie-card {
   background-color: #1a1a1a;
   border-radius: 10px;
-  width: 182px;
+  width: 100%;
   box-shadow: 0px 5px 10px rgb(17, 17, 17);
   cursor: pointer;
   margin: 20px 15px;
@@ -108,8 +108,16 @@ button {
 }
 .movie-info {
   padding: 15px 10px;
+  /* align-items: center; */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
 }
-.movie-info .rating i {
+.movie-info .rating{
+  display: flex;
+  align-items: center;
+}
+.movie-info .rating .i {
   color: #fffd6b;
   margin-right: 1rem;
 }
@@ -134,6 +142,8 @@ button {
   position: absolute;
   bottom: 0;
   margin-bottom: 10px;
+  width: 80%;
+  align-self: center;
 }
 .btn-watch a i {
   color: #3b6ac1;

@@ -1,4 +1,6 @@
 import { Card, Space } from "antd";
+import { useParams } from "react-router-dom";
 export const MovieDetails = () => {
-  return <div>Movie Info</div>;
+  let { id } = useParams();
+  return <div>Movie Info {id}</div>;
 };

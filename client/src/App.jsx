@@ -60,7 +60,7 @@ function App() {
             <Route path="/list" element={<List userToken={response} />} />
             <Route path="/movies" element={<Movie userToken={response} />} />
             <Route
-              path="/movies/:movieId"
+              path="/details/:id"
               element={<MovieDetails userToken={response} />}
             />
             <Route path="/tv-shows" element={<Shows />} />

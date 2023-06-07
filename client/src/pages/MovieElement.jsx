@@ -1,5 +1,6 @@
 import { Button, Space } from "antd";
 import { useState } from "react";
+import StarIcon from "@mui/icons-material/Star";
 export default function MovieElement(props) {
   const [loading, setLoading] = useState(false);
   function handleClick() {
@@ -17,7 +18,7 @@ export default function MovieElement(props) {
         <div className="movie-info">
           <div className="rating">
             <a href="#">
-              <i className="fas fa-star"></i>
+              <StarIcon className="i" />
             </a>
             <strong>{props.movieData.vote_average}</strong>
           </div>
@@ -31,9 +32,6 @@ export default function MovieElement(props) {
             value={props.movieData.id}
             onClick={handleClick}
           >
-            <a href="#">
-              <i className="fas fa-plus"></i>
-            </a>
             Add to list
           </Button>
         </div>
