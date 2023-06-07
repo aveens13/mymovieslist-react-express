@@ -1,0 +1,30 @@
+.details-hero{
+    width: 100%;
+    margin-top: 1rem;
+    padding: 3rem;
+    font-family: 'Poppins', sans-serif;
+}
+.details-hero .top--section{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+.top--section .image--drop img{
+    width: 300px;
+}
+.top--section .movie-info ul li{
+    display: flex;
+    align-items: center;
+}
+.top--section .movie-info ul li .title{
+    font-weight: 700;
+    font-size: 2rem;
+}
+.movie-info ul li .bold{
+    font-weight: 600;
+    width: 7rem;
+    color: gray;
+}
+.movie-info ul li .light{
+    padding: 0 1rem;
+}
