@@ -6,17 +6,21 @@ import "../styles/Details.css";
 import image from "../assets/OIP.jpg";
 export const MovieDetails = () => {
   const [data, setData] = useState({
-    info: {},
+    info: {
+      genres: [],
+    },
     credits: {
       cast: [],
       crew: [],
     },
   });
-  let { id } = useParams();
+  let { id, type } = useParams();
   useEffect(() => {
     // fetch data
     const dataFetch = async () => {
-      const data = await (await fetch(`/api/details/${id}?type=movie`)).json();
+      const data = await (
+        await fetch(`/api/details/${id}?type=${type}`)
+      ).json();
       setData(data);
     };
 
@@ -37,35 +41,60 @@ export const MovieDetails = () => {
           <ul>
             <li>
               <div className="title-section">
-                <p className="title">{data.info.title}</p>
+                {type == "tv" ? (
+                  <p className="title">{data.info.name}</p>
+                ) : (
+                  <p className="title">{data.info.title}</p>
+                )}
                 <div className="ratings">
                   <p>
                     <StarIcon />
                     {data.info.vote_average}
                   </p>
-                  <p className="runtime">{data.info.runtime} minutes</p>
+                  {type == "tv" ? (
+                    <p className="runtime">
+                      {data.info.number_of_episodes} Episodes
+                    </p>
+                  ) : (
+                    <p className="runtime">{data.info.runtime} minutes</p>
+                  )}
                 </div>
               </div>
             </li>
             <li>
               <p className="bold">Type:</p>
-              <p className="light">Movie</p>
+              <p className="light">{type}</p>
             </li>
             <li>
               <p className="bold">Genre:</p>
-              <p className="light">Action</p>
+              {data.info.genres.map((genre) => (
+                <p className="light">{genre.name}</p>
+              ))}
             </li>
             <li>
               <p className="bold">Release:</p>
-              <p className="light">{data.info.release_date}</p>
-            </li>
-            <li>
-              <p className="bold">Director:</p>
-              {data.credits.crew.map(
-                (crew) =>
-                  crew.job == "Director" && <p className="light">{crew.name}</p>
+              {type == "tv" ? (
+                <p className="light">{data.info.first_air_date}</p>
+              ) : (
+                <p className="light">{data.info.release_date}</p>
               )}
             </li>
+            {type == "tv" ? (
+              <li>
+                <p className="bold">Status:</p>
+                <p className="light">{data.info.status}</p>
+              </li>
+            ) : (
+              <li>
+                <p className="bold">Director:</p>
+                {data.credits.crew.map(
+                  (crew) =>
+                    crew.job == "Director" && (
+                      <p className="light">{crew.name}</p>
+                    )
+                )}
+              </li>
+            )}
             <li>
               <p className="bold">Cast:</p>
               {data.credits.cast.slice(0, 3).map((cast, index) => (
