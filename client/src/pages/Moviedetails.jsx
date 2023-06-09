@@ -2,10 +2,17 @@ import { Button, Card, Space } from "antd";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
+import Snackbar from "@mui/material/Snackbar";
+import { Alert } from "@mui/material";
 import "../styles/Details.css";
-import image from "../assets/OIP.jpg";
-export const MovieDetails = () => {
+export const MovieDetails = ({ userToken }) => {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [snackbarprop, setSnackbarprop] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
   let { id, type } = useParams();
   useEffect(() => {
     // fetch data
@@ -23,8 +30,59 @@ export const MovieDetails = () => {
     return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
   };
 
+  //handle closing snackbar
+  const handleClose = (reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackbarprop((prev) => {
+      return { ...prev, open: false };
+    });
+  };
+
+  //Post api to add the movie to the user's list
+  const handleAddtoList = () => {
+    setLoading(true);
+    fetch(`/api/add-movie/${id}/${userToken.id}?type=${type}`, {
+      method: "POST",
+    }).then((res) => {
+      res.json().then((e) => {
+        if (res.ok) {
+          setSnackbarprop({
+            open: true,
+            message: e.result,
+            severity: "success",
+          });
+
+          setLoading(false);
+        } else {
+          setSnackbarprop({
+            open: true,
+            message: e.result,
+            severity: "error",
+          });
+
+          setLoading(false);
+        }
+      });
+    });
+  };
   return (
     <div className="details-hero">
+      <Snackbar
+        open={snackbarprop.open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={snackbarprop.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarprop.message}
+        </Alert>
+      </Snackbar>
       {type != "person"
         ? data && (
             <>
@@ -114,10 +172,10 @@ export const MovieDetails = () => {
                 <div className="actions">
                   <Button
                     type="primary"
-                    // loading={loading}
+                    loading={loading}
                     className="btn-watch"
                     // value={props.movieData.id}
-                    // onClick={handleClick}
+                    onClick={handleAddtoList}
                   >
                     Add to list
                   </Button>
@@ -181,17 +239,7 @@ export const MovieDetails = () => {
               </div>
               <div className="details-section">
                 <div className="description">{data.info.biography}</div>
-                <div className="actions">
-                  <Button
-                    type="primary"
-                    // loading={loading}
-                    className="btn-watch"
-                    // value={props.movieData.id}
-                    // onClick={handleClick}
-                  >
-                    Add to list
-                  </Button>
-                </div>
+                <div className="actions"></div>
               </div>
             </>
           )}
