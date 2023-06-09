@@ -40,7 +40,7 @@ export default function Movie({ userToken }) {
 
   //Add movie to the list
   function handleWatchedMovie(id) {
-    return fetch(`/api/add-movie/${id}/${userToken.id}`, {
+    return fetch(`/api/add-movie/${id}/${userToken.id}?type=movie`, {
       method: "POST",
     }).then((response) => {
       response
