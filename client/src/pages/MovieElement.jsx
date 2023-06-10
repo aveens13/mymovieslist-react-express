@@ -22,8 +22,11 @@ export default function MovieElement(props) {
             </a>
             <strong>{props.movieData.vote_average}</strong>
           </div>
-
-          <h1 className="movie-title">{props.movieData.title}</h1>
+          {props.movieData.title ? (
+            <h1 className="movie-title">{props.movieData.title}</h1>
+          ) : (
+            <h1 className="movie-title">{props.movieData.name}</h1>
+          )}
 
           <Button
             type="primary"

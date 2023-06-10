@@ -63,7 +63,7 @@ function App() {
               path="/details/:id/:type"
               element={<MovieDetails userToken={response} />}
             />
-            <Route path="/tv-shows" element={<Shows />} />
+            <Route path="/tv-shows" element={<Shows userToken={response} />} />
           </Routes>
         </BrowserRouter>
       </>
