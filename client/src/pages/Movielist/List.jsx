@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Movielist from "./Movielist";
 export default function List({ userToken }) {
   const [list, setList] = useState([]);
+  const [show, setShow] = useState([]);
+  const [data, setData] = useState([]);
   const getPosterUrl = (posterId) => {
     return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
   };
@@ -10,13 +12,25 @@ export default function List({ userToken }) {
     fetch(`/api/get-movie-list/${userToken.id}`).then((response) => {
       response.json().then((data) => {
         setList(data.result);
+        setData(data.result);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    fetch(`/api/get-show-list/${userToken.id}`).then((response) => {
+      response.json().then((data) => {
+        setShow(data.result);
       });
     });
   }, []);
   return (
     <div className="listSection">
-      <h3>Movie List</h3>
-      {list.map((movie) => (
+      <div className="top-buttons">
+        <h3 onClick={() => setData(list)}>Movie List</h3>
+        <h3 onClick={() => setData(show)}>Shows List</h3>
+      </div>
+      {data.map((movie) => (
         <Movielist
           movie={movie}
           getPosterUrl={getPosterUrl(movie.poster_path)}

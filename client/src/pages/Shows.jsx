@@ -6,7 +6,7 @@ import MovieElement from "./MovieElement";
 
 export default function Shows({ userToken }) {
   const [tvShow, setTvShow] = useState([]);
-  const [loading, setLoading] = useState(false);
+
   const [snackbarprop, setSnackbarprop] = useState({
     open: false,
     message: "",
@@ -38,7 +38,6 @@ export default function Shows({ userToken }) {
 
   //Add movie to the list
   function handleWatchedMovie(id) {
-    setLoading(true);
     return fetch(`/api/add-movie/${id}/${userToken.id}?type=tv`, {
       method: "POST",
     }).then((response) => {
@@ -46,14 +45,12 @@ export default function Shows({ userToken }) {
         .json()
         .then((e) => {
           if (response.ok) {
-            setLoading(false);
             setSnackbarprop({
               open: true,
               message: e.result,
               severity: "success",
             });
           } else {
-            setLoading(false);
             setSnackbarprop({
               open: true,
               message: e.result,
