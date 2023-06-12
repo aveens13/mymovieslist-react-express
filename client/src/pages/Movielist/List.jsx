@@ -33,6 +33,7 @@ export default function List({ userToken }) {
       {data.map((movie) => (
         <Movielist
           movie={movie}
+          userToken={userToken}
           getPosterUrl={getPosterUrl(movie.poster_path)}
         />
       ))}

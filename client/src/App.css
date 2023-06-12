@@ -31,7 +31,7 @@ body {
   background-color: rgba(0,0,0,0.7);
   z-index: 1000;
 }
-.modal--hero button{
+.modal--hero > button{
   padding: 1rem;
   position: absolute;
   top: 1%;

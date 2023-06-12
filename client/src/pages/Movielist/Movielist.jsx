@@ -22,7 +22,7 @@ export default function Movielist(props) {
         </div>
       </div>
       <Modal open={isShowing} close={() => setIsShowing(false)}>
-        <MovieInfo movie={props.movie} />
+        <MovieInfo movie={props.movie} userToken={props.userToken} />
       </Modal>
     </>
   );

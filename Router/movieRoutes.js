@@ -9,6 +9,11 @@ router.get("/api/tv-shows", requireAuth, handlers.tv); //Gets popular tv shows l
 router.get("/api/get-movie-list/:userId", requireAuth, handlers.getMovieList); //Movies list for specific user
 router.get("/api/get-show-list/:userId", requireAuth, handlers.getShowsList); //Movies list for specific user
 router.post("/api/add-movie/:movieId/:userId", requireAuth, handlers.addMovie);
+router.post(
+  "/api/deletefromlist/:movieId/:userId",
+  requireAuth,
+  handlers.deleteList
+);
 router.post("/api/search", requireAuth, handlers.searchMovie);
 
 module.exports = router;

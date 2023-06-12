@@ -40,3 +40,16 @@
     padding: 1rem;
     margin: 1rem;
 }
+
+.info--card {
+    font-family: 'Poppins', sans-serif;
+}
+
+.info--card .movie--info .movie-title-nav{
+    display: flex;
+    align-items: center;
+}
+
+.movie-title-nav > button{
+    margin-left: auto;
+}
