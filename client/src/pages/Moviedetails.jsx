@@ -1,12 +1,15 @@
-import { Button, Card, Space } from "antd";
+import { Button, Card, Space, Rate } from "antd";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 import "../styles/Details.css";
+const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
+
 export const MovieDetails = ({ userToken }) => {
   const [data, setData] = useState(null);
+  const [value, setValue] = useState(3);
   const [loading, setLoading] = useState(false);
   const [snackbarprop, setSnackbarprop] = useState({
     open: false,
@@ -41,6 +44,9 @@ export const MovieDetails = ({ userToken }) => {
     });
   };
 
+  function setRate() {
+    console.log(e.value);
+  }
   //Post api to add the movie to the user's list
   const handleAddtoList = () => {
     setLoading(true);
@@ -165,6 +171,18 @@ export const MovieDetails = ({ userToken }) => {
                       )}
                     </li>
                   </ul>
+                </div>
+                <div className="rating--hero">
+                  <h3>Have you watched this ? Rate it</h3>
+                  <span>
+                    <Rate tooltips={desc} onChange={setValue} value={value} />
+                    {value ? (
+                      <span className="ant-rate-text">{desc[value - 1]}</span>
+                    ) : (
+                      ""
+                    )}
+                  </span>
+                  <Button type="primary">Submit</Button>
                 </div>
               </div>
               <div className="details-section">

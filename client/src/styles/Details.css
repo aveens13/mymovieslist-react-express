@@ -55,3 +55,13 @@
     font-size: 1.2rem;
     letter-spacing: 0.1rem;
 }
+.rating--hero{
+    display: flex;
+    align-self: center;
+    margin-left: 8rem;
+    flex-direction: column;
+}
+.rating--hero button{
+    margin: 1rem 0;
+    /* width: 10%; */
+}
