@@ -1,4 +1,4 @@
-import { Button, Card, Space, Rate } from "antd";
+import { Button, notification, Space, Rate, message } from "antd";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
@@ -16,6 +16,35 @@ export const MovieDetails = ({ userToken }) => {
     message: "",
     severity: "success",
   });
+  const [api, contextHolder] = notification.useNotification();
+  const [messageApi, messageContext] = message.useMessage();
+
+  const openNotification = () => {
+    const key = `open${Date.now()}`;
+    const btn = (
+      <Space>
+        <Button
+          danger
+          type="primary"
+          size="small"
+          onClick={() => api.destroy()}
+        >
+          Cancel
+        </Button>
+        <Button type="primary" size="small" onClick={() => handleAddtoList()}>
+          Add to my list
+        </Button>
+      </Space>
+    );
+    api.open({
+      message: "Not on your list",
+      description:
+        "Want to update your list? Click add button below to add this to your list. ( PS: You need to rate it again 😊)",
+      btn,
+      key,
+    });
+  };
+
   let { id, type } = useParams();
   useEffect(() => {
     // fetch data
@@ -88,15 +117,28 @@ export const MovieDetails = ({ userToken }) => {
 
     response.json().then((e) => {
       if (response.ok) {
+        messageApi.open({
+          type: "success",
+          content: "Thank you for rating 😊",
+        });
         console.log(e);
       } else {
-        console.log(e);
+        if (e.code == "P2025") {
+          openNotification();
+        } else {
+          api.open({
+            message: "Error",
+            description: e.message,
+          });
+        }
       }
     });
   }
 
   return (
     <div className="details-hero">
+      {contextHolder}
+      {messageContext}
       <Snackbar
         open={snackbarprop.open}
         autoHideDuration={3000}
