@@ -9,7 +9,7 @@ const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
 export const MovieDetails = ({ userToken }) => {
   const [data, setData] = useState(null);
-  const [value, setValue] = useState(3);
+  const [value, setValue] = useState(5);
   const [loading, setLoading] = useState(false);
   const [snackbarprop, setSnackbarprop] = useState({
     open: false,
@@ -44,9 +44,6 @@ export const MovieDetails = ({ userToken }) => {
     });
   };
 
-  function setRate() {
-    console.log(e.value);
-  }
   //Post api to add the movie to the user's list
   const handleAddtoList = () => {
     setLoading(true);
@@ -74,6 +71,30 @@ export const MovieDetails = ({ userToken }) => {
       });
     });
   };
+
+  async function updateRating() {
+    const response = await fetch(
+      `/api/update-movie/${id}/${userToken.id}?type=${type}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rating: value,
+        }),
+      }
+    );
+
+    response.json().then((e) => {
+      if (response.ok) {
+        console.log(e);
+      } else {
+        console.log(e);
+      }
+    });
+  }
+
   return (
     <div className="details-hero">
       <Snackbar
@@ -111,7 +132,7 @@ export const MovieDetails = ({ userToken }) => {
                         <div className="ratings">
                           <p>
                             <StarIcon />
-                            {data.info.vote_average}
+                            TMDB Rating ({data.info.vote_average})
                           </p>
                           {type == "tv" ? (
                             <p className="runtime">
@@ -182,7 +203,9 @@ export const MovieDetails = ({ userToken }) => {
                       ""
                     )}
                   </span>
-                  <Button type="primary">Submit</Button>
+                  <Button type="primary" onClick={updateRating}>
+                    Submit
+                  </Button>
                 </div>
               </div>
               <div className="details-section">

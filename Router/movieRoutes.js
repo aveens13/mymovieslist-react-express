@@ -10,6 +10,11 @@ router.get("/api/get-movie-list/:userId", requireAuth, handlers.getMovieList); /
 router.get("/api/get-show-list/:userId", requireAuth, handlers.getShowsList); //Movies list for specific user
 router.post("/api/add-movie/:movieId/:userId", requireAuth, handlers.addMovie);
 router.post(
+  "/api/update-movie/:movieId/:userId",
+  requireAuth,
+  handlers.updateMovie
+);
+router.post(
   "/api/deletefromlist/:movieId/:userId",
   requireAuth,
   handlers.deleteList
