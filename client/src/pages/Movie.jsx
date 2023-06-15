@@ -22,6 +22,7 @@ export default function Movie({ userToken }) {
   useEffect(() => {
     fetch("/api/movies").then((response) => {
       response.json().then((data) => {
+        console.log(data);
         setMovie(data.result);
       });
     });

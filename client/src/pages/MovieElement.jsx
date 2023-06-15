@@ -9,7 +9,6 @@ export default function MovieElement(props) {
     props.handleWatchedMovie(props.movieData.id).then(() => setLoading(false));
   }
   const [type, setType] = useState(props.movieData.title ? "movie" : "tv");
-  console.log(type);
   return (
     <>
       <div className="movie-card" key={props.movieData.id}>
