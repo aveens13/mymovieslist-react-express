@@ -10,9 +10,10 @@ export default function List({ userToken }) {
   };
   useEffect(() => {
     fetch(`/api/get-movie-list/${userToken.id}`).then((response) => {
-      response.json().then((data) => {
-        setList(data.result);
-        setData(data.result);
+      response.json().then((e) => {
+        console.log(e);
+        setList(e.data.result);
+        setData(e.data.result);
       });
     });
   }, []);
