@@ -69,6 +69,7 @@ button {
 }
 
 .movie-list::-webkit-scrollbar {
+  display: none;
   width: 15px;
   height: 10px;
 }
