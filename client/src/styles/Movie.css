@@ -29,6 +29,10 @@ button {
   /* display: block; */
   margin-top: 2rem;
 }
+.main-header-for-you{
+  font-weight: 600;
+  font-size: 2rem;
+}
 .movie-slider {
   position: relative;
 }

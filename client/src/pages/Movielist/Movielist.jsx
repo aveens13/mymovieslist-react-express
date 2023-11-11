@@ -48,8 +48,8 @@ export default function Movielist(props) {
             <img src={props.getPosterUrl} alt="Movie" />
           </div>
           <div className="content">
-            {props.movie.original_title ? (
-              <h2>{props.movie.original_title}</h2>
+            {props.movie.title ? (
+              <h2>{props.movie.title}</h2>
             ) : (
               <h2>{props.movie.name}</h2>
             )}

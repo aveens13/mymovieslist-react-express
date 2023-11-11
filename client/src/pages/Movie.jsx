@@ -7,7 +7,7 @@ import { Alert } from "@mui/material";
 
 export default function Movie({ userToken }) {
   const [movie, setMovie] = useState([]);
-  const [trending, setTrending] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
   const [snackbarprop, setSnackbarprop] = useState({
     open: false,
     message: "",
@@ -23,9 +23,15 @@ export default function Movie({ userToken }) {
   useEffect(() => {
     fetch("/api/movies").then((response) => {
       response.json().then((data) => {
-        console.log(data);
         setMovie(data.result.popular);
-        setTrending(data.result.trending);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    fetch(`/api/get-recommendations/${userToken.id}`).then((response) => {
+      response.json().then((data) => {
+        setRecommendations(data.result);
       });
     });
   }, []);
@@ -98,17 +104,19 @@ export default function Movie({ userToken }) {
             ))}
           </div>
         </div>
-        <h1 className="main-header">Trending Today</h1>
+        <h1 className="main-header">| Recommended for you</h1>
         <div className="movie-slider">
           <div className="movie-list">
-            {trending.map((movieData) => (
-              <MovieElement
-                movieData={movieData}
-                getPosterUrl={getPosterUrl(movieData.poster_path)}
-                handleWatchedMovie={handleWatchedMovie}
-                key={movieData.id}
-              />
-            ))}
+            {recommendations.map((movieList) =>
+              movieList.map((movieData) => (
+                <MovieElement
+                  movieData={movieData}
+                  getPosterUrl={getPosterUrl(movieData.poster_path)}
+                  handleWatchedMovie={handleWatchedMovie}
+                  key={movieData.id}
+                />
+              ))
+            )}
           </div>
         </div>
       </section>
