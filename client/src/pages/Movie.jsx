@@ -2,8 +2,17 @@ import * as React from "react";
 import { useRef, useState, useEffect } from "react";
 import "../styles/Movie.css";
 import MovieElement from "./MovieElement";
+import Moviecard from "./Moviecard";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "../styles/MovieCard.css";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 
 export default function Movie({ userToken }) {
   const [movie, setMovie] = useState([]);
@@ -16,7 +25,7 @@ export default function Movie({ userToken }) {
 
   //Get the image for the movie poster
   const getPosterUrl = (posterId) => {
-    return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
+    return `https://image.tmdb.org/t/p/original${posterId}`;
   };
 
   //Setting up the useeffect for movies
@@ -91,7 +100,49 @@ export default function Movie({ userToken }) {
             {snackbarprop.message}
           </Alert>
         </Snackbar>
-        <h1 className="main-header">Popular Movies Right Now</h1>
+        <Swiper
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          loop={true}
+          slidesPreview={"auto"}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 2.5,
+          }}
+          pagination={{ el: ".swiper-pagination", clickable: true }}
+          navigation={{
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+            clickable: true,
+          }}
+          modules={[EffectCoverflow, Pagination, Navigation]}
+          className="swiper_container"
+        >
+          {movie.map((movieData) => (
+            <SwiperSlide>
+              <Moviecard
+                movieData={movieData}
+                getPosterUrl={getPosterUrl(movieData.backdrop_path)}
+                handleWatchedMovie={handleWatchedMovie}
+                key={movieData.id}
+              />
+            </SwiperSlide>
+          ))}
+
+          <div className="slider-controller">
+            <div className="swiper-button-prev slider-arrow">
+              <ion-icon name="arrow-back-outline"></ion-icon>
+            </div>
+            <div className="swiper-button-next slider-arrow">
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </div>
+            <div className="swiper-pagination"></div>
+          </div>
+        </Swiper>
+        {/* <h1 className="main-header">Popular Movies Right Now</h1>
         <div className="movie-slider">
           <div className="movie-list">
             {movie.map((movieData) => (
@@ -103,20 +154,18 @@ export default function Movie({ userToken }) {
               />
             ))}
           </div>
-        </div>
+        </div> */}
         <h1 className="main-header">| Recommended for you</h1>
         <div className="movie-slider">
           <div className="movie-list">
-            {recommendations.map((movieList) =>
-              movieList.map((movieData) => (
-                <MovieElement
-                  movieData={movieData}
-                  getPosterUrl={getPosterUrl(movieData.poster_path)}
-                  handleWatchedMovie={handleWatchedMovie}
-                  key={movieData.id}
-                />
-              ))
-            )}
+            {recommendations.map((movieData) => (
+              <MovieElement
+                movieData={movieData}
+                getPosterUrl={getPosterUrl(movieData.poster_path)}
+                handleWatchedMovie={handleWatchedMovie}
+                key={movieData.id}
+              />
+            ))}
           </div>
         </div>
       </section>

@@ -49,6 +49,18 @@
 }
 .details-hero .details-section{
     padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.details-section .trailer-section{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+.trailer-section iframe{
+    width: 80%;
 }
 .details-hero .details-section .description{
     font-weight: 400;

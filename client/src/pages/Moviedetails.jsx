@@ -5,10 +5,12 @@ import StarIcon from "@mui/icons-material/Star";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 import "../styles/Details.css";
+import { Container } from "react-bootstrap";
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
 export const MovieDetails = ({ userToken }) => {
   const [data, setData] = useState(null);
+  const [videoData, setVideoData] = useState(null);
   const [value, setValue] = useState(5);
   const [loading, setLoading] = useState(false);
   const [snackbarprop, setSnackbarprop] = useState({
@@ -55,11 +57,18 @@ export const MovieDetails = ({ userToken }) => {
       setData(data);
     };
 
+    const videoFetch = async () => {
+      const data = await (await fetch(`/api/video/${id}?type=${type}`)).json();
+      console.log(data);
+      setVideoData(data);
+    };
+
     dataFetch();
+    videoFetch();
   }, [id]);
 
   const getPosterUrl = (posterId) => {
-    return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
+    return `https://image.tmdb.org/t/p/original${posterId}`;
   };
 
   //handle closing snackbar
@@ -252,6 +261,13 @@ export const MovieDetails = ({ userToken }) => {
               </div>
               <div className="details-section">
                 <div className="description">{data.info.overview}</div>
+                <div className="trailer-section">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${videoData.info.key}`}
+                    title={videoData.info.name}
+                    allowFullScreen
+                  ></iframe>
+                </div>
                 <div className="actions">
                   <Button
                     type="primary"
