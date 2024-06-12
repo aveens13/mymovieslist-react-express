@@ -4,6 +4,11 @@
     padding: 3rem;
     font-family: 'Poppins', sans-serif;
 }
+.details-section-hero{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .details-hero .top--section{
     display: flex;
     width: 100%;
@@ -51,16 +56,19 @@
     padding: 2rem 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
 }
 .details-section .trailer-section{
     width: 100%;
-    height: 100%;
+    height: 50rem;
     display: flex;
     justify-content: center;
 }
 .trailer-section iframe{
     width: 80%;
+    border-radius: 1rem;
+    margin: 1rem;
 }
 .details-hero .details-section .description{
     font-weight: 400;
@@ -76,4 +84,43 @@
 .rating--hero button{
     margin: 1rem 0;
     /* width: 10%; */
+}
+.actions{
+    display: inline-block;
+    align-items: center;
+    position: relative;
+}
+.actions img{
+    margin: 1rem;
+}
+.actions .tooltiptext{
+    visibility: hidden;
+  width: 120px;
+  background-color: rgba(255, 255, 255, 0.67);
+  color: black;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  left: 15%;
+  top: 45%;
+  z-index: 1;
+  transition: all ease-in-out 0.2s;
+}
+
+.addtolistButton{
+    background-color: white;
+    width: 5%;
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+.actions .addtolistButton:hover {
+    scale: 1.3;
+    transition: all ease-in-out 0.3s;
+    cursor: pointer;
+    background-color: #fffd6b;
+}
+
+.addtolistButton:hover + .tooltiptext{
+    visibility: visible;
 }

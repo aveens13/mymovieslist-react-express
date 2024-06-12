@@ -8,6 +8,7 @@ import NavBar from "./pages/Navbar";
 import Movie from "./pages/Movie";
 import Signup from "./pages/Signup";
 import Shows from "./pages/Shows";
+import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Landingpage from "./Landingpage";
 import { MovieDetails } from "./pages/Moviedetails";
@@ -64,6 +65,7 @@ function App() {
               element={<MovieDetails userToken={response} />}
             />
             <Route path="/tv-shows" element={<Shows userToken={response} />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </BrowserRouter>
       </>

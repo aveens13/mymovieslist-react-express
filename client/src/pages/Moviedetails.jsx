@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
+import Bookmark from "../assets/bookmark.png";
 import "../styles/Details.css";
 import { Container } from "react-bootstrap";
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
@@ -59,7 +60,6 @@ export const MovieDetails = ({ userToken }) => {
 
     const videoFetch = async () => {
       const data = await (await fetch(`/api/video/${id}?type=${type}`)).json();
-      console.log(data);
       setVideoData(data);
     };
 
@@ -163,7 +163,7 @@ export const MovieDetails = ({ userToken }) => {
       </Snackbar>
       {type != "person"
         ? data && (
-            <>
+            <div className="details-section-hero">
               <div className="top--section">
                 <div className="image--drop">
                   <img
@@ -245,6 +245,15 @@ export const MovieDetails = ({ userToken }) => {
                   </ul>
                 </div>
                 <div className="rating--hero">
+                  <div className="actions">
+                    <img
+                      src={Bookmark}
+                      alt="Add to list"
+                      className="addtolistButton"
+                      onClick={handleAddtoList}
+                    />
+                    <p className="tooltiptext">Add to list</p>
+                  </div>
                   <h3>Have you watched this ? Rate it</h3>
                   <span>
                     <Rate tooltips={desc} onChange={setValue} value={value} />
@@ -261,29 +270,20 @@ export const MovieDetails = ({ userToken }) => {
               </div>
               <div className="details-section">
                 <div className="description">{data.info.overview}</div>
-                <div className="trailer-section">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${videoData.info.key}`}
-                    title={videoData.info.name}
-                    allowFullScreen
-                  ></iframe>
-                </div>
-                <div className="actions">
-                  <Button
-                    type="primary"
-                    loading={loading}
-                    className="btn-watch"
-                    // value={props.movieData.id}
-                    onClick={handleAddtoList}
-                  >
-                    Add to list
-                  </Button>
-                </div>
+                {videoData && (
+                  <div className="trailer-section">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoData.info.key}`}
+                      title={videoData.info.name}
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                )}
               </div>
-            </>
+            </div>
           )
         : data && (
-            <>
+            <div className="details-section-hero">
               <div className="top--section">
                 <div className="image--drop">
                   <img
@@ -340,7 +340,7 @@ export const MovieDetails = ({ userToken }) => {
                 <div className="description">{data.info.biography}</div>
                 <div className="actions"></div>
               </div>
-            </>
+            </div>
           )}
     </div>
   );

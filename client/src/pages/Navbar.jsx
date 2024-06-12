@@ -75,6 +75,9 @@ export default function NavBar(props) {
           <li className="listItem">
             <Link to="/tv-shows">TV Shows</Link>
           </li>
+          <li className="listItem">
+            <Link to="/profile">Profile</Link>
+          </li>
           <li className="userImage" onClick={handleLogout}>
             <LogoutIcon fontSize="large" />
           </li>
