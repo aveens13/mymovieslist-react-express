@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '20.x'  # Ensure Node.js 20 is used
 
       - name: npm install, build, and test
         run: |
@@ -40,7 +40,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write # This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -62,4 +62,3 @@ jobs:
           app-name: 'movieridge'
           slot-name: 'Production'
           package: .
-          
