@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5055;
 const middleware = require("./lib/middleware");
 //Setting up express application and prisma client
 const app = express();
-
+const path = require("path");
 //Processing Request Logger
 app.use((req, res, next) => {
   console.log(`Processing request for ${req.url}...`);
@@ -28,6 +28,12 @@ app.use("/api/signup", middleware.hashPassword);
 app.use(moviesRoutes);
 app.use(authenticationRoutes);
 
+//Production script
+
+app.use(express.static("./client/dist"));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+});
 //Listening to the server
 app.listen(PORT, (req, res) => {
   console.log(`Server Started on http://localhost:${PORT}`);
