@@ -270,10 +270,18 @@ export const MovieDetails = ({ userToken }) => {
               </div>
               <div className="details-section">
                 <div className="description">{data.info.overview}</div>
-                {videoData && (
+                {type == "movie" ? (
                   <div className="trailer-section">
                     <iframe
-                      src={`https://www.youtube.com/embed/${videoData.info.key}`}
+                      src={`https://vidsrc.to/embed/movie/${id}`}
+                      title={videoData.info.name}
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                ) : (
+                  <div className="trailer-section">
+                    <iframe
+                      src={`https://vidsrc.to/embed/tv/${id}`}
                       title={videoData.info.name}
                       allowFullScreen
                     ></iframe>
