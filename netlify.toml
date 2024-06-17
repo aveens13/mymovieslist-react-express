@@ -1,0 +1,9 @@
+[build]
+  command = "cd client && npm install && npm run build"
+  publish = "client/dist"
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://48.217.139.9/"
+  status = 200
+  force = true
