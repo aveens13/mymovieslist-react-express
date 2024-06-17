@@ -33,10 +33,10 @@ jobs:
           name: node-app
           path: .
 
-      - name: Copy dist to wwwroot
-        run: |
-          rm -rf ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/*
-          cp -r client/dist/* ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/
+      # - name: Copy dist to wwwroot
+      #   run: |
+      #     rm -rf ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/*
+      #     cp -r client/dist/* ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/
 
   deploy:
     runs-on: ubuntu-latest
