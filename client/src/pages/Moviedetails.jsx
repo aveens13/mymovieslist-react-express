@@ -273,7 +273,7 @@ export const MovieDetails = ({ userToken }) => {
                 {type == "movie" ? (
                   <div className="trailer-section">
                     <iframe
-                      src={`https://vidsrc.to/embed/movie/${id}`}
+                      src={`https://vidsrc.pro/embed/movie/${id}`}
                       title={videoData.info.name}
                       allowFullScreen
                     ></iframe>
