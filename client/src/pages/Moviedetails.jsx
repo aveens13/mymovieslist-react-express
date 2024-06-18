@@ -58,13 +58,13 @@ export const MovieDetails = ({ userToken }) => {
       setData(data);
     };
 
-    const videoFetch = async () => {
-      const data = await (await fetch(`/api/video/${id}?type=${type}`)).json();
-      setVideoData(data);
-    };
+    // const videoFetch = async () => {
+    //   const data = await (await fetch(`/api/video/${id}?type=${type}`)).json();
+    //   setVideoData(data);
+    // };
 
     dataFetch();
-    videoFetch();
+    // videoFetch();
   }, [id]);
 
   const getPosterUrl = (posterId) => {
@@ -274,7 +274,6 @@ export const MovieDetails = ({ userToken }) => {
                   <div className="trailer-section">
                     <iframe
                       src={`https://vidsrc.pro/embed/movie/${id}`}
-                      title={videoData.info.name}
                       allowFullScreen
                     ></iframe>
                   </div>
@@ -282,7 +281,6 @@ export const MovieDetails = ({ userToken }) => {
                   <div className="trailer-section">
                     <iframe
                       src={`https://vidsrc.to/embed/tv/${id}`}
-                      title={videoData.info.name}
                       allowFullScreen
                     ></iframe>
                   </div>
