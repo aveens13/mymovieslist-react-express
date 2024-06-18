@@ -21,7 +21,7 @@ function App() {
   //check if the user is already logged in or not
   //run this useeffect hook on every time the state is changed
   useEffect(() => {
-    fetch("http://48.217.139.9/api/verifyToken").then((result) => {
+    fetch("/api/verifyToken").then((result) => {
       if (result.ok) {
         result.json().then((e) => {
           setState("verified");
