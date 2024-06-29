@@ -2,18 +2,27 @@
 header {
   /* width: 100%; */
   display: flex;
-  height: 5rem;
+  height: 3.5rem;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
+  /* position: sticky; */
+  position: relative;
   top: 0;
-  padding: 0 1rem;
+  padding: 1rem;
   border-radius: 0.3rem;
   transition: 0.4s ease-in-out;
   z-index: 500;
 }
 .navBar{  
-  background-color: #3b6ac1;
+  background-color:transparent;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  border-radius: 2.5rem;
+}
+.navBar .toggle-btn{
+  cursor: pointer;
+  display: none;
 }
 .navBar .title {
   font-family: "Poppins", sans-serif;
@@ -34,14 +43,15 @@ header {
 }
 .navBar form input[type='search']{
   font-family: 'Poppins', sans-serif;
-  font-weight: 300;
+  font-weight: 500;
   font-size: 1rem;
   letter-spacing: 0.14rem;
   width: 30rem;
   padding: 1rem;
   border: none;
-  border-radius: 0.6rem;
+  outline: none;
   background-color: black;
+  border-radius: 1.6rem;
   color: white;
 } 
 .navBar .title a{
@@ -119,20 +129,55 @@ header {
   font-weight: 400;
 }
 .navBar nav ul {
-  width: 100%;
+  gap:2rem;
   margin-top: 2rem;
   list-style: none;
   display: flex;
 }
-
-.navBar nav ul li a {
+ li a{
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   letter-spacing: 0.1rem;
   font-size: 1rem;
   color: white;
   text-decoration: none;
+  list-style: none;
 }
+
+/* Dropdown */
+.dropdown_menu {
+  display: none;
+  height: 0;
+  transition: height 0.2s  cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dropdown_menu_active{
+  position: absolute;
+  right: 2rem;
+  top: 60px;
+  width:250px;
+  height: 20%px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 0.8rem;
+  overflow: hidden;
+  z-index: 500;
+}
+
+.dropdown_menu_active li{ 
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* .navBar nav ul li a {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  color: white;
+  text-decoration: none;
+} */
 .navBar nav ul li:hover{
   transform: scale(1.2);
 }
@@ -148,4 +193,16 @@ header {
 }
 .navBar nav .userImage:hover{
   transform: scale(1.1);
+}
+
+
+/* Response */
+
+@media(max-width:992px){
+  .navBar nav ul{
+    display: none;
+  }
+  .navBar .toggle-btn{
+    display: block;
+  }
 }

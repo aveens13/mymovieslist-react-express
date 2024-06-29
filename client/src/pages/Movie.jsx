@@ -38,11 +38,20 @@ export default function Movie({ userToken }) {
   }, []);
 
   useEffect(() => {
-    fetch(`/api/get-recommendations/${userToken.id}`).then((response) => {
-      response.json().then((data) => {
+    fetch(`/api/get-recommendations/${userToken.id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Recommendations data:", data); // Ensure data is received correctly
         setRecommendations(data.result);
+      })
+      .catch((error) => {
+        console.error("Error fetching recommendations:", error);
       });
-    });
   }, []);
 
   //handle closing snackbar

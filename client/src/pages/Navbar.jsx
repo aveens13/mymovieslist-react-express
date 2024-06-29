@@ -2,10 +2,12 @@ import "../styles/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect, useRef } from "react";
 import SearchResults from "./SearchResults";
 
 export default function NavBar(props) {
+  const [isActive, setIsActive] = useState(false);
   const [query, setQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const overlayRef = useRef(null);
@@ -39,41 +41,69 @@ export default function NavBar(props) {
     });
   }
 
+  function toggleButton() {
+    setIsActive(!isActive);
+  }
+
   return (
-    <header className="navBar">
-      <h1 className="title">
-        <Link to="/">Movies Ridge</Link>
-      </h1>
-      <form>
-        <SearchIcon className="searchIcon" />
-        <input
-          type="search"
-          name="searchItem"
-          id="searchItem"
-          onChange={handleChange}
-          placeholder="Search Movies/Tv-Shows"
-        />
-      </form>
-      {showResults && (
-        <div className="search-overlay">
-          <div className="search-results-container" ref={overlayRef}>
-            <SearchResults
-              query={query}
-              queryClick={() => setShowResults(false)}
-            />
+    <>
+      <header className="navBar">
+        <h1 className="title">
+          <Link to="/">Movies Ridge</Link>
+        </h1>
+        <form>
+          <SearchIcon className="searchIcon" />
+          <input
+            type="search"
+            name="searchItem"
+            id="searchItem"
+            onChange={handleChange}
+            placeholder="Search Movies/Tv-Shows"
+          />
+        </form>
+        {showResults && (
+          <div className="search-overlay">
+            <div className="search-results-container" ref={overlayRef}>
+              <SearchResults
+                query={query}
+                queryClick={() => setShowResults(false)}
+              />
+            </div>
           </div>
+        )}
+        <nav>
+          <ul className="navItems">
+            <li className="listItem">
+              <Link to="/list">List</Link>
+            </li>
+            <li className="listItem">
+              <Link to="/movies">Movies</Link>
+            </li>
+            <li className="listItem">
+              <Link to="/tv-shows">Shows</Link>
+            </li>
+            <li className="listItem">
+              <Link to="/profile">Profile</Link>
+            </li>
+            <li className="userImage" onClick={handleLogout}>
+              <LogoutIcon fontSize="large" />
+            </li>
+          </ul>
+        </nav>
+        <div className="toggle-btn">
+          <MenuIcon fontSize="medium" onClick={toggleButton} />
         </div>
-      )}
-      <nav>
-        <ul className="navItems">
+      </header>
+      <div className={isActive ? "dropdown_menu_active" : "dropdown_menu"}>
+        <ul>
           <li className="listItem">
-            <Link to="/list">My List</Link>
+            <Link to="/list">List</Link>
           </li>
           <li className="listItem">
             <Link to="/movies">Movies</Link>
           </li>
           <li className="listItem">
-            <Link to="/tv-shows">TV Shows</Link>
+            <Link to="/tv-shows">Shows</Link>
           </li>
           <li className="listItem">
             <Link to="/profile">Profile</Link>
@@ -82,7 +112,7 @@ export default function NavBar(props) {
             <LogoutIcon fontSize="large" />
           </li>
         </ul>
-      </nav>
-    </header>
+      </div>
+    </>
   );
 }
