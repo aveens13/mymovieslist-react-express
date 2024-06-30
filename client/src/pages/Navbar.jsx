@@ -1,4 +1,5 @@
 import "../styles/Navbar.css";
+import MovieIcon from "@mui/icons-material/Movie";
 import { Link, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SearchIcon from "@mui/icons-material/Search";
@@ -48,9 +49,17 @@ export default function NavBar(props) {
   return (
     <>
       <header className="navBar">
-        <h1 className="title">
-          <Link to="/">Movies Ridge</Link>
-        </h1>
+        <div className="mainLogo">
+          <Link to="/">
+            <div className="title">
+              <MovieIcon color="white" style={{ fontSize: 60 }} />
+              <div className="fonty">
+                <div>Movies</div>
+                <div>Ridge</div>
+              </div>
+            </div>
+          </Link>
+        </div>
         <form>
           <SearchIcon className="searchIcon" />
           <input

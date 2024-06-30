@@ -48,6 +48,7 @@ export default function Movie({ userToken }) {
       .then((data) => {
         console.log("Recommendations data:", data); // Ensure data is received correctly
         setRecommendations(data.result);
+        console.log(data.result);
       })
       .catch((error) => {
         console.error("Error fetching recommendations:", error);
