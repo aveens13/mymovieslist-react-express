@@ -1,0 +1,50 @@
+.tophero{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+}
+.tophero .infoSection{
+    margin-left: auto;
+    padding: 1rem 0;
+}
+.tophero .infoSection .followCard .followDialog img{
+    width: 2rem;
+    height: 2rem;
+}
+.infoSection .followCard{
+    border-radius: 1.8rem;
+    width: 100%;
+    box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px, rgba(189, 194, 198, 0.15) 0px 0px 0px 1px;
+}
+.infoSection .followCard .followDialog{
+    display: flex;
+    /* justify-content: center; */
+    padding: 1rem 2rem;
+    font-family: 'Poppins', sans-serif;
+    align-items: center;
+    transition: all 0.2s ease-in;
+}
+.followDialog .userInfo{
+    padding: 0 1rem;
+    margin: 0 1rem;
+}
+.followDialog .userInfo .name{
+    font-weight: 500;
+}
+.followDialog .userInfo .followers{
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+.followDialog .button{
+    margin-left: auto;
+}
+.followDialog .button .buttonActive{
+    color: white;
+    background-color: black;
+    padding:0 1.5rem;
+    box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px, rgba(255, 255, 255, 0.15) 0px 0px 0px 1px;
+}
+.followDialog .button .buttonDisabled{
+    color: grey;
+    transition: all 0.3s ease-in;
+}

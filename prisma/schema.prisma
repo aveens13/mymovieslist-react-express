@@ -11,12 +11,14 @@ datasource db {
 }
 
 model User {
-  user_id  String  @id @default(uuid())
-  name     String
-  email    String  @unique
-  password String
-  movies   Movie[]
-  shows    Show[]
+  user_id    String    @id @default(uuid())
+  name       String
+  email      String    @unique
+  password   String
+  movies     Movie[]
+  shows      Show[]
+  follows    Follows[] @relation("UserFollows")
+  followedBy Follows[] @relation("UserFollowed")
 }
 
 model Movie {
@@ -37,4 +39,14 @@ model Show {
   authorId  String
 
   @@id([show_id, authorId])
+}
+
+model Follows {
+  userID       String
+  targetUserID String
+  user         User   @relation("UserFollows", fields: [userID], references: [user_id])
+  targetUser   User   @relation("UserFollowed", fields: [targetUserID], references: [user_id])
+
+  @@id([userID, targetUserID])
+  @@index([userID], name: "by_userid")
 }

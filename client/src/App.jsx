@@ -25,7 +25,7 @@ function App() {
       if (result.ok) {
         result.json().then((e) => {
           setState("verified");
-          setResponse(e.data);
+          setResponse(e);
           if (!toast.isActive(customToastId)) {
             toast.success("Logged In Successfully", {
               toastId: customToastId,
@@ -57,15 +57,29 @@ function App() {
             transition={Slide}
           />
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/list" element={<List userToken={response} />} />
-            <Route path="/movies" element={<Movie userToken={response} />} />
+            <Route path="/" element={<Home userToken={response.data} />} />
+            <Route path="/list" element={<List userToken={response.data} />} />
+            <Route
+              path="/movies"
+              element={<Movie userToken={response.data} />}
+            />
             <Route
               path="/details/:id/:type"
-              element={<MovieDetails userToken={response} />}
+              element={<MovieDetails userToken={response.data} />}
             />
-            <Route path="/tv-shows" element={<Shows userToken={response} />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/tv-shows"
+              element={<Shows userToken={response.data} />}
+            />
+            <Route
+              path="/profile"
+              element={
+                <Profile
+                  userName={response.userName}
+                  userToken={response.data}
+                />
+              }
+            />
           </Routes>
         </BrowserRouter>
       </>

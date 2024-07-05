@@ -20,11 +20,17 @@ router.post(
   requireAuth,
   handlers.updateMovie
 );
+router.post("/api/followuser", requireAuth, handlers.followPost);
 router.post(
   "/api/deletefromlist/:movieId/:userId",
   requireAuth,
   handlers.deleteList
 );
 router.post("/api/search", requireAuth, handlers.searchMovie);
-
+router.get(
+  "/api/recommededfollowers/:userId",
+  requireAuth,
+  handlers.recommendFollowers
+);
+router.get("/api/followers/:userId", requireAuth, handlers.getFollowers);
 module.exports = router;
