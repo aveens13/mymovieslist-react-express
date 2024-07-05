@@ -1,3 +1,4 @@
+
 //Loading Modules and Libraries
 const express = require("express");
 const authenticationRoutes = require("./Router/authRoutes");
@@ -28,12 +29,7 @@ app.use("/api/signup", middleware.hashPassword);
 app.use(moviesRoutes);
 app.use(authenticationRoutes);
 
-//Production script
 
-app.use(express.static("./client/dist"));
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
-});
 //Listening to the server
 app.listen(PORT, (req, res) => {
   console.log(`Server Started on http://localhost:${PORT}`);
