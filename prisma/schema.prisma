@@ -19,6 +19,7 @@ model User {
   shows      Show[]
   follows    Follows[] @relation("UserFollows")
   followedBy Follows[] @relation("UserFollowed")
+  created    Posts[]   @relation("UserCreates")
 }
 
 model Movie {
@@ -49,4 +50,14 @@ model Follows {
 
   @@id([userID, targetUserID])
   @@index([userID], name: "by_userid")
+}
+
+model Posts {
+  postID      String   @id @default(uuid())
+  contentID   Int
+  description String
+  authorID    String
+  createdAt   DateTime @default(now())
+  contentType String   @default("movie")
+  author      User     @relation("UserCreates", fields: [authorID], references: [user_id])
 }

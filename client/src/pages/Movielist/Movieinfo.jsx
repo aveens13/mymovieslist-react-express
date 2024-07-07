@@ -24,8 +24,8 @@ export default function MovieInfo(props) {
     <div className="info--card">
       <div className="movie--info">
         <div className="movie-title-nav">
-          {props.movie.original_title ? (
-            <h2>{props.movie.original_title}</h2>
+          {props.movie.title ? (
+            <h2>{props.movie.title}</h2>
           ) : (
             <h2>{props.movie.name}</h2>
           )}

@@ -21,6 +21,7 @@ router.post(
   handlers.updateMovie
 );
 router.post("/api/followuser", requireAuth, handlers.followPost);
+router.post("/api/sharemovie", requireAuth, handlers.shareMovie);
 router.post(
   "/api/deletefromlist/:movieId/:userId",
   requireAuth,
@@ -33,4 +34,5 @@ router.get(
   handlers.recommendFollowers
 );
 router.get("/api/followers/:userId", requireAuth, handlers.getFollowers);
+router.get("/api/feed/:userId", requireAuth, handlers.getFeed);
 module.exports = router;

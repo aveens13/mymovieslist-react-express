@@ -6,8 +6,9 @@ export default function List({ userToken }) {
   const [show, setShow] = useState([]);
   const [data, setData] = useState([]);
   const getPosterUrl = (posterId) => {
-    return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
+    return `https://image.tmdb.org/t/p/original${posterId}`;
   };
+
   useEffect(() => {
     fetch(`/api/get-movie-list/${userToken.id}`).then((response) => {
       response.json().then((e) => {

@@ -1,12 +1,15 @@
 import "../styles/Home.css";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import user from "../assets/user.png";
+import poster from "../assets/movie.jpg";
 import "../styles/Home.css";
 import { Button } from "antd";
 export default function Home({ userToken }) {
+  const [type, setType] = useState("movie");
   const [followers, setFollowers] = useState([]);
-  const [toggle, setToggle] = useState(false);
+  const [posts, setPosts] = useState([]);
   //Fetch followers
   useEffect(() => {
     fetch(`/api/recommededfollowers/${userToken.id}`).then((response) => {
@@ -15,6 +18,19 @@ export default function Home({ userToken }) {
       });
     });
   }, []);
+
+  useEffect(() => {
+    fetch(`/api/feed/${userToken.id}`).then((response) => {
+      response.json().then((data) => {
+        setPosts(data.result);
+      });
+    });
+  }, []);
+
+  //Get the image for the movie poster
+  const getPosterUrl = (posterId) => {
+    return `https://image.tmdb.org/t/p/original${posterId}`;
+  };
 
   const toggleFollow = (id) => {
     setFollowers((prevFollowers) =>
@@ -59,7 +75,44 @@ export default function Home({ userToken }) {
   return (
     <>
       <div className="tophero">
-        <div className="feedsection"></div>
+        <div className="feedsection">
+          {posts.map((post) => (
+            <div className="feed">
+              <div className="feederInfo">
+                <img src={user} alt="" />
+                <div>
+                  <div className="name">{post.author.name}</div>
+                  <div className="time">Wednesday, 3rd July 9:59</div>
+                </div>
+              </div>
+              <div className="feedInfo">
+                <div className="description">{post.description}</div>
+                <div className="image">
+                  <Link
+                    to={`/details/${post.content.id}/${
+                      post.content.title ? "movie" : "tv"
+                    }`}
+                  >
+                    {post.content.backdrop_path ? (
+                      <img
+                        loading="lazy"
+                        src={getPosterUrl(post.content.backdrop_path)}
+                        alt=""
+                      />
+                    ) : (
+                      <img
+                        loading="lazy"
+                        src={getPosterUrl(post.content.poster_path)}
+                        alt=""
+                      />
+                    )}
+                  </Link>
+                </div>
+                <div className="movieName">{post.content.title}</div>
+              </div>
+            </div>
+          ))}
+        </div>
         <div className="infoSection">
           <div className="followCard">
             {followers.map((recommended) => (
