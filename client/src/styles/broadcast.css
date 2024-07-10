@@ -1,0 +1,18 @@
+.broadcast{
+    font-family: 'Poppins', sans-serif;
+    margin: 1rem;
+}
+.broadcast .title{
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.broadcast video{
+    width: 1200px;
+    height: auto;
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid red;
+    border-radius: 1.8rem;
+}

@@ -1,6 +1,6 @@
 import { Button, notification, Space, Rate, message } from "antd";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
@@ -10,8 +10,9 @@ import { Container } from "react-bootstrap";
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
 export const MovieDetails = ({ userToken }) => {
+  const streamRef = useRef(null);
+  const videoRef = useRef(null);
   const [data, setData] = useState(null);
-  const [videoData, setVideoData] = useState(null);
   const [value, setValue] = useState(5);
   const [loading, setLoading] = useState(false);
   const [snackbarprop, setSnackbarprop] = useState({
@@ -141,6 +142,149 @@ export const MovieDetails = ({ userToken }) => {
           });
         }
       }
+    });
+  }
+
+  async function init() {
+    try {
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: true,
+      });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        console.log("Setting video source...");
+        if (stream.active) {
+          videoRef.current.srcObject = stream;
+          videoRef.current
+            .play()
+            .then(() => console.log("Video playing"))
+            .catch((error) => console.error("Error playing video:", error));
+        } else {
+          console.error("Stream is not active");
+        }
+      } else {
+        console.error("Video ref is null");
+      }
+      const peer = createPeer();
+      stream.getTracks().forEach((track) => {
+        peer.addTrack(track, stream);
+        // Listen for the 'ended' event to handle when the user stops sharing
+        track.addEventListener("ended", () => {
+          console.log("User stopped sharing");
+          stopSharing();
+        });
+      });
+
+      // Add beforeunload event listener
+      const handleBeforeUnload = async (event) => {
+        console.log("Browser is about to close");
+        event.preventDefault(); // Cancel the event
+        event.returnValue = ""; // Chrome requires returnValue to be set
+        await stopSharing();
+      };
+
+      window.addEventListener("beforeunload", handleBeforeUnload);
+
+      // Store the handleBeforeUnload function so we can remove it later
+      streamRef.current.handleBeforeUnload = handleBeforeUnload;
+    } catch (error) {
+      console.error("Error accessing display media.", error);
+    }
+  }
+
+  function createPeer() {
+    const peer = new RTCPeerConnection({
+      iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        {
+          urls: "turn:numb.viagenie.ca",
+          credential: "muazkh",
+          username: "webrtc@live.com",
+        },
+      ],
+    });
+
+    // Add these event listeners
+    peer.addEventListener("icecandidateerror", (event) => {
+      console.error("ICE candidate error:", event);
+    });
+
+    peer.addEventListener("connectionstatechange", () => {
+      console.log("Connection state:", peer.connectionState);
+    });
+
+    peer.addEventListener("iceconnectionstatechange", () => {
+      console.log("ICE connection state:", peer.iceConnectionState);
+    });
+    peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer);
+    return peer;
+  }
+
+  async function handleNegotiationNeededEvent(peer) {
+    const offer = await peer.createOffer();
+    await peer.setLocalDescription(offer);
+
+    // Wait for ICE gathering to complete
+    // await new Promise((resolve) => {
+    //   if (peer.iceGatheringState === "complete") {
+    //     resolve();
+    //   } else {
+    //     peer.addEventListener("icegatheringstatechange", () => {
+    //       if (peer.iceGatheringState === "complete") {
+    //         resolve();
+    //       }
+    //     });
+    //   }
+    // });
+    const payload = {
+      sdp: peer.localDescription,
+      streamerID: userToken.id,
+    };
+
+    const response = await fetch(`/api/broadcast`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    response.json().then((e) => {
+      const desc = new RTCSessionDescription(e.result.sdp);
+      console.log(e.result);
+      peer.setRemoteDescription(desc).catch((event) => console.log(event));
+    });
+  }
+
+  async function stopSharing() {
+    // Remove the beforeunload event listener if it exists
+    if (streamRef.current && streamRef.current.handleBeforeUnload) {
+      window.removeEventListener(
+        "beforeunload",
+        streamRef.current.handleBeforeUnload
+      );
+    }
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    const jsonBody = {
+      streamerID: userToken.id,
+    };
+    const response = await fetch(`/api/endBroadcast`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(jsonBody),
+    });
+
+    response.json().then((e) => {
+      console.log(e.result);
     });
   }
 
@@ -285,6 +429,13 @@ export const MovieDetails = ({ userToken }) => {
                     ></iframe>
                   </div>
                 )}
+                <Button danger type="primary" onClick={() => init()}>
+                  Stat Broadcast
+                </Button>
+                {/* <video
+                  ref={videoRef}
+                  style={{ width: "100%", maxWidth: "640px", height: "auto" }}
+                ></video> */}
               </div>
             </div>
           )

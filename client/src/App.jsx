@@ -9,6 +9,7 @@ import Movie from "./pages/Movie";
 import Signup from "./pages/Signup";
 import Shows from "./pages/Shows";
 import Profile from "./pages/Profile";
+import Broadcast from "./pages/Broadcast";
 import Login from "./pages/Login";
 import Landingpage from "./Landingpage";
 import { MovieDetails } from "./pages/Moviedetails";
@@ -75,6 +76,15 @@ function App() {
               path="/profile"
               element={
                 <Profile
+                  userName={response.userName}
+                  userToken={response.data}
+                />
+              }
+            />
+            <Route
+              path="/broadcast/:streamerId"
+              element={
+                <Broadcast
                   userName={response.userName}
                   userToken={response.data}
                 />

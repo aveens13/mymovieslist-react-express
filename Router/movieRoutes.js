@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { requireAuth } = require("../lib/jwt");
 const handlers = require("../lib/handlers");
+const broadcast = require("../lib/broadcastingLogic");
 const router = Router();
 
 router.get("/api/movies", requireAuth, handlers.movies); //Gets popular movies list from the tmdb api
@@ -35,4 +36,10 @@ router.get(
 );
 router.get("/api/followers/:userId", requireAuth, handlers.getFollowers);
 router.get("/api/feed/:userId", requireAuth, handlers.getFeed);
+
+//Streaming and broadcasting as well as consuming endpoints
+router.post("/api/broadcast", requireAuth, broadcast.broadcast);
+router.post("/api/endBroadcast", requireAuth, broadcast.endBroadcast);
+router.post("/api/consume", requireAuth, broadcast.consume);
+router.get("/api/activeStreams", requireAuth, broadcast.getActiveStreams);
 module.exports = router;
