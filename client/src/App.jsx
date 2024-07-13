@@ -36,6 +36,8 @@ function App() {
             });
           }
         });
+      } else {
+        setLoading(false);
       }
     });
   }, [state]);
