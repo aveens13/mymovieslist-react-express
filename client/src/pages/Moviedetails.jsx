@@ -5,6 +5,7 @@ import StarIcon from "@mui/icons-material/Star";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 import Bookmark from "../assets/bookmark.png";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "../styles/Details.css";
 import { Container } from "react-bootstrap";
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
@@ -15,6 +16,12 @@ export const MovieDetails = ({ userToken }) => {
   const [data, setData] = useState(null);
   const [value, setValue] = useState(5);
   const [loading, setLoading] = useState(false);
+  const [episodeLoader, setEpisodeLoader] = useState({
+    seasonNumber: 1,
+    episodeNumber: 1,
+  });
+  const [seasonActive, setSeasonActive] = useState(false);
+  const [seasonDetails, setSeasonDetails] = useState({});
   const [snackbarprop, setSnackbarprop] = useState({
     open: false,
     message: "",
@@ -52,11 +59,17 @@ export const MovieDetails = ({ userToken }) => {
   let { id, type } = useParams();
   useEffect(() => {
     // fetch data
+    console.log(seasonActive);
     const dataFetch = async () => {
       const data = await (
         await fetch(`/api/details/${id}?type=${type}`)
       ).json();
       setData(data);
+      setSeasonActive(false);
+      setEpisodeLoader({
+        seasonNumber: 1,
+        episodeNumber: 1,
+      });
     };
 
     // const videoFetch = async () => {
@@ -143,6 +156,20 @@ export const MovieDetails = ({ userToken }) => {
         }
       }
     });
+  }
+
+  async function handleSeasonQuery(seasonNumber) {
+    const response = await fetch(
+      `/api/tv/seasons?seriesId=${id}&seasonNumber=${seasonNumber}`
+    );
+
+    if (response.ok) {
+      response.json().then((e) => {
+        setSeasonDetails(e.result);
+        setSeasonActive(!seasonActive);
+        console.log(seasonDetails);
+      });
+    }
   }
 
   async function init() {
@@ -445,8 +472,56 @@ export const MovieDetails = ({ userToken }) => {
                   </div>
                 ) : (
                   <div className="trailer-section">
+                    {data.info.seasons &&
+                      (seasonActive ? (
+                        <div className="episode-info">
+                          <div
+                            className="seasonTitle"
+                            onClick={() => setSeasonActive(!seasonActive)}
+                          >
+                            {seasonDetails.name}
+                            <ArrowDropDownIcon color="white" />
+                          </div>
+                          <div className="episodes">
+                            {seasonDetails?.episodes.map((episode) => (
+                              <div
+                                className="episode"
+                                onClick={() => {
+                                  setEpisodeLoader({
+                                    seasonNumber: episode.season_number,
+                                    episodeNumber: episode.episode_number,
+                                  });
+                                }}
+                              >
+                                Episode {episode.episode_number}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="season-info">
+                          {data.info.seasons?.map(
+                            (season) =>
+                              season.season_number != 0 && (
+                                <div
+                                  className="season"
+                                  key={season.season_number}
+                                  onClick={() =>
+                                    handleSeasonQuery(season.season_number)
+                                  }
+                                >
+                                  <img
+                                    src={getPosterUrl(season.poster_path)}
+                                    alt=""
+                                  />
+                                  <div className="name">{season.name}</div>
+                                </div>
+                              )
+                          )}
+                        </div>
+                      ))}
                     <iframe
-                      src={`https://vidsrc.to/embed/tv/${id}`}
+                      src={`https://vidsrc.pro/embed/tv/${id}/${episodeLoader.seasonNumber}/${episodeLoader.episodeNumber}`}
                       allowFullScreen
                     ></iframe>
                   </div>

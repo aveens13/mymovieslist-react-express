@@ -6,6 +6,7 @@ const router = Router();
 
 router.get("/api/movies", requireAuth, handlers.movies); //Gets popular movies list from the tmdb api
 router.get("/api/details/:movieId", requireAuth, handlers.getDetails);
+router.get("/api/tv/seasons", requireAuth, handlers.getSeasonDetails);
 router.get("/api/video/:movieId", requireAuth, handlers.getVideoUsingId);
 router.get("/api/tv-shows", requireAuth, handlers.tv); //Gets popular tv shows list from the tmdb api
 router.get("/api/get-movie-list/:userId", requireAuth, handlers.getMovieList); //Movies list for specific user
