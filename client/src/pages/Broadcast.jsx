@@ -40,11 +40,16 @@ export default function Broadcast({ userName, userToken }) {
           credential: "qpUfgv53MDLcdugm",
         },
       ],
+      iceTransportPolicy: "all",
     });
 
     // Add these event listeners
     peer.addEventListener("icecandidateerror", (event) => {
       console.error("ICE candidate error:", event);
+      console.error("Error code:", event.errorCode);
+      console.error("Error text:", event.errorText);
+      console.error("Server URL:", event.url);
+      console.error("Host candidate:", event.hostCandidate);
     });
 
     peer.addEventListener("connectionstatechange", () => {
