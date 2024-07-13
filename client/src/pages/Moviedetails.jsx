@@ -7,7 +7,7 @@ import { Alert } from "@mui/material";
 import Bookmark from "../assets/bookmark.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "../styles/Details.css";
-import { Container } from "react-bootstrap";
+import loadingImg from "../assets/movieridge.gif";
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
 export const MovieDetails = ({ userToken }) => {
@@ -57,9 +57,9 @@ export const MovieDetails = ({ userToken }) => {
   };
 
   let { id, type } = useParams();
-  useEffect(() => {
+  useEffect(async () => {
     // fetch data
-    console.log(seasonActive);
+    setLoading(true);
     const dataFetch = async () => {
       const data = await (
         await fetch(`/api/details/${id}?type=${type}`)
@@ -77,7 +77,9 @@ export const MovieDetails = ({ userToken }) => {
     //   setVideoData(data);
     // };
 
-    dataFetch();
+    dataFetch().then(() => {
+      setLoading(false);
+    });
     // videoFetch();
   }, [id]);
 
@@ -98,7 +100,6 @@ export const MovieDetails = ({ userToken }) => {
 
   //Post api to add the movie to the user's list
   const handleAddtoList = () => {
-    setLoading(true);
     fetch(`/api/add-movie/${id}/${userToken.id}?type=${type}`, {
       method: "POST",
     }).then((res) => {
@@ -109,16 +110,12 @@ export const MovieDetails = ({ userToken }) => {
             message: e.result,
             severity: "success",
           });
-
-          setLoading(false);
         } else {
           setSnackbarprop({
             open: true,
             message: e.result,
             severity: "error",
           });
-
-          setLoading(false);
         }
       });
     });
@@ -159,6 +156,7 @@ export const MovieDetails = ({ userToken }) => {
   }
 
   async function handleSeasonQuery(seasonNumber) {
+    setLoading(true);
     const response = await fetch(
       `/api/tv/seasons?seriesId=${id}&seasonNumber=${seasonNumber}`
     );
@@ -167,6 +165,7 @@ export const MovieDetails = ({ userToken }) => {
       response.json().then((e) => {
         setSeasonDetails(e.result);
         setSeasonActive(!seasonActive);
+        setLoading(false);
         console.log(seasonDetails);
       });
     }
@@ -472,7 +471,12 @@ export const MovieDetails = ({ userToken }) => {
                   </div>
                 ) : (
                   <div className="trailer-section">
-                    {data.info.seasons &&
+                    {loading ? (
+                      <div className="loadingClass">
+                        <img src={loadingImg} alt="" />
+                      </div>
+                    ) : (
+                      data.info.seasons &&
                       (seasonActive ? (
                         <div className="episode-info">
                           <div
@@ -519,7 +523,8 @@ export const MovieDetails = ({ userToken }) => {
                               )
                           )}
                         </div>
-                      ))}
+                      ))
+                    )}
                     <iframe
                       src={`https://vidsrc.pro/embed/tv/${id}/${episodeLoader.seasonNumber}/${episodeLoader.episodeNumber}`}
                       allowFullScreen

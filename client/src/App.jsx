@@ -13,11 +13,13 @@ import Broadcast from "./pages/Broadcast";
 import Login from "./pages/Login";
 import Landingpage from "./Landingpage";
 import { MovieDetails } from "./pages/Moviedetails";
+import Loader from "./pages/Loader";
 const customToastId = "preventingDuplicate";
 
 function App() {
   const [state, setState] = useState("waiting");
   const [response, setResponse] = useState({});
+  const [loading, setLoading] = useState(true);
 
   //check if the user is already logged in or not
   //run this useeffect hook on every time the state is changed
@@ -27,6 +29,7 @@ function App() {
         result.json().then((e) => {
           setState("verified");
           setResponse(e);
+          setLoading(false);
           if (!toast.isActive(customToastId)) {
             toast.success("Logged In Successfully", {
               toastId: customToastId,
@@ -90,6 +93,16 @@ function App() {
                 />
               }
             />
+          </Routes>
+        </BrowserRouter>
+      </>
+    );
+  } else if (loading) {
+    return (
+      <>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Loader />} />
           </Routes>
         </BrowserRouter>
       </>

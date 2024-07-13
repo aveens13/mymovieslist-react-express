@@ -68,6 +68,12 @@
     justify-content: center;
     align-items: center;
 }
+.trailer-section .loadingClass img{
+    width: 15rem;
+    height: 15rem;
+    justify-self: center;
+    align-self: center;
+}
 .trailer-section .season-info{
     display: flex;
     width: 100%;
