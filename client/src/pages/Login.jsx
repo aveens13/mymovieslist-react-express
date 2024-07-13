@@ -29,8 +29,12 @@ export default function Login({ changeState }) {
       }
     );
     if (response.ok) {
-      changeState();
-      navigate("/");
+      const tokenResponse = await fetch("/api/verifyToken");
+      if (tokenResponse.ok) {
+        const userData = await tokenResponse.json();
+        changeState(userData);
+        navigate("/");
+      }
     } else {
       const error = await response.json();
 

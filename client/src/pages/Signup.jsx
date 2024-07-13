@@ -15,9 +15,12 @@ export default function Signup(props) {
       body: formDataJsonString,
     });
     if (response.ok) {
-      console.log("ok");
-      props.changeState();
-      navigate("/");
+      const tokenResponse = await fetch("/api/verifyToken");
+      if (tokenResponse.ok) {
+        const userData = await tokenResponse.json();
+        props.changeState(userData);
+        navigate("/");
+      }
     }
   }
   return (

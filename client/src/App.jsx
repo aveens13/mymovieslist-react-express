@@ -58,26 +58,26 @@ function App() {
             transition={Slide}
           />
           <Routes>
-            <Route path="/" element={<Home userToken={response.data} />} />
-            <Route path="/list" element={<List userToken={response.data} />} />
+            <Route path="/" element={<Home userToken={response?.data} />} />
+            <Route path="/list" element={<List userToken={response?.data} />} />
             <Route
               path="/movies"
-              element={<Movie userToken={response.data} />}
+              element={<Movie userToken={response?.data} />}
             />
             <Route
               path="/details/:id/:type"
-              element={<MovieDetails userToken={response.data} />}
+              element={<MovieDetails userToken={response?.data} />}
             />
             <Route
               path="/tv-shows"
-              element={<Shows userToken={response.data} />}
+              element={<Shows userToken={response?.data} />}
             />
             <Route
               path="/profile"
               element={
                 <Profile
-                  userName={response.userName}
-                  userToken={response.data}
+                  userName={response?.userName}
+                  userToken={response?.data}
                 />
               }
             />
@@ -103,11 +103,25 @@ function App() {
             <Route path="/" element={<Landingpage />} />
             <Route
               path="/signup"
-              element={<Signup changeState={() => setState("verified")} />}
+              element={
+                <Signup
+                  changeState={(data) => {
+                    setState("verified");
+                    setResponse(data);
+                  }}
+                />
+              }
             />
             <Route
               path="/login"
-              element={<Login changeState={() => setState("verified")} />}
+              element={
+                <Login
+                  changeState={(data) => {
+                    setState("verified");
+                    setResponse(data);
+                  }}
+                />
+              }
             />
           </Routes>
         </BrowserRouter>
