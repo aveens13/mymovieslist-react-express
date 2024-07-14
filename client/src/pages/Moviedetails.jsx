@@ -223,24 +223,6 @@ export const MovieDetails = ({ userToken }) => {
     const peer = new RTCPeerConnection({
       iceServers: [
         {
-          urls: "stun:stun.relay.metered.ca:80",
-        },
-        {
-          urls: "turn:global.relay.metered.ca:80",
-          username: "0df9a5d34563a36ffade45c9",
-          credential: "qpUfgv53MDLcdugm",
-        },
-        {
-          urls: "turn:global.relay.metered.ca:80?transport=tcp",
-          username: "0df9a5d34563a36ffade45c9",
-          credential: "qpUfgv53MDLcdugm",
-        },
-        {
-          urls: "turn:global.relay.metered.ca:443",
-          username: "0df9a5d34563a36ffade45c9",
-          credential: "qpUfgv53MDLcdugm",
-        },
-        {
           urls: "turns:global.relay.metered.ca:443?transport=tcp",
           username: "0df9a5d34563a36ffade45c9",
           credential: "qpUfgv53MDLcdugm",
@@ -256,6 +238,10 @@ export const MovieDetails = ({ userToken }) => {
       console.error("Error text:", event.errorText);
       console.error("Server URL:", event.url);
       console.error("Host candidate:", event.hostCandidate);
+    });
+
+    peer.addEventListener("icecandidate", (event) => {
+      console.log(event.candidate);
     });
 
     peer.addEventListener("connectionstatechange", () => {
