@@ -223,6 +223,9 @@ export const MovieDetails = ({ userToken }) => {
     const peer = new RTCPeerConnection({
       iceServers: [
         {
+          urls: "stun:stun.relay.metered.ca:80",
+        },
+        {
           urls: "turns:global.relay.metered.ca:443?transport=tcp",
           username: "0df9a5d34563a36ffade45c9",
           credential: "qpUfgv53MDLcdugm",
