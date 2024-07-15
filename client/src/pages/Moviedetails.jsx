@@ -57,7 +57,7 @@ export const MovieDetails = ({ userToken }) => {
   };
 
   let { id, type } = useParams();
-  useEffect(async () => {
+  useEffect(() => {
     // fetch data
     setLoading(true);
     const dataFetch = async () => {
@@ -458,7 +458,9 @@ export const MovieDetails = ({ userToken }) => {
                         <div className="episode-info">
                           <div
                             className="seasonTitle"
-                            onClick={() => setSeasonActive(!seasonActive)}
+                            onClick={() => {
+                              setSeasonActive(!seasonActive);
+                            }}
                           >
                             {seasonDetails.name}
                             <ArrowDropDownIcon color="white" />
@@ -466,7 +468,12 @@ export const MovieDetails = ({ userToken }) => {
                           <div className="episodes">
                             {seasonDetails?.episodes.map((episode) => (
                               <div
-                                className="episode"
+                                className={
+                                  episodeLoader.episodeNumber ==
+                                  episode.episode_number
+                                    ? "episode-selected"
+                                    : "episode"
+                                }
                                 onClick={() => {
                                   setEpisodeLoader({
                                     seasonNumber: episode.season_number,

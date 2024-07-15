@@ -133,6 +133,16 @@
     transition: all 0.2s ease-in-out ;
 }
 
+.trailer-section .episode-info .episodes .episode-selected{
+    padding: 0.2rem 1rem;
+    margin: 0.5rem;
+    box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px, rgba(189, 194, 198, 0.15) 0px 0px 0px 1px;
+    border-radius: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out ;
+    background-color: #4666ff;
+}
+
 .trailer-section .episode-info .episodes .episode:hover{
     transform: scale(1.05);
     background-color: #2b2b2c;
