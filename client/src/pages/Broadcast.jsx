@@ -24,7 +24,7 @@ export default function Broadcast({ userName, userToken }) {
           credential: "qpUfgv53MDLcdugm",
         },
       ],
-      iceTransportPolicy: "all",
+      iceTransportPolicy: "relay",
       bundlePolicy: "max-bundle",
       rtcpMuxPolicy: "require",
       iceCandidatePoolSize: 0,
