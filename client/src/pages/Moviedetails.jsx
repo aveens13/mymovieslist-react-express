@@ -220,7 +220,23 @@ export const MovieDetails = ({ userToken }) => {
   }
 
   function createPeer() {
-    const peer = new RTCPeerConnection();
+    const peer = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: "stun:stun.relay.metered.ca:80",
+        },
+        {
+          urls: "turn:global.relay.metered.ca:443",
+          username: "0df9a5d34563a36ffade45c9",
+          credential: "qpUfgv53MDLcdugm",
+        },
+      ],
+      iceTransportPolicy: "all",
+      bundlePolicy: "max-bundle",
+      rtcpMuxPolicy: "require",
+      iceCandidatePoolSize: 0,
+      sdpSemantics: "unified-plan",
+    });
 
     // Add these event listeners
     peer.addEventListener("icecandidateerror", (event) => {
@@ -251,17 +267,17 @@ export const MovieDetails = ({ userToken }) => {
     await peer.setLocalDescription(offer);
 
     // Wait for ICE gathering to complete
-    // await new Promise((resolve) => {
-    //   if (peer.iceGatheringState === "complete") {
-    //     resolve();
-    //   } else {
-    //     peer.addEventListener("icegatheringstatechange", () => {
-    //       if (peer.iceGatheringState === "complete") {
-    //         resolve();
-    //       }
-    //     });
-    //   }
-    // });
+    await new Promise((resolve) => {
+      if (peer.iceGatheringState === "complete") {
+        resolve();
+      } else {
+        peer.addEventListener("icegatheringstatechange", () => {
+          if (peer.iceGatheringState === "complete") {
+            resolve();
+          }
+        });
+      }
+    });
     const payload = {
       sdp: peer.localDescription,
       streamerID: userToken.id,
