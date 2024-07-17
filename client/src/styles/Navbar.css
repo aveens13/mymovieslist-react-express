@@ -13,7 +13,7 @@ header {
   transition: 0.4s ease-in-out;
   z-index: 500;
 }
-.navBar{  
+.navBar {
   width: 100%;
   max-width: 1920px;
   background-color: rgba(0, 0, 0, 0.8);
@@ -21,10 +21,10 @@ header {
   margin: 0 auto;
   border-radius: 2.5rem;
 }
-.navBar .mainLogo{
+.navBar .mainLogo {
   width: 20rem;
 }
-.navBar .toggle-btn{
+.navBar .toggle-btn {
   cursor: pointer;
   display: none;
 }
@@ -39,32 +39,31 @@ header {
   /* background-color: aliceblue; */
   padding: 0 4rem 0 0;
 }
- .navBar a{
+.navBar a {
   text-decoration: none;
   color: white;
-  
- }
+}
 
- .navBar .title .fonty{
+.navBar .title .fonty {
   display: flex;
   flex-direction: column;
- }
-.fonty div{
+}
+.fonty div {
   padding: 0;
   margin: 0;
   font-family: 1.2rem;
   font-weight: 700;
 }
-.navBar form{
+.navBar form {
   /* width: 100%; */
   display: flex;
   justify-content: center;
 }
-.navBar form .searchIcon{
+.navBar form .searchIcon {
   padding: 1rem;
 }
-.navBar form input[type='search']{
-  font-family: 'Poppins', sans-serif;
+.navBar form input[type="search"] {
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 1rem;
   letter-spacing: 0.14rem;
@@ -75,15 +74,15 @@ header {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
   color: white;
-} 
-.navBar .title a{
+}
+.navBar .title a {
   font-size: 1.5rem;
   letter-spacing: 0.1rem;
   color: white;
 }
 .search-overlay {
   position: fixed;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1rem;
   color: white;
   top: 0;
@@ -110,12 +109,18 @@ header {
   max-height: 80%;
   /* height: 10vh; */
   overflow-y: auto;
-  background-color: #1f1f1f;
+  background-color: #000000;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
-
+.search-results-container .loadingClass {
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
 .search-results-container ul {
   list-style: none;
   display: flex;
@@ -123,7 +128,7 @@ header {
   margin: 0;
   padding: 0;
 }
-.search-results-container ul a{
+.search-results-container ul a {
   text-decoration: none;
   color: white;
 }
@@ -138,25 +143,26 @@ header {
   overflow: hidden;
   transition: all 0.2s ease-in-out;
 }
-.search-results-container li img{
+.search-results-container li img {
   width: 8rem;
   padding: 1rem;
 }
-.search-results-container li:hover{
+.search-results-container li:hover {
   transform: scale(1.01);
   cursor: pointer;
 }
 
-.search-results-container li h3,h4{
+.search-results-container li h3,
+h4 {
   font-weight: 400;
 }
 .navBar nav ul {
-  gap:2rem;
+  gap: 2rem;
   margin-top: 2rem;
   list-style: none;
   display: flex;
 }
- li a{
+li a {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   letter-spacing: 0.1rem;
@@ -170,14 +176,14 @@ header {
 .dropdown_menu {
   display: none;
   height: 0;
-  transition: height 0.2s  cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: height 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.dropdown_menu_active{
+.dropdown_menu_active {
   position: absolute;
   right: 2rem;
   top: 60px;
-  width:250px;
+  width: 250px;
   height: 20%px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
@@ -186,7 +192,7 @@ header {
   z-index: 500;
 }
 
-.dropdown_menu_active li{ 
+.dropdown_menu_active li {
   padding: 0.7rem;
   display: flex;
   align-items: center;
@@ -200,7 +206,7 @@ header {
   color: white;
   text-decoration: none;
 } */
-.navBar nav ul li:hover{
+.navBar nav ul li:hover {
   transform: scale(1.2);
 }
 .navItems li {
@@ -210,21 +216,20 @@ header {
 .navBar .listItem {
   padding: 0 1rem;
 }
-.navBar .userImage{
+.navBar .userImage {
   padding: 0 1rem;
 }
-.navBar nav .userImage:hover{
+.navBar nav .userImage:hover {
   transform: scale(1.1);
 }
 
-
 /* Response */
 
-@media(max-width:992px){
-  .navBar nav ul{
+@media (max-width: 992px) {
+  .navBar nav ul {
     display: none;
   }
-  .navBar .toggle-btn{
+  .navBar .toggle-btn {
     display: block;
   }
 }

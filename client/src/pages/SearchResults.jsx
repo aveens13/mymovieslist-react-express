@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import loadingImg from "../assets/movieridge.gif";
 function SearchResults({ query, queryClick }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +49,9 @@ function SearchResults({ query, queryClick }) {
   return (
     <div>
       {loading ? (
-        <p>Loading search results...</p>
+        <div className="loadingClass">
+          <img src={loadingImg} alt="" />
+        </div>
       ) : results ? (
         <ul>
           {results.map((result) => (

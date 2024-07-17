@@ -3,14 +3,18 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import Snackbar from "@mui/material/Snackbar";
+import ShareIcon from "@mui/icons-material/Share";
 import { Alert } from "@mui/material";
 import Bookmark from "../assets/bookmark.png";
+import Modal from "./Modal/Modal";
+import MovieShare from "./Movielist/MovieShare";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "../styles/Details.css";
 import loadingImg from "../assets/movieridge.gif";
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
 export const MovieDetails = ({ userToken }) => {
+  const [isSharing, setIsSharing] = useState(false);
   const streamRef = useRef(null);
   const videoRef = useRef(null);
   const [data, setData] = useState(null);
@@ -66,10 +70,6 @@ export const MovieDetails = ({ userToken }) => {
       ).json();
       setData(data);
       setSeasonActive(false);
-      setEpisodeLoader({
-        seasonNumber: 1,
-        episodeNumber: 1,
-      });
     };
 
     // const videoFetch = async () => {
@@ -224,11 +224,6 @@ export const MovieDetails = ({ userToken }) => {
       iceServers: [
         {
           urls: "stun:stun.relay.metered.ca:80",
-        },
-        {
-          urls: "turns:global.relay.metered.ca:443?transport=tcp",
-          username: "0df9a5d34563a36ffade45c9",
-          credential: "qpUfgv53MDLcdugm",
         },
       ],
     });
@@ -433,6 +428,16 @@ export const MovieDetails = ({ userToken }) => {
                       onClick={handleAddtoList}
                     />
                     <p className="tooltiptext">Add to list</p>
+                    {type == "movie" && (
+                      <ShareIcon
+                        color="white"
+                        className="share"
+                        fontSize="small"
+                        onClick={() => {
+                          setIsSharing(!isSharing);
+                        }}
+                      />
+                    )}
                   </div>
                   <h3>Have you watched this ? Rate it</h3>
                   <span>
@@ -443,7 +448,11 @@ export const MovieDetails = ({ userToken }) => {
                       ""
                     )}
                   </span>
-                  <Button type="primary" onClick={updateRating}>
+                  <Button
+                    type="primary"
+                    onClick={updateRating}
+                    className="submitButton"
+                  >
                     Submit
                   </Button>
                 </div>

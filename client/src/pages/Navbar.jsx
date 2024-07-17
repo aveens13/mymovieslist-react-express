@@ -6,7 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect, useRef } from "react";
 import SearchResults from "./SearchResults";
-
+import { Input } from "antd";
+const { Search } = Input;
 export default function NavBar(props) {
   const [isActive, setIsActive] = useState(false);
   const [query, setQuery] = useState("");
@@ -54,14 +55,15 @@ export default function NavBar(props) {
             <div className="title">
               <MovieIcon color="white" style={{ fontSize: 60 }} />
               <div className="fonty">
-                <div>Movies</div>
+                <div>Movie</div>
                 <div>Ridge</div>
               </div>
             </div>
           </Link>
         </div>
-        <form>
+        <form onSubmit={(event) => event.preventDefault()}>
           <SearchIcon className="searchIcon" />
+
           <input
             type="search"
             name="searchItem"
