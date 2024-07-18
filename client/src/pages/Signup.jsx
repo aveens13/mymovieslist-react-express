@@ -1,11 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Modal, Input } from "antd";
+
 export default function Signup(props) {
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    otp: "",
+  });
+
   let navigate = useNavigate();
   async function handleSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
     const circulartoPlain = Object.fromEntries(formData.entries());
+    setFormData(circulartoPlain);
     const formDataJsonString = JSON.stringify(circulartoPlain);
     const response = await fetch("/api/signup", {
       method: "POST",
@@ -15,14 +28,45 @@ export default function Signup(props) {
       body: formDataJsonString,
     });
     if (response.ok) {
+      setOpen(true);
+    }
+  }
+  const handleOk = async () => {
+    setConfirmLoading(true);
+    const formDataJsonString = JSON.stringify(formData);
+    const response = await fetch("/api/validateOTP", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: formDataJsonString,
+    });
+    if (response.ok) {
+      setConfirmLoading(false);
+      setOpen(false);
       const tokenResponse = await fetch("/api/verifyToken");
       if (tokenResponse.ok) {
         const userData = await tokenResponse.json();
         props.changeState(userData);
         navigate("/");
       }
+    } else {
+      setConfirmLoading(false);
     }
-  }
+  };
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setOpen(false);
+  };
+
+  const onChange = (text) => {
+    console.log("onChange:", text);
+    setFormData((prevData) => ({
+      ...prevData,
+      otp: text,
+    }));
+  };
+
   return (
     <div className="hero--card">
       <div className="left--content">
@@ -62,6 +106,24 @@ export default function Signup(props) {
           </p>
         </div>
       </div>
+      <Modal
+        title="Verify your email"
+        open={open}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+        onOk={handleOk}
+        style={{
+          backgroundColor: "black",
+          fontFamily: "Poppins",
+        }}
+      >
+        We have sent you a 6 digit verification code on your email. Please
+        consider looking in spam as well.
+        <br />
+        <br />
+        <br />
+        <Input.OTP length={6} onChange={onChange} />
+      </Modal>
     </div>
   );
 }
