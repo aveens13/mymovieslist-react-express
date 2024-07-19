@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import user from "../assets/user.png";
-import love from "../assets/heart.png";
-import loveFilled from "../assets/heartFilled.png";
 import watchparty from "../assets/watchparty.png";
 import RssFeedIcon from "@mui/icons-material/RssFeed";
 import "../styles/Home.css";
-import { Button } from "antd";
+import { Button, Tag } from "antd";
 export default function Home({ userToken }) {
   const [type, setType] = useState("movie");
   const [followers, setFollowers] = useState([]);
@@ -59,6 +57,7 @@ export default function Home({ userToken }) {
     fetch(`/api/feed/${userToken.id}`).then((response) => {
       response.json().then((data) => {
         setPosts(data.result);
+        console.log(data.result);
       });
     });
   }, []);
@@ -145,6 +144,13 @@ export default function Home({ userToken }) {
                   </Link>
                 </div>
                 <div className="movieName">{post.content.title}</div>
+                <div className="tags">
+                  {post.content.genres.map((genre) => (
+                    <Tag color="lime" style={{ borderRadius: "0.8rem" }}>
+                      {genre.name}
+                    </Tag>
+                  ))}
+                </div>
                 {/* <div className="interactionsSection">
                   {isHeart ? (
                     <img

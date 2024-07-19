@@ -76,6 +76,9 @@
   font-weight: 600;
   font-size: 1.2rem;
 }
+.feed .feedInfo .tags {
+  padding: 0 1rem;
+}
 .tophero .infoSection {
   margin-left: auto;
   margin-top: 1rem;
