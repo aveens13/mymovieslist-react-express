@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import { useState, useEffect } from "react";
 import Home from "./pages/Home";
@@ -104,7 +104,7 @@ function App() {
       <>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Loader />} />
+            <Route path="*" element={<Loader />} />
           </Routes>
         </BrowserRouter>
       </>
@@ -138,6 +138,7 @@ function App() {
                 />
               }
             />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </>
