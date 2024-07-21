@@ -3,7 +3,10 @@ import { useState, useCallback } from "react";
 import { Modal, Input, notification } from "antd";
 
 export default function Signup(props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState({
+    otpSent: false,
+    email: "",
+  });
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -40,7 +43,12 @@ export default function Signup(props) {
       body: formDataJsonString,
     });
     if (response.ok) {
-      setOpen(true);
+      response.json().then((e) => {
+        setOpen({
+          otpSent: true,
+          email: e.sentTo,
+        });
+      });
     } else {
       openNotification(
         "Error",
@@ -69,9 +77,7 @@ export default function Signup(props) {
       }
     } else {
       setConfirmLoading(false);
-      tokenResponse.json().then((e) => {
-        openNotification("Error", e.result);
-      });
+      openNotification("Error", "OTP Validation Failed");
     }
   };
   const handleCancel = () => {
@@ -129,7 +135,7 @@ export default function Signup(props) {
       </div>
       <Modal
         title="Verify your email"
-        open={open}
+        open={open.otpSent}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         onOk={handleOk}
@@ -138,8 +144,8 @@ export default function Signup(props) {
           fontFamily: "Poppins",
         }}
       >
-        We have sent you a 6 digit verification code on your email. Please
-        consider looking in spam as well.
+        We have sent you a 6 digit verification code on your email {open.email}.
+        Please consider looking in spam as well.
         <br />
         <br />
         <br />
