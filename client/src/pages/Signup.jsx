@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { Modal, Input } from "antd";
+import { useState, useCallback } from "react";
+import { Modal, Input, notification } from "antd";
 
 export default function Signup(props) {
   const [open, setOpen] = useState(false);
@@ -11,6 +11,18 @@ export default function Signup(props) {
     password: "",
     otp: "",
   });
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = useCallback(
+    (errorTitle, errorDesc) => {
+      api["error"]({
+        message: errorTitle,
+        description: errorDesc,
+        showProgress: true,
+      });
+    },
+    [api]
+  );
 
   let navigate = useNavigate();
   async function handleSubmit(event) {
@@ -29,6 +41,11 @@ export default function Signup(props) {
     });
     if (response.ok) {
       setOpen(true);
+    } else {
+      openNotification(
+        "Error",
+        "Error Server Side while sending otp. Try using a valid email or wait for server to respond. Thank you for your patience"
+      );
     }
   }
   const handleOk = async () => {
@@ -52,6 +69,9 @@ export default function Signup(props) {
       }
     } else {
       setConfirmLoading(false);
+      tokenResponse.json().then((e) => {
+        openNotification("Error", e.result);
+      });
     }
   };
   const handleCancel = () => {
@@ -69,6 +89,7 @@ export default function Signup(props) {
 
   return (
     <div className="hero--card">
+      {contextHolder}
       <div className="left--content">
         <div className="labelElement">
           <label>One Place for all your movies</label>
