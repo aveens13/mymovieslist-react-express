@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const handlers = require("../lib/handlers");
+const handlers = require("../lib/authenticationLogic");
 const router = Router();
 
 router.get("/api/verifyToken", handlers.checktoken);
