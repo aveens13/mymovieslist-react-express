@@ -1,5 +1,7 @@
 # MovieRidge
 
+![mymovielist react express](client/src/assets/movieridge.gif)
+
 MovieRidge is a social media-based application for movie and TV show enthusiasts, offering personalized recommendations and a platform to share your viewing experiences.
 
 ## Project Description
