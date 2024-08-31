@@ -53,20 +53,39 @@ export default function Broadcast({ userName, userToken }) {
     await peer.setLocalDescription(offer);
 
     // Wait for ICE gathering to complete
+    // await new Promise((resolve) => {
+    //   if (peer.iceGatheringState === "complete") {
+    //     resolve();
+    //   } else {
+    //     peer.addEventListener("icegatheringstatechange", () => {
+    //       if (peer.iceGatheringState === "complete") {
+    //         resolve();
+    //       }
+    //     });
+    //   }
+    // });
+    const iceCandidates = [];
     await new Promise((resolve) => {
-      if (peer.iceGatheringState === "complete") {
-        resolve();
-      } else {
-        peer.addEventListener("icegatheringstatechange", () => {
-          if (peer.iceGatheringState === "complete") {
-            resolve();
-          }
-        });
-      }
+      const checkState = () => {
+        if (peer.iceGatheringState === "complete") {
+          peer.removeEventListener("icecandidate", onIceCandidate);
+          resolve();
+        }
+      };
+      const onIceCandidate = (event) => {
+        if (event.candidate) {
+          iceCandidates.push(event.candidate);
+        }
+        checkState();
+      };
+      peer.addEventListener("icecandidate", onIceCandidate);
+      checkState();
+      setTimeout(resolve, 5000); // 5 second timeout
     });
 
     const payload = {
       sdp: peer.localDescription,
+      iceCandidates,
       streamerID: streamerId,
     };
 
@@ -80,8 +99,10 @@ export default function Broadcast({ userName, userToken }) {
 
     response.json().then((e) => {
       const desc = new RTCSessionDescription(e.result.sdp);
-      console.log(e.result);
       peer.setRemoteDescription(desc).catch((event) => console.log(event));
+      for (const candidate of e.result.iceCandidates || []) {
+        peer.addIceCandidate(new RTCIceCandidate(candidate));
+      }
     });
   }
 
