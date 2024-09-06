@@ -31,7 +31,6 @@ export default function Home({ userToken }) {
         }
         response.json().then((data) => {
           if (data.success) {
-            console.log(data.streams);
             setActiveStreams(data.streams);
           } else {
             throw new Error("Failed to fetch active streams");
@@ -57,7 +56,6 @@ export default function Home({ userToken }) {
     fetch(`/api/feed/${userToken.id}`).then((response) => {
       response.json().then((data) => {
         setPosts(data.result);
-        console.log(data.result);
       });
     });
   }, []);
@@ -117,7 +115,9 @@ export default function Home({ userToken }) {
                 <img src={user} alt="" />
                 <div>
                   <div className="name">{post.author.name}</div>
-                  <div className="time">Wednesday, 3rd July 9:59</div>
+                  <div className="time">
+                    {new Date(post.createdAt).toString()}
+                  </div>
                 </div>
               </div>
               <div className="feedInfo">
