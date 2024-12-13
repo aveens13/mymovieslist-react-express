@@ -25,12 +25,11 @@ MovieRidge is designed to enhance your entertainment experience by combining soc
 4. **Content Providers Integration**: Access a wide range of movies and TV shows through our partnerships with VidSrc and VidSrcPro, ensuring you always have something great to watch.
 
 5. **Friend Connections**: Follow your friends, see what they're watching, and discover new content through their recommendations.
+   
+7. **WebRTC Implementation**: Our broadcasting feature utilizes WebRTC (Web Real-Time Communication) technology. This peer-to-peer communication protocol enables high-quality, low-latency video streaming directly in the browser, ensuring a smooth and interactive shared viewing experience.
+
 
 ### Upcoming Features
-
-**Live Broadcasting** (In Progress): We're excited to announce that we're currently working on a live broadcasting feature. This will allow users to stream and watch content together in real-time, creating a shared viewing experience. 
-
-- **WebRTC Implementation**: Our broadcasting feature utilizes WebRTC (Web Real-Time Communication) technology. This peer-to-peer communication protocol enables high-quality, low-latency video streaming directly in the browser, ensuring a smooth and interactive shared viewing experience.
 
 - **Synchronized Playback**: Users will be able to synchronize their viewing sessions, pause, play, and discuss the content in real-time.
 
