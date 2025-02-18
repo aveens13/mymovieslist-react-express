@@ -1,4 +1,3 @@
-
 //Loading Modules and Libraries
 const express = require("express");
 const authenticationRoutes = require("./Router/authRoutes");
@@ -8,9 +7,15 @@ const cookieparser = require("cookie-parser");
 const cors = require("cors");
 const PORT = process.env.PORT || 5055;
 const middleware = require("./lib/middleware");
+const Websocket = require("ws");
+const http = require("http");
 //Setting up express application and prisma client
 const app = express();
+const server = http.createServer(app);
+const websocket = new Websocket.Server({ server, path: "/ws" });
 const path = require("path");
+const { WebsocketConnection } = require("./lib/ws");
+
 //Processing Request Logger
 app.use((req, res, next) => {
   console.log(`Processing request for ${req.url}...`);
@@ -29,8 +34,8 @@ app.use("/api/signup", middleware.hashPassword);
 app.use(moviesRoutes);
 app.use(authenticationRoutes);
 
-
+WebsocketConnection(websocket);
 //Listening to the server
-app.listen(PORT, (req, res) => {
+server.listen(PORT, (req, res) => {
   console.log(`Server Started on http://localhost:${PORT}`);
 });
