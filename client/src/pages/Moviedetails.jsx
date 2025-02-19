@@ -19,6 +19,7 @@ export const MovieDetails = ({ userToken }) => {
   const [isSharing, setIsSharing] = useState(false);
   const streamRef = useRef(null);
   const videoRef = useRef(null);
+  const videoRefMedia = useRef(null);
   const [data, setData] = useState(null);
   const [value, setValue] = useState(5);
   const [loading, setLoading] = useState(false);
@@ -35,16 +36,11 @@ export const MovieDetails = ({ userToken }) => {
   });
   const [api, contextHolder] = notification.useNotification();
   const [messageApi, messageContext] = message.useMessage();
-  const [socket, setSocket] = useState(null);
-  const [device, setDevice] = useState(null);
+  let socket;
+  let device;
   let producer;
-
-  useEffect(() => {
-    const ws = new WebSocket(websocketURL);
-    setSocket(ws);
-
-    // Cleanup function to close WebSocket when component unmounts
-  }, [websocketURL]);
+  let remoteStream;
+  let consumeTransport;
 
   const openNotification = () => {
     const key = `open${Date.now()}`;
@@ -186,6 +182,7 @@ export const MovieDetails = ({ userToken }) => {
   //Check Mediasoup function
   async function checkMedasoup() {
     // setSocket(new WebSocket(websocketURL));
+    socket = new WebSocket(websocketURL);
     console.log("Hmm");
 
     socket.onopen = () => {
@@ -214,6 +211,15 @@ export const MovieDetails = ({ userToken }) => {
         case "producerTransportCreated":
           onProducerTransportCreated(resp);
           break;
+        case "subTransportCreated":
+          onSubTransportCreated(resp);
+          break;
+        case "resumed":
+          console.log(event.data);
+          break;
+        case "subscribed":
+          onSubscribed(resp);
+          break;
         default:
           break;
       }
@@ -228,7 +234,94 @@ export const MovieDetails = ({ userToken }) => {
       return true;
     };
 
+    const onSubscribed = async (event) => {
+      console.log(event);
+
+      const { producerId, id, kind, rtpParameters } = event.data;
+      let codecOptions = {};
+      console.log("Eha samma pugeko ho");
+
+      const consumer = await consumeTransport.consume({
+        id,
+        producerId,
+        kind,
+        rtpParameters,
+        codecOptions,
+      });
+      const stream = new MediaStream();
+      stream.addTrack(consumer.track);
+      remoteStream = stream;
+    };
+
+    const onSubTransportCreated = (event) => {
+      if (event.error) {
+        console.error("On subtransport create error:", event.error);
+      }
+
+      const transport = device.createRecvTransport(event.data);
+      consumeTransport = transport;
+      transport.on("connect", ({ dtlsParameters }, callback, errback) => {
+        const msg = {
+          type: "connectConsumerTransport",
+          transportId: transport.id,
+          dtlsParameters,
+        };
+
+        const message = JSON.stringify(msg);
+        socket.send(message);
+
+        //subconnected
+        socket.addEventListener("message", (event) => {
+          const jsonValidation = IsJsonString(event.data);
+          if (!jsonValidation) {
+            console.error("Json error");
+            return;
+          }
+
+          let resp = JSON.parse(event.data);
+          if (resp.type === "subConnected") {
+            console.log("Subconsumer transport connected");
+
+            callback();
+          }
+        });
+      });
+      transport.on("connectionstatechange", async (state) => {
+        switch (state) {
+          case "connecting":
+            console.log("Subscribing");
+
+            break;
+          case "connected":
+            videoRefMedia.current.srcObject = remoteStream;
+            const msg = {
+              type: "resume",
+            };
+            const message = JSON.stringify(msg);
+            socket.send(message);
+          case "failed":
+            transport.close();
+            console.log("Failed");
+          default:
+            break;
+        }
+      });
+      const stream = consumer(transport);
+    };
+
+    const consumer = async (transport) => {
+      const { rtpCapabilities } = device;
+      const msg = {
+        type: "consume",
+        rtpCapabilities,
+      };
+      const message = JSON.stringify(msg);
+      socket.send(message);
+    };
+
     const onProducerTransportCreated = async (event) => {
+      console.log("I am on producer transport created function");
+
       if (event.error) {
         console.error("Producer transport create error:", event.error);
         return;
@@ -239,7 +332,7 @@ export const MovieDetails = ({ userToken }) => {
       transport.on("connect", async ({ dtlsParameters }, callback, errback) => {
         const message = {
           type: "connectProducerTransport",
-          dtlsParameters,
+          dtlsParameters: dtlsParameters,
         };
 
         const resp = JSON.stringify(message);
@@ -293,9 +386,10 @@ export const MovieDetails = ({ userToken }) => {
       //connection state change end
       let stream;
       try {
-        stream = await getUserMedia(transport)[0];
+        stream = await getUserMedia(transport);
+        const track = stream.getVideoTracks()[0];
         const params = { track };
-        producer = await transport.producer(params);
+        producer = await transport.produce(params);
       } catch (error) {
         console.error(error);
       }
@@ -316,8 +410,7 @@ export const MovieDetails = ({ userToken }) => {
 
     const loadDevice = async (routerRtpCapabilities) => {
       try {
-        const dev = new mediasoup.Device();
-        setDevice(dev);
+        device = new mediasoup.Device();
       } catch (error) {
         if (error.name === "UnsupportedError") {
           console.log("Browser not supported");
@@ -342,6 +435,15 @@ export const MovieDetails = ({ userToken }) => {
     };
   }
 
+  async function consume() {
+    const msg = {
+      type: "createConsumerTransport",
+      forceTcp: false,
+    };
+
+    const message = JSON.stringify(msg);
+    socket.send(message);
+  }
   async function init() {
     try {
       const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -732,9 +834,22 @@ export const MovieDetails = ({ userToken }) => {
                   Stat Broadcast
                 </Button>
 
-                {/*<Button warning type="primary" onClick={() => checkMedasoup()}>
-                Check Mediasoup
-              </Button>*/}
+                <Button warning type="primary" onClick={() => checkMedasoup()}>
+                  Check Mediasoup
+                </Button>
+
+                <div className="broadcast">
+                  <div className="title">Broadcast</div>
+                  <video
+                    autoPlay
+                    ref={videoRefMedia}
+                    allowFullScreen
+                    controls
+                  ></video>
+                </div>
+                <Button warning type="primary" onClick={() => consume()}>
+                  Consume
+                </Button>
                 {/* <video
                   ref={videoRef}
                   style={{ width: "100%", maxWidth: "640px", height: "auto" }}
