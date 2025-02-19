@@ -36,6 +36,8 @@ const config = {
           announcedIp: "127.0.0.1", //replace by public ip
         },
       ],
+      maxIncomeBitrate: 1500000,
+      initialAvailableOutgoingBitrate: 1000000,
     },
   },
 };

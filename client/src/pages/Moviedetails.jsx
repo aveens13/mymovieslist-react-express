@@ -12,6 +12,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "../styles/Details.css";
 import loadingImg from "../assets/movieridge.gif";
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
+import * as mediasoup from "mediasoup-client";
+const websocketURL = "ws://localhost:5055/ws";
 
 export const MovieDetails = ({ userToken }) => {
   const [isSharing, setIsSharing] = useState(false);
@@ -33,6 +35,16 @@ export const MovieDetails = ({ userToken }) => {
   });
   const [api, contextHolder] = notification.useNotification();
   const [messageApi, messageContext] = message.useMessage();
+  const [socket, setSocket] = useState(null);
+  const [device, setDevice] = useState(null);
+  let producer;
+
+  useEffect(() => {
+    const ws = new WebSocket(websocketURL);
+    setSocket(ws);
+
+    // Cleanup function to close WebSocket when component unmounts
+  }, [websocketURL]);
 
   const openNotification = () => {
     const key = `open${Date.now()}`;
@@ -169,6 +181,165 @@ export const MovieDetails = ({ userToken }) => {
         console.log(seasonDetails);
       });
     }
+  }
+
+  //Check Mediasoup function
+  async function checkMedasoup() {
+    // setSocket(new WebSocket(websocketURL));
+    console.log("Hmm");
+
+    socket.onopen = () => {
+      console.log("Socket is open");
+
+      //Start our socket requests
+      const msg = {
+        type: "getRouterRtpCapabilities",
+      };
+      const rep = JSON.stringify(msg);
+      socket.send(rep);
+    };
+
+    socket.onmessage = (event) => {
+      const jsonValidation = IsJsonString(event.data);
+      if (!jsonValidation) {
+        console.error("Json error");
+        return;
+      }
+
+      let resp = JSON.parse(event.data);
+      switch (resp.type) {
+        case "routerCapabilities":
+          onRouterCapabilities(resp);
+          break;
+        case "producerTransportCreated":
+          onProducerTransportCreated(resp);
+          break;
+        default:
+          break;
+      }
+    };
+
+    const IsJsonString = (str) => {
+      try {
+        JSON.parse(str);
+      } catch (error) {
+        return false;
+      }
+      return true;
+    };
+
+    const onProducerTransportCreated = async (event) => {
+      if (event.error) {
+        console.error("Producer transport create error:", event.error);
+        return;
+      }
+
+      const transport = device.createSendTransport(event.data);
+
+      transport.on("connect", async ({ dtlsParameters }, callback, errback) => {
+        const message = {
+          type: "connectProducerTransport",
+          dtlsParameters,
+        };
+
+        const resp = JSON.stringify(message);
+        socket.send(resp);
+        socket.addEventListener("message", (event) => {
+          const jsonValidation = IsJsonString(event.data);
+          if (!jsonValidation) {
+            console.error("Json error");
+            return;
+          }
+
+          let resp = JSON.parse(event.data);
+          if (resp.type === "producerConnected") {
+            callback();
+          }
+        });
+      });
+      //begin producer
+      transport.on(
+        "produce",
+        async ({ kind, rtpParameters }, callback, errback) => {
+          const message = {
+            type: "produce",
+            transportId: transport.id,
+            kind,
+            rtpParameters,
+          };
+          const resp = JSON.stringify(message);
+          socket.send(resp);
+          socket.addEventListener("published", (resp) => {
+            callback(resp.data.id);
+          });
+        }
+      );
+      //end transport producer
+      //connection state change begin
+      transport.on("connectionStateChange", (state) => {
+        switch (state) {
+          case "connecting":
+            console.log("Connecting");
+            break;
+          case "connected":
+            break;
+          case "failed":
+            transport.close();
+            console.log("Failed");
+          default:
+            break;
+        }
+      });
+      //connection state change end
+      let stream;
+      try {
+        stream = await getUserMedia(transport)[0];
+        const params = { track };
+        producer = await transport.producer(params);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const onRouterCapabilities = (resp) => {
+      loadDevice(resp.data).then(() => {
+        const message = {
+          type: "createProducerTransport",
+          forceTcp: false,
+          rtpCapabilities: device.rtpCapabilities,
+        };
+
+        const resp = JSON.stringify(message);
+        socket.send(resp);
+      });
+    };
+
+    const loadDevice = async (routerRtpCapabilities) => {
+      try {
+        const dev = new mediasoup.Device();
+        setDevice(dev);
+      } catch (error) {
+        if (error.name === "UnsupportedError") {
+          console.log("Browser not supported");
+        }
+      }
+      await device.load({ routerRtpCapabilities });
+    };
+
+    const getUserMedia = async (transport) => {
+      if (!device.canProduce("video")) {
+        console.error("Cannot Produce Video!!!");
+        return;
+      }
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+      return stream;
+    };
   }
 
   async function init() {
@@ -560,6 +731,10 @@ export const MovieDetails = ({ userToken }) => {
                 <Button danger type="primary" onClick={() => init()}>
                   Stat Broadcast
                 </Button>
+
+                {/*<Button warning type="primary" onClick={() => checkMedasoup()}>
+                Check Mediasoup
+              </Button>*/}
                 {/* <video
                   ref={videoRef}
                   style={{ width: "100%", maxWidth: "640px", height: "auto" }}
