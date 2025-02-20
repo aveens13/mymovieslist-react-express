@@ -444,6 +444,8 @@ export const MovieDetails = ({ userToken }) => {
     const message = JSON.stringify(msg);
     socket.send(message);
   }
+
+  //Main native webrtc connection
   async function init() {
     try {
       const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -833,7 +835,7 @@ export const MovieDetails = ({ userToken }) => {
                 <Button danger type="primary" onClick={() => init()}>
                   Stat Broadcast
                 </Button>
-
+                {/*
                 <Button warning type="primary" onClick={() => checkMedasoup()}>
                   Check Mediasoup
                 </Button>
@@ -849,7 +851,7 @@ export const MovieDetails = ({ userToken }) => {
                 </div>
                 <Button warning type="primary" onClick={() => consume()}>
                   Consume
-                </Button>
+                </Button>/*}
                 {/* <video
                   ref={videoRef}
                   style={{ width: "100%", maxWidth: "640px", height: "auto" }}

@@ -38,6 +38,9 @@ const config = {
       ],
       maxIncomeBitrate: 1500000,
       initialAvailableOutgoingBitrate: 1000000,
+      stunServers: [
+        { urls: "stun:stun.l.google.com:19302" }, // Google's free STUN server
+      ],
     },
   },
 };
