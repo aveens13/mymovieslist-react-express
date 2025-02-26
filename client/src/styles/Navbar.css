@@ -206,7 +206,7 @@ li a {
   color: white;
   text-decoration: none;
 } */
-.navBar nav ul li:hover {
+.navBar nav ul .listItem:hover {
   transform: scale(1.2);
 }
 .navItems li {
@@ -215,6 +215,7 @@ li a {
 }
 .navBar .listItem {
   padding: 0 1rem;
+  cursor: pointer;
 }
 .navBar .userImage {
   padding: 0 1rem;

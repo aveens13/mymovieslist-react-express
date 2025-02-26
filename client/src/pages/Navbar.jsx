@@ -6,7 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect, useRef } from "react";
 import SearchResults from "./SearchResults";
-import { Input } from "antd";
+import { Input, Button, Popconfirm } from "antd";
 const { Search } = Input;
 export default function NavBar(props) {
   const [isActive, setIsActive] = useState(false);
@@ -96,9 +96,14 @@ export default function NavBar(props) {
             <li className="listItem">
               <Link to="/profile">Profile</Link>
             </li>
-            <li className="userImage" onClick={handleLogout}>
+            <Popconfirm
+              title="Logout"
+              description="Do you want to logout?"
+              onConfirm={handleLogout}
+              className="listItem"
+            >
               <LogoutIcon fontSize="large" />
-            </li>
+            </Popconfirm>
           </ul>
         </nav>
         <div className="toggle-btn">
