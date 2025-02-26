@@ -33,7 +33,9 @@ export default function Login({ changeState }) {
       if (tokenResponse.ok) {
         const userData = await tokenResponse.json();
         changeState(userData);
-        navigate("/");
+        const redirectRoute = localStorage.getItem("redirectAfterLogin") || "/";
+        localStorage.removeItem("redirectAfterLogin");
+        navigate(redirectRoute);
       }
     } else {
       const error = await response.json();

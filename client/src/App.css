@@ -160,14 +160,14 @@ input[type="password"] {
 .form--hero form input[type="submit"] {
   color: white;
   width: 100%;
-  background-color: #1650b5;
+  background-color: #f40612;
   font-weight: 400;
   border: none;
   border-radius: 0.5rem;
   transition: all 0.3s ease-in-out;
 }
 .form--hero form input[type="submit"]:hover {
-  background-color: #005eff;
+  background-color: #f40612;
   cursor: pointer;
 }
 .login--main {
@@ -189,7 +189,7 @@ input[type="password"] {
   color: white;
   padding: 0.6rem 1rem;
   border-radius: 0.2rem;
-  background-color: #1650b5;
+  background-color: #f40612;
   letter-spacing: 0.1rem;
   transition: all 0.3s ease-in-out;
 }
@@ -217,7 +217,7 @@ input[type="password"] {
 .login--card form input[type="submit"] {
   margin-left: 1rem;
   color: white;
-  background-color: #1650b5;
+  background-color: #f40612;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
@@ -226,7 +226,7 @@ input[type="password"] {
   font-weight: 400;
 }
 .login--card form input[type="submit"]:hover {
-  background-color: #005eff;
+  background-color: #f40612;
   transform: scale(1.01);
 }
 .login--card button:hover {
