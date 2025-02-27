@@ -29,7 +29,7 @@
   padding: 0 1rem;
 }
 .ratings .runtime {
-  background-color: #4666ff;
+  background-color: #e50914;
   border-radius: 0.5rem;
 }
 .top--section .image--drop img {
@@ -221,4 +221,5 @@
 
 .rating--hero .submitButton {
   width: fit-content;
+  background-color: #e50914;
 }

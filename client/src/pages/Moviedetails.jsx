@@ -1,4 +1,4 @@
-import { Button, notification, Space, Rate, message } from "antd";
+import { Button, notification, Space, Rate, message, Tooltip } from "antd";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import StarIcon from "@mui/icons-material/Star";
@@ -653,10 +653,7 @@ export const MovieDetails = ({ userToken }) => {
                           <p className="title">{data.info.title}</p>
                         )}
                         <div className="ratings">
-                          <p>
-                            <StarIcon />
-                            TMDB Rating ({data.info.vote_average})
-                          </p>
+                          <p>👍🏻{data.info.vote_average} rating</p>
                           {type == "tv" ? (
                             <p className="runtime">
                               {data.info.number_of_episodes} Episodes
@@ -705,10 +702,15 @@ export const MovieDetails = ({ userToken }) => {
                     )}
                     <li>
                       <p className="bold">Cast:</p>
-                      {data.credits.cast.slice(0, 3).map((cast, index) => (
-                        <p className="light" key={index}>
-                          {cast.name}
-                        </p>
+                      {data.credits.cast.slice(0, 6).map((cast, index) => (
+                        <Tooltip title={cast.name} color="#e50914">
+                          <div key={cast.id} className="cast-avatar">
+                            <img
+                              src={getPosterUrl(cast.profile_path)}
+                              alt={cast.name}
+                            />
+                          </div>
+                        </Tooltip>
                       ))}
                       {data.credits.cast.length > 3 && (
                         <Button type="link">See more</Button>

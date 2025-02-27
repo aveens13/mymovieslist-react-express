@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./styles/Landingpage.css";
-import avatar from "./assets/user.png";
 
 export default function Landingpage() {
   const navigate = useNavigate();
@@ -50,10 +49,10 @@ export default function Landingpage() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/tvshows">TV Shows</Link>
+              <Link to="/login">TV Shows</Link>
             </li>
             <li>
-              <Link to="/movies">Movies</Link>
+              <Link to="/login">Movies</Link>
             </li>
             <li>
               <Link to="/series">Series</Link>

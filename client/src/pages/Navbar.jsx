@@ -53,7 +53,12 @@ export default function NavBar(props) {
         <div className="mainLogo">
           <Link to="/">
             <div className="title">
-              <MovieIcon color="white" style={{ fontSize: 60 }} />
+              <MovieIcon
+                color="white"
+                style={{ fontSize: 60, color: "#e50914" }}
+              />
+              {/* <div className="logo-diamond"></div> */}
+
               <div className="fonty">
                 <div>Movie</div>
                 <div>Ridge</div>
