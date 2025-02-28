@@ -1,50 +1,111 @@
-.main_profile{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    padding: 1rem;
-    margin: 2rem 0;
-    font-family: 'Poppins', sans-serif;
-}
-.main_profile .top_profile{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    padding: 1rem;
-    font-family: 'Poppins', sans-serif;
-}
-.main_profile .top_profile img{
-    width: 100px;
-    height:100px;
-    padding: 0 1rem;
-    margin: 0 1rem;
-}
-.top_profile .userInfo{
-    display: flex;
-    flex-direction: column;
-}
-.top_profile .userActions{
-    margin-left: auto;
-}
-.top_profile .userInfo .name{
-    font-size: 1.4rem;
-    font-weight: 600;
-}
-.top_profile .userInfo .followers{
-    padding: 0.6rem;
-    background-color: rgba(0,12,25,255);
-    font-size: 1.2rem;
-    font-weight: 400;
-    border-radius:2rem;
-    align-self: start;
+.main_profile {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  gap: 2rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  margin: 2rem 0;
+  font-family: "Poppins", sans-serif;
 }
 
-.main_profile .recentHostings{
-    padding: 1rem;
+.left-hero-profile {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.recentHostings img{
-    width: 20%;
-    height: 20%;
-    border-radius: 1.2rem;
+
+.left-hero-profile .profile-card-hero-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: rgba(20, 20, 20, 255);
+  /* margin: 0.5rem; */
+  width: 100%;
+  padding: 0 0 2rem 0;
+  border-radius: 0.8rem;
+}
+
+.profile-card-hero-main .picture-name-user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  /* width: 100%; */
+  /* background-color: antiquewhite; */
+}
+
+.picture-name-user img {
+  border-radius: 50%;
+  height: 78px;
+  width: 78px;
+}
+
+.picture-name-user .name-user-hero {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  align-items: flex-start;
+}
+
+.name-user-hero .name-profile {
+  font-size: medium;
+  font-weight: 600;
+}
+
+.username-profile {
+  color: rgba(97, 97, 97, 255);
+  font-size: smaller;
+}
+
+.profile-card-hero-main .user-following-stat {
+  display: flex;
+  gap: 2rem;
+  padding: 0 1rem;
+  margin: 1rem 0;
+}
+
+.profile-card-hero-main .user-description-profile {
+  padding: 1rem;
+  margin: 0 1rem;
+}
+
+.user-description-profile .descrip-profile {
+  color: rgba(255, 255, 255, 255);
+  font-size: smaller;
+}
+
+.followbutton-profile {
+  align-self: center;
+  /* padding: 0 2rem; */
+}
+
+.edit-button-profile {
+  align-self: center;
+  /* margin-left: 1rem; */
+}
+
+.left-hero-profile .genre-classifier-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 1rem;
+}
+.genre-classifier-profile .genre-titles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.genre-classifier-profile .genre-titles span {
+  padding: 0.25rem 1rem;
+  background-color: rgba(20, 20, 20, 255);
+  border-radius: 0.6rem;
+  text-align: center;
+  font-size: small;
+  color: rgba(150, 150, 150, 255);
 }
