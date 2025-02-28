@@ -1,181 +1,418 @@
+/* Main layout */
 .tophero {
   display: flex;
-  /* flex-direction: column; */
   padding: 2rem 1rem;
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  gap: 24px;
+  font-family: "Poppins", sans-serif;
 }
 
+/* Feed section */
 .tophero .feedsection {
+  flex: 3;
   display: flex;
   flex-direction: column;
-  font-family: "Poppins", sans-serif;
-  margin: 1rem 5rem 1rem 1rem;
-  padding: 0 1rem;
-  width: 100%;
+  gap: 24px;
+  width: auto;
+  margin: 0;
+  padding: 0;
 }
+
+.feed-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  padding-left: 0.5rem;
+  border-left: 4px solid #e50914;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #fff;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.empty-feed,
+.empty-followers {
+  background-color: rgba(14, 14, 15, 0.7);
+  padding: 2rem;
+  text-align: center;
+  border-radius: 0.8rem;
+  color: #a0a0a0;
+}
+
+/* Feed card styling */
 .feedsection .feed {
-  padding: 1rem 0;
-  margin: 0 2rem 2rem 0;
+  padding: 1.5rem;
+  margin: 0;
   background-color: #0e0e0f;
   border-radius: 0.8rem;
-  box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px,
-    rgba(255, 255, 255, 0.15) 0px 0px 0px 1px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.feedsection .feed:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
 .feedsection .feed .feederInfo {
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.user-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  object-fit: cover;
+  border: 2px solid rgba(229, 9, 20, 0.5);
+}
+
 .feedsection .feed .feederInfo img {
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0.5rem;
+  margin-right: 12px;
 }
+
 .feedsection .feed .feederInfo .name {
   font-size: 1rem;
   font-weight: 700;
-  padding: 0.25rem 0;
-}
-.feedsection .feed .feederInfo .time {
-  font-size: 0.8rem;
-  font-weight: 300;
-  color: gray;
-}
-.feed .feedInfo {
-  padding: 1rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-.feed .feedInfo .interactionsSection img {
-  width: 2rem;
-  height: 2rem;
-  padding: 0.5rem;
-  margin: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease-in;
+  color: #fff;
 }
 
-.feedInfo .interactionsSection img:hover {
-  transform: scale(1.1);
+.feedsection .feed .feederInfo .time {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #a0a0a0;
 }
-.feed .feedInfo .image img {
-  width: 100%;
-  height: 100%;
+
+.feed .feedInfo {
+  padding: 0;
+}
+
+.feed .feedInfo .description {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  color: #e0e0e0;
+}
+
+.feed .feedInfo .image {
+  position: relative;
+  overflow: hidden;
   border-radius: 0.8rem;
   margin: 1rem 0;
-  transition: all 0.2s ease-in-out;
+}
+
+.feed .feedInfo .image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  transform-origin: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .feed .feedInfo .image img:hover {
-  transform: scale(1.005);
-  opacity: 0.8;
+  transform: scale(1.03);
+  opacity: 0.9;
 }
+
 .feed .feedInfo .movieName {
-  padding: 1rem;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
   font-size: 1.2rem;
-}
-.feed .feedInfo .tags {
-  padding: 0 1rem;
-}
-.tophero .infoSection {
-  margin-left: auto;
-  margin-top: 1rem;
-  position: sticky;
-  /* z-index: 999; */
-  /* width: 30rem; */
-  /* background-color: red; */
-  padding: 0 1rem;
-}
-
-.tophero .infoSection .followCard .followDialog img {
-  width: 2rem;
-  height: 2rem;
-}
-.infoSection .followCard {
-  border-radius: 1.8rem;
-  margin: 0rem;
-  width: 100%;
-  box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px,
-    rgba(189, 194, 198, 0.15) 0px 0px 0px 1px;
-}
-.infoSection .followCard .followDialog {
-  display: flex;
-  /* justify-content: center; */
-  padding: 1rem 2rem;
-  /* background-color: aliceblue; */
-  font-family: "Poppins", sans-serif;
-  align-items: center;
-  transition: all 0.2s ease-in;
-}
-.followDialog .userInfo {
-  padding: 0 1rem;
-  margin: 0 1rem;
-}
-.followDialog .userInfo .name {
-  font-size: 1rem;
-  font-weight: 500;
-}
-.followDialog .userInfo .followers {
-  font-size: 0.8rem;
-  color: grey;
-  font-weight: 400;
-}
-.followDialog .button {
-  margin-left: auto;
-}
-.followDialog .button .buttonActive {
-  color: white;
-  background-color: black;
-  padding: 0 1.5rem;
-  box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px,
-    rgba(255, 255, 255, 0.15) 0px 0px 0px 1px;
-}
-.followDialog .button .buttonDisabled {
-  color: grey;
-  transition: all 0.3s ease-in;
-}
-
-.infoSection .watchParty {
+  font-weight: 700;
   margin: 1rem 0;
-  padding: 1rem;
-  font-family: "Poppins", sans-serif;
-  /* width: 100%; */
+  color: #fff;
+}
+
+.feed .feedInfo .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Interaction section */
+.interactionsSection {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.interaction-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.interaction-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.interaction-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.interaction-icon {
+  font-size: 1.2rem !important;
+}
+
+/* Info section (sidebar) */
+.tophero .infoSection {
+  flex: 1;
+  margin: 0;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  padding: 0;
+}
+
+/* Watch party section */
+.infoSection .watchParty {
+  background-color: rgba(14, 14, 15, 0.7);
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
   border-radius: 0.8rem;
-  box-shadow: rgba(255, 255, 255, 0.02) 0px 1px 3px 0px,
-    rgba(255, 255, 255, 0.15) 0px 0px 0px 1px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .infoSection .watchParty .watchPartyDialog {
   display: flex;
   align-items: center;
-  width: 100%;
-  background-color: #0e0e0f;
+  padding: 0.8rem;
+  background-color: #181818;
   border-radius: 0.8rem;
-  cursor: pointer;
-  transition: 0.2s all ease-in-out;
+  margin-bottom: 0.8rem;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.live-indicator {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #e50914;
+  border-radius: 50%;
+  top: 10px;
+  left: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(229, 9, 20, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0);
+  }
 }
 
 .infoSection .watchParty .watchPartyDialog:hover {
-  transform: scale(1.01);
-  background-color: rgba(255, 0, 0, 0.05);
+  transform: translateY(-2px);
+  background-color: #242424;
 }
+
 .infoSection .watchParty .watchPartyDialog img {
   width: 2rem;
   height: 2rem;
-  border-radius: 0.8rem;
-  padding: 0.5rem;
+  border-radius: 0.4rem;
+  margin-right: 0.8rem;
 }
+
 .infoSection .watchParty .watchPartyDialog .name {
-  font-size: 0.8rem;
-  color: red;
-  padding: 0 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e50914;
+  margin-right: auto;
 }
+
+.stream-icon {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px !important;
+  margin-right: 6px;
+}
+
 .infoSection .watchParty .watchPartyDialog .viewers {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+  display: flex;
+  align-items: center;
+}
+
+.viewer-count {
+  font-weight: 700;
+  color: #fff;
+  margin-right: 4px;
+}
+
+/* Follow section */
+.infoSection .followCard {
+  background-color: rgba(14, 14, 15, 0.7);
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.infoSection .followCard .followDialog {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background-color 0.2s ease;
+}
+
+.infoSection .followCard .followDialog:last-child {
+  border-bottom: none;
+}
+
+.infoSection .followCard .followDialog:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.followDialog .userInfo {
+  flex: 1;
+  padding: 0 0.5rem;
+  margin: 0;
+}
+
+.followDialog .userInfo .name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.followDialog .userInfo .followers {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+}
+
+.followDialog .button {
   margin-left: auto;
-  font-size: 0.6rem;
-  padding: 0 1rem;
-  font-weight: 500;
-  color: gray;
+}
+
+.followDialog .button .buttonActive {
+  background-color: #e50914 !important;
+  border-color: #e50914 !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  padding: 0 1.2rem !important;
+  height: 32px !important;
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+  transition: all 0.2s ease;
+}
+
+.followDialog .button .buttonActive:hover {
+  background-color: #ff0a16 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+}
+
+.followDialog .button .buttonDisabled {
+  color: #a0a0a0 !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  padding: 0 1.2rem !important;
+  height: 32px !important;
+  transition: all 0.2s ease;
+}
+
+.followDialog .button .buttonDisabled:hover {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Loading skeletons */
+.skeleton-feed {
+  min-height: 300px;
+}
+
+.skeleton-image {
+  height: 200px;
+  margin: 1rem 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.8rem;
+}
+
+.skeleton-text {
+  flex: 1;
+  margin-left: 12px;
+}
+
+.skeleton-follow {
+  min-height: 60px;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .tophero {
+    padding: 1rem;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 992px) {
+  .tophero {
+    flex-direction: column;
+  }
+
+  .tophero .infoSection {
+    position: static;
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .infoSection .watchParty,
+  .infoSection .followCard {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .feed-title,
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .feedsection .feed {
+    padding: 1rem;
+  }
+
+  .feed .feedInfo .movieName {
+    font-size: 1rem;
+  }
+
+  .interaction-buttons {
+    justify-content: space-between;
+  }
+
+  .interaction-btn span {
+    display: none;
+  }
 }

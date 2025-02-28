@@ -1,48 +1,80 @@
-import { Button, Space } from "antd";
 import { useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Link } from "react-router-dom";
-export default function MovieElement(props) {
+
+export default function MovieElement({
+  movieData,
+  getPosterUrl,
+  handleWatchedMovie,
+}) {
   const [loading, setLoading] = useState(false);
-  function handleClick() {
+  const [saved, setSaved] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const type = movieData.title ? "movie" : "tv";
+
+  function handleSave() {
     setLoading(true);
-    props.handleWatchedMovie(props.movieData.id).then(() => setLoading(false));
+    handleWatchedMovie(movieData.id).then(() => {
+      setLoading(false);
+      setSaved(true);
+    });
   }
-  const [type, setType] = useState(props.movieData.title ? "movie" : "tv");
+
   return (
-    <>
-      <div className="movie-card" key={props.movieData.id}>
-        <Link to={`/details/${props.movieData.id}/${type}`}>
+    <div
+      className="movie-card"
+      key={movieData.id}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="poster-container">
+        <Link to={`/details/${movieData.id}/${type}`}>
           <img
-            src={props.getPosterUrl}
-            alt="movie poster"
+            src={getPosterUrl}
+            alt={movieData.title || movieData.name}
             className="movie-poster"
           />
-        </Link>
-        <div className="movie-info">
-          <div className="rating">
-            <a href="#">
-              <StarIcon className="i" />
-            </a>
-            <strong>{props.movieData.vote_average}</strong>
-          </div>
-          {props.movieData.title ? (
-            <h1 className="movie-title">{props.movieData.title}</h1>
-          ) : (
-            <h1 className="movie-title">{props.movieData.name}</h1>
+          {hovered && (
+            <div className="hover-overlay">
+              <div className="play-button">
+                <PlayArrowIcon />
+                <span>Watch Now</span>
+              </div>
+            </div>
           )}
-
-          <Button
-            type="primary"
-            loading={loading}
-            className="btn-watch"
-            value={props.movieData.id}
-            onClick={handleClick}
-          >
-            Add to list
-          </Button>
+        </Link>
+        <div className="rating-badge">
+          <StarIcon className="star-icon" />
+          <span>{movieData.vote_average.toFixed(1)}</span>
         </div>
       </div>
-    </>
+
+      <div className="movie-info">
+        <h3 className="movie-title">{movieData.title || movieData.name}</h3>
+        <div className="movie-meta">
+          {movieData.release_date && (
+            <span className="release-year">
+              {new Date(movieData.release_date).getFullYear()}
+            </span>
+          )}
+          {movieData.first_air_date && (
+            <span className="release-year">
+              {new Date(movieData.first_air_date).getFullYear()}
+            </span>
+          )}
+        </div>
+        <button
+          className={`bookmark-button ${saved ? "saved" : ""}`}
+          onClick={handleSave}
+          disabled={loading}
+        >
+          {saved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+          <span>{saved ? "Added" : "Add to list"}</span>
+        </button>
+      </div>
+    </div>
   );
 }

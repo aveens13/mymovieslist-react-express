@@ -11,6 +11,8 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 
@@ -22,6 +24,9 @@ export default function Movie({ userToken }) {
     message: "",
     severity: "success",
   });
+  const sliderRef = useRef(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
 
   //Get the image for the movie poster
   const getPosterUrl = (posterId) => {
@@ -94,6 +99,26 @@ export default function Movie({ userToken }) {
     });
   }
 
+  const scrollLeft = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: -800, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: 800, behavior: "smooth" });
+    }
+  };
+
+  const handleScroll = () => {
+    if (sliderRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+      setShowLeftArrow(scrollLeft > 0);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
   return (
     <>
       <section id="slider-container">
@@ -152,30 +177,40 @@ export default function Movie({ userToken }) {
             <div className="swiper-pagination"></div>
           </div>
         </Swiper>
-        {/* <h1 className="main-header">Popular Movies Right Now</h1>
-        <div className="movie-slider">
-          <div className="movie-list">
-            {movie.map((movieData) => (
-              <MovieElement
-                movieData={movieData}
-                getPosterUrl={getPosterUrl(movieData.poster_path)}
-                handleWatchedMovie={handleWatchedMovie}
-                key={movieData.id}
-              />
-            ))}
-          </div>
-        </div> */}
-        <h1 className="main-header">| Recommended for you</h1>
-        <div className="movie-slider">
-          <div className="movie-list">
-            {recommendations.map((movieData) => (
-              <MovieElement
-                movieData={movieData}
-                getPosterUrl={getPosterUrl(movieData.poster_path)}
-                handleWatchedMovie={handleWatchedMovie}
-                key={movieData.id}
-              />
-            ))}
+        <div className="recommendation-section">
+          <h1 className="section-title">
+            <span className="highlight">|</span> Recommended for you
+          </h1>
+
+          <div className="slider-container">
+            {showLeftArrow && (
+              <button
+                className="slider-arrow slider-arrow-left"
+                onClick={scrollLeft}
+              >
+                <ArrowBackIosNewIcon />
+              </button>
+            )}
+
+            <div className="movie-list" ref={sliderRef} onScroll={handleScroll}>
+              {recommendations.map((movieData) => (
+                <MovieElement
+                  key={movieData.id}
+                  movieData={movieData}
+                  getPosterUrl={getPosterUrl(movieData.poster_path)}
+                  handleWatchedMovie={handleWatchedMovie}
+                />
+              ))}
+            </div>
+
+            {showRightArrow && (
+              <button
+                className="slider-arrow slider-arrow-right"
+                onClick={scrollRight}
+              >
+                <ArrowForwardIosIcon />
+              </button>
+            )}
           </div>
         </div>
       </section>
