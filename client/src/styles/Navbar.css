@@ -59,6 +59,7 @@ header {
   /* width: 100%; */
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .navBar form .searchIcon {
   padding: 1rem;

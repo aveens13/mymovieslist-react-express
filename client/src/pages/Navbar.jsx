@@ -1,38 +1,111 @@
 import "../styles/Navbar.css";
 import MovieIcon from "@mui/icons-material/Movie";
+import movie from "../assets/movieridge_no_image.png";
 import { Link, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import SearchResults from "./SearchResults";
-import { Input, Button, Popconfirm } from "antd";
-const { Search } = Input;
+import { Input, Button, Popconfirm, AutoComplete } from "antd";
+
 export default function NavBar(props) {
   const [isActive, setIsActive] = useState(false);
-  const [query, setQuery] = useState("");
+  const [options, setOptions] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState("");
   const [showResults, setShowResults] = useState(false);
-  const overlayRef = useRef(null);
+  const debounceTimer = useRef(null);
+
   let navigate = useNavigate();
 
-  function handleChange(event) {
-    setQuery(event.target.value);
-    setShowResults(true);
-  }
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (overlayRef.current && !overlayRef.current.contains(event.target)) {
-        setShowResults(false);
-      }
+  const getPosterUrl = (posterId) => {
+    if (posterId == null) {
+      return movie;
     }
+    return `https://www.themoviedb.org/t/p/w220_and_h330_face${posterId}`;
+  };
 
-    window.addEventListener("click", handleClickOutside);
+  //Fetch search results
+  const fetchResults = async (searchQuery) => {
+    if (searchQuery.length < 3) {
+      setOptions([]);
+      return;
+    }
+    setShowResults(true);
+    try {
+      const response = await fetch(`/api/search?name=${searchQuery}`, {
+        method: "POST",
+      });
+      if (response.ok) {
+        response.json().then((e) => {
+          console.log(e.result);
+          //Change options here
+          setOptions(
+            e.result.map((item) => {
+              const title =
+                item.media_type === "movie"
+                  ? `${item.title} (${item.release_date})`
+                  : item.media_type === "tv"
+                  ? `${item.name} (${item.first_air_date})`
+                  : `${item.name} (${item.known_for_department})`;
 
-    return () => {
-      window.removeEventListener("click", handleClickOutside);
-    };
-  }, [overlayRef]);
+              return {
+                value: item.id,
+                label: (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                    }}
+                  >
+                    <img
+                      src={getPosterUrl(item.poster_path || item.profile_path)}
+                      alt={title}
+                      style={{
+                        width: "50px",
+                        height: "70px",
+                        borderRadius: "5px",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <span>{title}</span>
+                  </div>
+                ),
+                title,
+                media_type: item.media_type,
+              };
+            })
+          );
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+    setShowResults(false);
+  };
+
+  //Debounce function to delay calls
+  const debounceSearch = useCallback((searchQuery) => {
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      fetchResults(searchQuery);
+    }, 500);
+  }, []);
+
+  const handleSearch = (text) => {
+    if (text.trim() === "") {
+      setOptions([]);
+      return;
+    }
+    debounceSearch(text);
+  };
+
+  const handleSelect = (movieId, option) => {
+    setSelectedMovie(option.title);
+    console.log("Selected movie ID:", movieId, option.media_type);
+    navigate(`/details/${movieId}/${option.media_type}`);
+  };
 
   function handleLogout() {
     fetch("/api/logout").then((response) => {
@@ -69,24 +142,28 @@ export default function NavBar(props) {
         <form onSubmit={(event) => event.preventDefault()}>
           <SearchIcon className="searchIcon" />
 
-          <input
+          {/* <input
             type="search"
             name="searchItem"
             id="searchItem"
             onChange={handleChange}
             placeholder="Search Movies/Tv-Shows"
+          /> */}
+          <AutoComplete
+            options={options}
+            // value={selectedMovie}
+            style={{
+              width: "20rem",
+              backgroundColor: "transparent",
+              color: "white",
+            }}
+            placeholder="Search for movies, shows, actors"
+            onSearch={handleSearch}
+            onSelect={handleSelect}
+            variant="borderless"
+            loading={showResults}
           />
         </form>
-        {showResults && (
-          <div className="search-overlay">
-            <div className="search-results-container" ref={overlayRef}>
-              <SearchResults
-                query={query}
-                queryClick={() => setShowResults(false)}
-              />
-            </div>
-          </div>
-        )}
         <nav>
           <ul className="navItems">
             <li className="listItem">

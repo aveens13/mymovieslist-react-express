@@ -253,3 +253,31 @@ input[type="password"] {
   height: 100%;
   display: flex;
 }
+
+.ant-select-dropdown {
+  background-color: #333 !important;
+}
+
+.ant-select-item {
+  color: white !important;
+}
+
+.ant-select-item-option-active {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Input field background and text color */
+.ant-select-selector {
+  background-color: #222 !important; /* Dark background */
+  color: white !important; /* Ensures text is visible */
+}
+
+/* Placeholder text color */
+.ant-select-selection-placeholder {
+  color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  ) !important; /* Lighter color for placeholder */
+}
