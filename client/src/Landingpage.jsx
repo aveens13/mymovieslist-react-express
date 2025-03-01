@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import MovieIcon from "@mui/icons-material/Movie";
 import "./styles/Landingpage.css";
 
 export default function Landingpage() {
@@ -41,8 +42,15 @@ export default function Landingpage() {
       <nav className="navbar">
         <div className="nav-left">
           <div className="logo-container">
-            <div className="logo-diamond"></div>
-            <h1 className="logo">MovieRidge</h1>
+            <MovieIcon
+              color="white"
+              style={{ fontSize: 30, color: "#e50914" }}
+            />
+            {/* <div className="logo-diamond"></div> */}
+
+            <div className="fonty">
+              <div>MovieRidge</div>
+            </div>
           </div>
           <ul>
             <li>

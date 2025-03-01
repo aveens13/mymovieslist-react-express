@@ -111,7 +111,7 @@ export default function Home({ userToken }) {
   return (
     <div className="tophero">
       <div className="feedsection">
-        <h2 className="feed-title">Your Feed</h2>
+        <span className="feed-title">Your Feed</span>
 
         {loading ? (
           // Loading skeleton
@@ -127,9 +127,7 @@ export default function Home({ userToken }) {
                 </div>
                 <div className="feedInfo">
                   <Skeleton active paragraph={{ rows: 2 }} />
-                  <div className="image skeleton-image">
-                    <Skeleton.Image active />
-                  </div>
+
                   <Skeleton active paragraph={{ rows: 1 }} />
                 </div>
               </div>
@@ -204,7 +202,7 @@ export default function Home({ userToken }) {
       <div className="infoSection">
         {activeStreams.length > 0 && (
           <div className="watchParty">
-            <h3 className="section-title">Live Watch Parties</h3>
+            <div className="section-title">Live Watch Parties</div>
             {activeStreams.map((stream) => (
               <Link key={stream.user_id} to={`/broadcast/${stream.user_id}`}>
                 <div className="watchPartyDialog">
@@ -221,7 +219,7 @@ export default function Home({ userToken }) {
           </div>
         )}
         <div className="followCard">
-          <h3 className="section-title">Suggested For You</h3>
+          <div className="suggested-title">You may know</div>
           {loading ? (
             // Skeleton loading for followers
             Array(3)

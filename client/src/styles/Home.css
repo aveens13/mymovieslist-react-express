@@ -21,7 +21,7 @@
 }
 
 .feed-title {
-  font-size: 1.5rem;
+  font-size: large;
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: #fff;
@@ -30,14 +30,23 @@
 }
 
 .section-title {
-  font-size: 1.2rem;
+  font-size: small;
   font-weight: 600;
   margin-bottom: 1rem;
   color: #fff;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
+.suggested-title {
+  font-size: large;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #fff;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 4px solid #e50914;
+  padding-left: 0.5rem;
+}
 .empty-feed,
 .empty-followers {
   background-color: rgba(14, 14, 15, 0.7);
@@ -397,7 +406,7 @@
 @media (max-width: 576px) {
   .feed-title,
   .section-title {
-    font-size: 1.2rem;
+    font-size: small;
   }
 
   .feedsection .feed {

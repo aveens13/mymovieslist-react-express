@@ -672,7 +672,7 @@ export const MovieDetails = ({ userToken }) => {
                     </li>
                     <li>
                       <p className="bold">Genre:</p>
-                      {data.info.genres.map((genre) => (
+                      {data.info?.genres?.map((genre) => (
                         <p className="light">{genre.name}</p>
                       ))}
                     </li>

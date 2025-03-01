@@ -3,10 +3,10 @@ header {
   /* width: 100%; */
   display: flex;
   height: 3.5rem;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   /* position: sticky; */
-  position: relative;
+  /* position: relative; */
   top: 0;
   padding: 0.5rem 1rem;
   border-radius: 0.3rem;
@@ -21,9 +21,7 @@ header {
   margin: 0 auto;
   border-radius: 2.5rem;
 }
-.navBar .mainLogo {
-  width: 20rem;
-}
+
 .navBar .toggle-btn {
   cursor: pointer;
   display: none;
@@ -31,40 +29,39 @@ header {
 .navBar .title {
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
-  align-items: center;
+  /* background-color: antiquewhite; */
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   cursor: pointer;
   /* background-color: aliceblue; */
-  padding: 0 4rem 0 0;
+  /* padding: 0 4rem 0 0; */
 }
 .navBar a {
   text-decoration: none;
   color: white;
 }
 
-.navBar .title .fonty {
-  display: flex;
-  flex-direction: column;
-}
 .fonty div {
   padding: 0;
   margin: 0;
   color: #e50914;
-  font-family: 1.2rem;
+  font-size: 1.2rem;
   font-weight: 700;
 }
-.navBar form {
+.navBar .form {
   /* width: 100%; */
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+  margin-right: 10%;
+  /* background-color: #e50914; */
 }
-.navBar form .searchIcon {
-  padding: 1rem;
-}
-.navBar form input[type="search"] {
+
+/* .navBar form input[type="search"] {
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 1rem;
@@ -76,97 +73,22 @@ header {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
   color: white;
-}
+} */
 .navBar .title a {
   font-size: 1.5rem;
   letter-spacing: 0.1rem;
   color: white;
 }
-.search-overlay {
-  position: fixed;
-  font-family: "Poppins", sans-serif;
-  font-size: 1rem;
-  color: white;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 999;
-  /* display: flex; */
-  justify-content: center;
-  align-items: center;
-}
-
-.search-overlay * {
-  box-sizing: border-box;
-}
-
-.search-results-container {
-  position: absolute;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-  max-height: 80%;
-  /* height: 10vh; */
-  overflow-y: auto;
-  background-color: #000000;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-.search-results-container .loadingClass {
-  margin: 0;
-  padding: 0;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-.search-results-container ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-}
-.search-results-container ul a {
-  text-decoration: none;
-  color: white;
-}
-.search-results-container li {
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  height: 8rem;
-  overflow: hidden;
-  transition: all 0.2s ease-in-out;
-}
-.search-results-container li img {
-  width: 8rem;
-  padding: 1rem;
-}
-.search-results-container li:hover {
-  transform: scale(1.01);
-  cursor: pointer;
-}
-
-.search-results-container li h3,
-h4 {
-  font-weight: 400;
-}
 .navBar nav ul {
-  gap: 2rem;
-  margin-top: 2rem;
+  gap: 1.2rem;
   list-style: none;
   display: flex;
+  align-items: center;
+  /* background-color: antiquewhite; */
 }
 li a {
   font-family: "Poppins", sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.1rem;
   font-size: 1rem;
   color: white;

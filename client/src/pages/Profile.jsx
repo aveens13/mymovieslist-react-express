@@ -143,132 +143,96 @@ export default function Profile({ userName, userToken }) {
         open={modal2Open}
         onOk={() => setModal2Open(false)}
         onCancel={() => setModal2Open(false)}
-        footer={[
-          <Button
-            key="submit"
-            type="primary"
-            // loading={loading}
-            style={{
-              backgroundColor: "#e50914",
-            }}
-          >
-            Submit
-          </Button>,
-        ]}
+        footer={null}
       >
         <Form
-          labelCol={{
-            span: 4,
-          }}
-          wrapperCol={{
-            span: 14,
-          }}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 14 }}
           layout="horizontal"
           style={{
             maxWidth: 600,
+            backgroundColor: "#121212", // Dark background
+            padding: "1.5rem",
+            borderRadius: "8px",
+            alignItems: "center",
           }}
+          centered
         >
-          <Form.Item label="Checkbox" name="disabled" valuePropName="checked">
-            <Checkbox>Checkbox</Checkbox>
-          </Form.Item>
-          <Form.Item label="Radio">
-            <Radio.Group>
-              <Radio value="apple"> Apple </Radio>
-              <Radio value="pear"> Pear </Radio>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item label="Input">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Select">
-            <Select>
-              <Select.Option value="demo">Demo</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="TreeSelect">
-            <TreeSelect
-              treeData={[
-                {
-                  title: "Light",
-                  value: "light",
-                  children: [
-                    {
-                      title: "Bamboo",
-                      value: "bamboo",
-                    },
-                  ],
-                },
-              ]}
+          <Form.Item>
+            <Input
+              style={{
+                backgroundColor: "#1E1E1E",
+                color: "white",
+                border: "1px solid #333",
+              }}
+              placeholder="Avinav Bhattarai"
+              className="custom-placeholder"
             />
           </Form.Item>
-          <Form.Item label="Cascader">
-            <Cascader
-              options={[
-                {
-                  value: "zhejiang",
-                  label: "Zhejiang",
-                  children: [
-                    {
-                      value: "hangzhou",
-                      label: "Hangzhou",
-                    },
-                  ],
-                },
-              ]}
+
+          <Form.Item>
+            <Input
+              style={{
+                backgroundColor: "#1E1E1E",
+                color: "white",
+                border: "1px solid #333",
+              }}
+              placeholder="aveens"
+              className="custom-placeholder"
             />
           </Form.Item>
-          <Form.Item label="DatePicker">
-            <DatePicker />
+
+          <Form.Item>
+            <TextArea
+              rows={3}
+              style={{
+                backgroundColor: "#1E1E1E",
+                color: "white",
+                border: "1px solid #333",
+              }}
+              className="custom-placeholder"
+              placeholder="Enter your bio"
+            />
           </Form.Item>
-          <Form.Item label="RangePicker">
-            <RangePicker />
-          </Form.Item>
-          <Form.Item label="InputNumber">
-            <InputNumber />
-          </Form.Item>
-          <Form.Item label="TextArea">
-            <TextArea rows={4} />
-          </Form.Item>
-          <Form.Item label="Switch" valuePropName="checked">
-            <Switch />
-          </Form.Item>
-          <Form.Item
-            label="Upload"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-          >
-            <Upload action="/upload.do" listType="picture-card">
+
+          <Form.Item valuePropName="fileList" getValueFromEvent={normFile}>
+            <Upload
+              // action="/upload.do"
+              listType="picture-card"
+              style={{
+                backgroundColor: "#1E1E1E",
+                color: "white",
+                border: "1px dashed #444",
+              }}
+            >
               <button
                 style={{
-                  color: "inherit",
-                  cursor: "inherit",
+                  color: "white",
+                  cursor: "pointer",
                   border: 0,
                   background: "none",
                 }}
                 type="button"
               >
-                <AddBoxOutlinedIcon />
-                <div
-                  style={{
-                    marginTop: 8,
-                  }}
-                >
-                  Upload
-                </div>
+                <div style={{ marginTop: 8 }}>Upload Profile Picture</div>
               </button>
             </Upload>
           </Form.Item>
-          <Form.Item label="Button">
-            <Button>Button</Button>
-          </Form.Item>
-          <Form.Item label="Slider">
-            <Slider />
-          </Form.Item>
-          <Form.Item label="ColorPicker">
-            <ColorPicker />
-          </Form.Item>
-          <Form.Item label="Rate">
-            <Rate />
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{
+                backgroundColor: "red",
+                border: "none",
+                color: "white",
+                fontWeight: "bold",
+                width: "100%",
+              }}
+            >
+              Submit
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

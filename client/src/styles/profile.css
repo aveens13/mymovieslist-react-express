@@ -187,3 +187,8 @@
 .ant-modal-footer {
   align-items: center;
 }
+
+.custom-placeholder::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important; /* Light gray for visibility */
+  opacity: 1 !important;
+}

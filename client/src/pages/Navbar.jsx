@@ -3,11 +3,16 @@ import MovieIcon from "@mui/icons-material/Movie";
 import movie from "../assets/movieridge_no_image.png";
 import { Link, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
-import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect, useRef, useCallback } from "react";
-import SearchResults from "./SearchResults";
-import { Input, Button, Popconfirm, AutoComplete } from "antd";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import {
+  LogoutOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+
+import { Input, Dropdown, Popconfirm, AutoComplete } from "antd";
 
 export default function NavBar(props) {
   const [isActive, setIsActive] = useState(false);
@@ -15,6 +20,34 @@ export default function NavBar(props) {
   const [selectedMovie, setSelectedMovie] = useState("");
   const [showResults, setShowResults] = useState(false);
   const debounceTimer = useRef(null);
+  const items = [
+    {
+      key: "1",
+      label: "My Account",
+      disabled: true,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "2",
+      label: <span onClick={() => navigate("/profile")}>Profile</span>,
+      extra: "⌘P",
+      icon: <UserOutlined />,
+    },
+    {
+      key: "3",
+      label: <span onClick={handleLogout}>Logout</span>,
+      extra: "⌘B",
+      icon: <LogoutOutlined />,
+    },
+    {
+      key: "4",
+      label: "Settings",
+      icon: <SettingOutlined />,
+      extra: "⌘S",
+    },
+  ];
 
   let navigate = useNavigate();
 
@@ -123,32 +156,34 @@ export default function NavBar(props) {
   return (
     <>
       <header className="navBar">
-        <div className="mainLogo">
-          <Link to="/">
-            <div className="title">
-              <MovieIcon
-                color="white"
-                style={{ fontSize: 60, color: "#e50914" }}
-              />
-              {/* <div className="logo-diamond"></div> */}
+        <Link to="/">
+          <div className="title">
+            <MovieIcon
+              color="white"
+              style={{ fontSize: 30, color: "#e50914" }}
+            />
+            {/* <div className="logo-diamond"></div> */}
 
-              <div className="fonty">
-                <div>Movie</div>
-                <div>Ridge</div>
-              </div>
+            <div className="fonty">
+              <div>MovieRidge</div>
             </div>
-          </Link>
-        </div>
-        <form onSubmit={(event) => event.preventDefault()}>
-          <SearchIcon className="searchIcon" />
+          </div>
+        </Link>
 
-          {/* <input
-            type="search"
-            name="searchItem"
-            id="searchItem"
-            onChange={handleChange}
-            placeholder="Search Movies/Tv-Shows"
-          /> */}
+        <nav>
+          <ul className="navItems">
+            <li className="listItem">
+              <Link to="/list">List</Link>
+            </li>
+            <li className="listItem">
+              <Link to="/movies">Movies</Link>
+            </li>
+            <li className="listItem">
+              <Link to="/tv-shows">Shows</Link>
+            </li>
+          </ul>
+        </nav>
+        <div className="form">
           <AutoComplete
             options={options}
             // value={selectedMovie}
@@ -163,31 +198,14 @@ export default function NavBar(props) {
             variant="borderless"
             loading={showResults}
           />
-        </form>
-        <nav>
-          <ul className="navItems">
-            <li className="listItem">
-              <Link to="/list">List</Link>
-            </li>
-            <li className="listItem">
-              <Link to="/movies">Movies</Link>
-            </li>
-            <li className="listItem">
-              <Link to="/tv-shows">Shows</Link>
-            </li>
-            <li className="listItem">
-              <Link to="/profile">Profile</Link>
-            </li>
-            <Popconfirm
-              title="Logout"
-              description="Do you want to logout?"
-              onConfirm={handleLogout}
-              className="listItem"
-            >
-              <LogoutIcon fontSize="large" />
-            </Popconfirm>
-          </ul>
-        </nav>
+          <Dropdown
+            menu={{
+              items,
+            }}
+          >
+            <AccountCircleRoundedIcon fontSize="large" />
+          </Dropdown>
+        </div>
         <div className="toggle-btn">
           <MenuIcon fontSize="medium" onClick={toggleButton} />
         </div>
