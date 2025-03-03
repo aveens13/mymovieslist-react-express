@@ -1,6 +1,9 @@
 # MovieRidge
 
-![MovieRidge Logo](client/src/assets/movie.png)
+<p align="center">
+  <img src="client/src/assets/front1.png" width="45%" />
+  <img src="client/src/assets/front2.png" width="45%" />
+</p>
 
 🚀 **MovieRidge** is a social media-based application for movie and TV show enthusiasts, offering personalized recommendations and a platform to share your viewing experiences.
 
