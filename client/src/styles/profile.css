@@ -5,6 +5,7 @@
   width: 100%;
   height: 100%;
   padding: 1rem;
+  /* max-height: 80vh; */
   margin: 2rem 0;
   font-family: "Poppins", sans-serif;
 }
@@ -191,4 +192,92 @@
 .custom-placeholder::placeholder {
   color: rgba(255, 255, 255, 0.6) !important; /* Light gray for visibility */
   opacity: 1 !important;
+}
+
+.mid-hero-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  /* overflow-y: auto; */
+  /* max-height: calc(100vh - 10rem); */
+  scrollbar-width: 0px;
+}
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+.mid-hero-profile::-webkit-scrollbar {
+  width: 0px;
+}
+
+.mid-hero-profile .profile-fetched-post {
+  background-color: rgba(20, 20, 20, 255);
+  border-radius: 0.85rem;
+  margin: 0 1rem;
+}
+
+.profile-fetched-post {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.profile-fetched-post .title-profile-post-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  /* background-color: aliceblue; */
+  width: 100%;
+}
+
+.profile-fetched-post .title-profile-post-section img {
+  width: 50px;
+  padding: 1rem;
+  border-radius: 50%;
+}
+
+.title-profile-post-section .profile-post-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.profile-post-user-info .user-name-time-post .name-profile {
+  padding: 1rem 1rem 0 0;
+  font-weight: 600;
+}
+
+.title-profile-post-section .profile-post-options {
+  margin-left: auto;
+  padding: 0 1rem;
+  cursor: pointer;
+}
+
+.title-profile-post-section .profile-post-options:hover {
+  color: #e50914;
+  transition: color 0.3s ease-in-out;
+  transform: scale(1.1);
+}
+
+.user-name-time-post .time-post-profile {
+  font-size: small;
+  font-weight: 300;
+  color: #e50914;
+  border-right: 1px #e50914;
+}
+
+.profile-fetched-post .desc-profile-post-section {
+  font-size: 0.92rem;
+  font-weight: 400;
+  padding: 0 1rem;
+}
+
+.profile-fetched-post .post-image-section-profile {
+  width: 100%;
+}
+
+.profile-fetched-post .post-image-section-profile img {
+  width: 100%;
+  border-radius: 0.25rem;
 }

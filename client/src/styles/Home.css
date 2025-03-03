@@ -425,3 +425,27 @@
     display: none;
   }
 }
+
+/* Dropdown Background and Border */
+.ant-dropdown {
+  background-color: rgba(20, 20, 20, 255) !important; /* Dark theme */
+  border-radius: 8px !important;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Dropdown Items */
+.ant-dropdown-menu {
+  background-color: rgba(20, 20, 20, 255) !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0 !important;
+  color: white;
+}
+
+.ant-dropdown-menu-item {
+  color: white !important;
+}
+
+.ant-dropdown-menu-item:not(.ant-dropdown-menu-item-danger):hover {
+  background-color: #242424 !important;
+}

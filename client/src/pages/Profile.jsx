@@ -1,34 +1,42 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import user from "../assets/user.png";
-import {
-  Button,
-  Modal,
-  Cascader,
-  Checkbox,
-  ColorPicker,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Rate,
-  Select,
-  Slider,
-  Switch,
-  TreeSelect,
-  Upload,
-} from "antd";
+import post from "../assets/details.png";
+import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import { Button, Modal, DatePicker, Form, Input, Upload, Dropdown } from "antd";
 import "../styles/profile.css";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import EditIcon from "@mui/icons-material/Edit";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  CommentOutlined,
+} from "@ant-design/icons";
 
 export default function Profile({ userName, userToken }) {
   const [follwersInfo, setFollowersInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [modal2Open, setModal2Open] = useState(false);
-  const { RangePicker } = DatePicker;
   const { TextArea } = Input;
+  const items = [
+    {
+      key: "2",
+      label: <span>Turn off comments for this post</span>,
+      icon: <CommentOutlined />,
+    },
+    {
+      key: "3",
+      label: <span>Edit post</span>,
+      icon: <EditOutlined />,
+    },
+    {
+      key: "4",
+      label: "Move to bin",
+      danger: true,
+      icon: <DeleteOutlined />,
+    },
+  ];
+
   const normFile = (e) => {
     if (Array.isArray(e)) {
       return e;
@@ -50,7 +58,7 @@ export default function Profile({ userName, userToken }) {
             <div className="picture-name-user">
               <img src={user} alt="Profile Picture" />
               <div className="name-user-hero">
-                <span className="name-profile">Avinav Bhattarai</span>
+                <span className="name-profile">{userName}</span>
                 <span className="username-profile">@aveens</span>
               </div>
               <Button
@@ -134,7 +142,72 @@ export default function Profile({ userName, userToken }) {
             </div>
           </div>
         </div>
-        <div className="mid-hero-profile">Mid</div>
+        <div className="mid-hero-profile">
+          <div className="profile-fetched-post">
+            <div className="title-profile-post-section">
+              <img src={user} alt="Profile Picture" />
+              <div className="profile-post-user-info">
+                <span className="username-profile">@aveens</span>
+                <div className="user-name-time-post">
+                  <span className="name-profile">Avinav Bhattarai</span>
+                  <span className="time-post-profile">1hr ago</span>
+                </div>
+              </div>
+              <Dropdown
+                menu={{
+                  items,
+                }}
+                trigger={["click"]}
+              >
+                <MoreVertRoundedIcon className="profile-post-options" />
+              </Dropdown>
+            </div>
+            <div className="desc-profile-post-section">
+              Recently I watched this movie, worth giving it a shot 🎥🎥
+            </div>
+            <div className="post-image-section-profile">
+              <img src={post} alt="Post Image" />
+            </div>
+          </div>
+          <div className="profile-fetched-post">
+            <div className="title-profile-post-section">
+              <img src={user} alt="Profile Picture" />
+              <div className="profile-post-user-info">
+                <span className="username-profile">@aveens</span>
+                <div className="user-name-time-post">
+                  <span className="name-profile">Avinav Bhattarai</span>
+                  <span className="time-post-profile">1hr ago</span>
+                </div>
+              </div>
+              <MoreVertRoundedIcon className="profile-post-options" />
+            </div>
+            <div className="desc-profile-post-section">
+              Recently I watched this movie, worth giving it a shot 🎥🎥
+            </div>
+            <div className="post-image-section-profile">
+              <img src={post} alt="Post Image" />
+            </div>
+          </div>
+          <div className="profile-fetched-post">
+            <div className="title-profile-post-section">
+              <img src={user} alt="Profile Picture" />
+              <div className="profile-post-user-info">
+                <span className="username-profile">@aveens</span>
+                <div className="user-name-time-post">
+                  <span className="name-profile">Avinav Bhattarai</span>
+                  <span className="time-post-profile">1hr ago</span>
+                </div>
+              </div>
+              <MoreVertRoundedIcon className="profile-post-options" />
+            </div>
+            <div className="desc-profile-post-section">
+              Recently I watched this movie, worth giving it a shot 🎥🎥
+            </div>
+            <div className="post-image-section-profile">
+              <img src={post} alt="Post Image" />
+            </div>
+          </div>
+        </div>
         <div className="right-hero-profile">right</div>
       </div>
       <Modal
