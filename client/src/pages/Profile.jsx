@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import user from "../assets/user.png";
-import post from "../assets/details.png";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-import { Button, Modal, DatePicker, Form, Input, Upload, Dropdown } from "antd";
+import {
+  Button,
+  Modal,
+  DatePicker,
+  Form,
+  Input,
+  Upload,
+  Dropdown,
+  message,
+} from "antd";
 import "../styles/profile.css";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,10 +23,13 @@ import {
 
 export default function Profile({ userName, userToken }) {
   const [follwersInfo, setFollowersInfo] = useState({});
+  const [messageApi, contextHolder] = message.useMessage();
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modal2Open, setModal2Open] = useState(false);
   const { TextArea } = Input;
-  const items = [
+  const key = "updatable";
+  const getItems = (postId, deletePost) => [
     {
       key: "2",
       label: <span>Turn off comments for this post</span>,
@@ -31,7 +42,7 @@ export default function Profile({ userName, userToken }) {
     },
     {
       key: "4",
-      label: "Move to bin",
+      label: <span onClick={() => deletePost(postId)}>Move to bin</span>,
       danger: true,
       icon: <DeleteOutlined />,
     },
@@ -50,8 +61,73 @@ export default function Profile({ userName, userToken }) {
       });
     });
   }, []);
+
+  useEffect(() => {
+    fetch(`/api/posts/${userToken.id}`).then((response) => {
+      response.json().then((data) => {
+        console.log(data);
+        setPosts(data.result);
+      });
+    });
+  }, []);
+
+  const deletePost = async (postId) => {
+    messageApi.open({
+      key,
+      type: "loading",
+      content: "Deleting your post...",
+      className: "custom-message",
+    });
+    try {
+      const response = await fetch(`/api/post/${postId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete post");
+      }
+
+      await response.json().then((res) => {
+        console.log(res);
+        messageApi.open({
+          key,
+          type: "success",
+          content: "Successfully Deleted!",
+          duration: 2,
+          className: "custom-message",
+        });
+      });
+
+      setPosts((prevPosts) =>
+        prevPosts.filter((post) => post.postID !== postId)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPosterUrl = (posterId) =>
+    `https://image.tmdb.org/t/p/original${posterId}`;
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMins < 1) return "just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+
+    return date.toLocaleDateString();
+  };
+
   return (
     <>
+      {contextHolder}
       <div className="main_profile">
         <div className="left-hero-profile">
           <div className="profile-card-hero-main">
@@ -79,7 +155,8 @@ export default function Profile({ userName, userToken }) {
             </div>
             <div className="user-following-stat">
               <span>
-                1700 <span className="username-profile">followers</span>
+                {follwersInfo.count}{" "}
+                <span className="username-profile">followers</span>
               </span>
               <span>
                 569 <span className="username-profile">following</span>
@@ -143,70 +220,44 @@ export default function Profile({ userName, userToken }) {
           </div>
         </div>
         <div className="mid-hero-profile">
-          <div className="profile-fetched-post">
-            <div className="title-profile-post-section">
-              <img src={user} alt="Profile Picture" />
-              <div className="profile-post-user-info">
-                <span className="username-profile">@aveens</span>
-                <div className="user-name-time-post">
-                  <span className="name-profile">Avinav Bhattarai</span>
-                  <span className="time-post-profile">1hr ago</span>
+          {posts.map((post) => (
+            <div className="profile-fetched-post" key={post.postID}>
+              <div className="title-profile-post-section">
+                <img src={user} alt="Profile Picture" />
+                <div className="profile-post-user-info">
+                  <span className="username-profile">
+                    @aveens shares his thoughts on watching {post.content.title}
+                  </span>
+                  <div className="user-name-time-post">
+                    <span className="name-profile">{userName}</span>
+                    <span className="time-post-profile">
+                      {formatDate(post.createdAt)}
+                    </span>
+                  </div>
                 </div>
+                <Dropdown
+                  menu={{
+                    items: getItems(post.postID, deletePost),
+                  }}
+                  trigger={["click"]}
+                >
+                  <MoreVertRoundedIcon className="profile-post-options" />
+                </Dropdown>
               </div>
-              <Dropdown
-                menu={{
-                  items,
-                }}
-                trigger={["click"]}
-              >
-                <MoreVertRoundedIcon className="profile-post-options" />
-              </Dropdown>
-            </div>
-            <div className="desc-profile-post-section">
-              Recently I watched this movie, worth giving it a shot 🎥🎥
-            </div>
-            <div className="post-image-section-profile">
-              <img src={post} alt="Post Image" />
-            </div>
-          </div>
-          <div className="profile-fetched-post">
-            <div className="title-profile-post-section">
-              <img src={user} alt="Profile Picture" />
-              <div className="profile-post-user-info">
-                <span className="username-profile">@aveens</span>
-                <div className="user-name-time-post">
-                  <span className="name-profile">Avinav Bhattarai</span>
-                  <span className="time-post-profile">1hr ago</span>
-                </div>
+              <div className="desc-profile-post-section">
+                {post.description}
               </div>
-              <MoreVertRoundedIcon className="profile-post-options" />
-            </div>
-            <div className="desc-profile-post-section">
-              Recently I watched this movie, worth giving it a shot 🎥🎥
-            </div>
-            <div className="post-image-section-profile">
-              <img src={post} alt="Post Image" />
-            </div>
-          </div>
-          <div className="profile-fetched-post">
-            <div className="title-profile-post-section">
-              <img src={user} alt="Profile Picture" />
-              <div className="profile-post-user-info">
-                <span className="username-profile">@aveens</span>
-                <div className="user-name-time-post">
-                  <span className="name-profile">Avinav Bhattarai</span>
-                  <span className="time-post-profile">1hr ago</span>
-                </div>
+              <div className="post-image-section-profile">
+                <img
+                  loading="lazy"
+                  src={getPosterUrl(
+                    post.content.backdrop_path || post.content.poster_path
+                  )}
+                  alt="Post Image"
+                />
               </div>
-              <MoreVertRoundedIcon className="profile-post-options" />
             </div>
-            <div className="desc-profile-post-section">
-              Recently I watched this movie, worth giving it a shot 🎥🎥
-            </div>
-            <div className="post-image-section-profile">
-              <img src={post} alt="Post Image" />
-            </div>
-          </div>
+          ))}
         </div>
         <div className="right-hero-profile">right</div>
       </div>

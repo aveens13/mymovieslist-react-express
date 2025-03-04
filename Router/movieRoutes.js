@@ -38,6 +38,8 @@ router.get(
 );
 router.get("/api/followers/:userId", requireAuth, handlers.getFollowers);
 router.get("/api/feed/:userId", requireAuth, handlers.getFeed);
+router.get("/api/posts/:userId", requireAuth, handlers.getUserPosts);
+router.delete("/api/post/:postId", requireAuth, handlers.deletePost);
 
 //Streaming and broadcasting as well as consuming endpoints
 router.post("/api/broadcast", requireAuth, broadcast.broadcast);
