@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import user from "../assets/user.png";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
@@ -22,11 +22,14 @@ import {
 } from "@ant-design/icons";
 
 export default function Profile({ userName, userToken }) {
+  const [searchParams] = useSearchParams();
+  const paramId = searchParams.get("id");
   const [follwersInfo, setFollowersInfo] = useState({});
   const [messageApi, contextHolder] = message.useMessage();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modal2Open, setModal2Open] = useState(false);
+  const [details, setDetails] = useState({});
   const { TextArea } = Input;
   const key = "updatable";
   const getItems = (postId, deletePost) => [
@@ -54,55 +57,64 @@ export default function Profile({ userName, userToken }) {
     }
     return e?.fileList;
   };
-  useEffect(() => {
-    fetch(`/api/followers/${userToken.id}`).then((response) => {
-      response.json().then((data) => {
-        setFollowersInfo(data);
-      });
-    });
-  }, []);
 
   useEffect(() => {
-    fetch(`/api/posts/${userToken.id}`).then((response) => {
+    fetch(`/api/posts/${paramId}`).then((response) => {
       response.json().then((data) => {
-        console.log(data);
+        // console.log(data);
         setPosts(data.result);
       });
     });
   }, []);
 
-  const deletePost = async (postId) => {
-    messageApi.open({
-      key,
-      type: "loading",
-      content: "Deleting your post...",
-      className: "custom-message",
+  useEffect(() => {
+    fetch(`/api/userinfo/${paramId}`).then((response) => {
+      response.json().then((data) => {
+        // setPosts(data.result.created)
+        setFollowersInfo(data.result.followedBy);
+        console.log(data.result);
+
+        setDetails(data.result);
+      });
     });
-    try {
-      const response = await fetch(`/api/post/${postId}`, {
-        method: "DELETE",
+  }, [paramId]);
+
+  const deletePost = async (postId) => {
+    if (userToken.id == paramId) {
+      messageApi.open({
+        key,
+        type: "loading",
+        content: "Deleting your post...",
+        className: "custom-message",
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete post");
-      }
-
-      await response.json().then((res) => {
-        console.log(res);
-        messageApi.open({
-          key,
-          type: "success",
-          content: "Successfully Deleted!",
-          duration: 2,
-          className: "custom-message",
+      try {
+        const response = await fetch(`/api/post/${postId}`, {
+          method: "DELETE",
         });
-      });
 
-      setPosts((prevPosts) =>
-        prevPosts.filter((post) => post.postID !== postId)
-      );
-    } catch (error) {
-      console.log(error);
+        if (!response.ok) {
+          throw new Error("Failed to delete post");
+        }
+
+        await response.json().then((res) => {
+          console.log(res);
+          messageApi.open({
+            key,
+            type: "success",
+            content: "Successfully Deleted!",
+            duration: 2,
+            className: "custom-message",
+          });
+        });
+
+        setPosts((prevPosts) =>
+          prevPosts.filter((post) => post.postID !== postId)
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("This Operation was not successful");
     }
   };
 
@@ -134,32 +146,37 @@ export default function Profile({ userName, userToken }) {
             <div className="picture-name-user">
               <img src={user} alt="Profile Picture" />
               <div className="name-user-hero">
-                <span className="name-profile">{userName}</span>
+                <span className="name-profile">{details?.name}</span>
                 <span className="username-profile">@aveens</span>
               </div>
-              <Button
-                color="default"
-                variant="text"
-                style={{
-                  backgroundColor: "rgba(30, 30, 30, 255)",
-                  color: "white",
-                  border: "none",
-                  // marginLeft: "1rem",
-                }}
-                className="edit-button-profile"
-                onClick={() => setModal2Open(!modal2Open)}
-              >
-                <EditIcon fontSize="small" />
-                Edit Profile
-              </Button>
+              {userToken.id === paramId ? (
+                <Button
+                  color="default"
+                  variant="text"
+                  style={{
+                    backgroundColor: "rgba(30, 30, 30, 255)",
+                    color: "white",
+                    border: "none",
+                    // marginLeft: "1rem",
+                  }}
+                  className="edit-button-profile"
+                  onClick={() => setModal2Open(!modal2Open)}
+                >
+                  <EditIcon fontSize="small" />
+                  Edit Profile
+                </Button>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="user-following-stat">
               <span>
-                {follwersInfo.count}{" "}
+                {follwersInfo.length}{" "}
                 <span className="username-profile">followers</span>
               </span>
               <span>
-                569 <span className="username-profile">following</span>
+                {details?.follows?.length}{" "}
+                <span className="username-profile">following</span>
               </span>
             </div>
             <div className="user-description-profile">
@@ -168,19 +185,23 @@ export default function Profile({ userName, userToken }) {
                 general. Lets connect! ❤️
               </span>
             </div>
-            <Button
-              type="text"
-              className="followbutton-profile"
-              style={{
-                color: "white",
-                backgroundColor: "#e50914",
-                width: "50%",
-              }}
-              loading={loading}
-              onClick={() => setLoading(!loading)}
-            >
-              Follow
-            </Button>
+            {userToken.id !== paramId ? (
+              <Button
+                type="text"
+                className="followbutton-profile"
+                style={{
+                  color: "white",
+                  backgroundColor: "#e50914",
+                  width: "50%",
+                }}
+                loading={loading}
+                onClick={() => setLoading(!loading)}
+              >
+                Follow
+              </Button>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="genre-classifier-profile">
             <span>Preferred Genres</span>
@@ -229,20 +250,24 @@ export default function Profile({ userName, userToken }) {
                     @aveens shares his thoughts on watching {post.content.title}
                   </span>
                   <div className="user-name-time-post">
-                    <span className="name-profile">{userName}</span>
+                    <span className="name-profile">{details?.name}</span>
                     <span className="time-post-profile">
                       {formatDate(post.createdAt)}
                     </span>
                   </div>
                 </div>
-                <Dropdown
-                  menu={{
-                    items: getItems(post.postID, deletePost),
-                  }}
-                  trigger={["click"]}
-                >
-                  <MoreVertRoundedIcon className="profile-post-options" />
-                </Dropdown>
+                {userToken.id === paramId ? (
+                  <Dropdown
+                    menu={{
+                      items: getItems(post.postID, deletePost),
+                    }}
+                    trigger={["click"]}
+                  >
+                    <MoreVertRoundedIcon className="profile-post-options" />
+                  </Dropdown>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="desc-profile-post-section">
                 {post.description}

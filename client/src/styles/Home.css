@@ -98,6 +98,11 @@
   color: #fff;
 }
 
+.feed .feederInfo .name:hover {
+  color: #e50914cc;
+  transition: color 0.2s ease-in-out;
+}
+
 .feedsection .feed .feederInfo .time {
   font-size: 0.8rem;
   font-weight: 400;

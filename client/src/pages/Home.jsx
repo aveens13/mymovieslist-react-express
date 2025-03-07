@@ -53,7 +53,10 @@ export default function Home({ userToken }) {
       .then((response) => response.json())
       .then((data) => setPosts(data.result))
       .catch((error) => console.error("Error fetching feed:", error))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        console.log(posts);
+      });
   }, [userToken.id]);
 
   const getPosterUrl = (posterId) =>
@@ -142,7 +145,9 @@ export default function Home({ userToken }) {
               <div className="feederInfo">
                 <img src={user} alt="User" className="user-avatar" />
                 <div>
-                  <div className="name">{post.author.name}</div>
+                  <Link to={`/profile?id=${post.authorID}`}>
+                    <div className="name">{post.author.name}</div>
+                  </Link>
                   <div className="time">{formatDate(post.createdAt)}</div>
                 </div>
               </div>

@@ -36,8 +36,9 @@ router.get(
   requireAuth,
   handlers.recommendFollowers
 );
-router.get("/api/followers/:userId", requireAuth, handlers.getFollowers);
+
 router.get("/api/feed/:userId", requireAuth, handlers.getFeed);
+router.get("/api/userinfo/:userId", requireAuth, handlers.userInfo);
 router.get("/api/posts/:userId", requireAuth, handlers.getUserPosts);
 router.delete("/api/post/:postId", requireAuth, handlers.deletePost);
 

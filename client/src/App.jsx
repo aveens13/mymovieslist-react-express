@@ -54,6 +54,7 @@ function App() {
           <NavBar
             changeState={() => setState("waiting")}
             queryClick={handleClick}
+            userToken={response?.data}
           />
           <ToastContainer
             autoClose={1000}

@@ -31,7 +31,11 @@ export default function NavBar(props) {
     },
     {
       key: "2",
-      label: <span onClick={() => navigate("/profile")}>Profile</span>,
+      label: (
+        <span onClick={() => navigate(`/profile?id=${props.userToken.id}`)}>
+          Profile
+        </span>
+      ),
       extra: "⌘P",
       icon: <UserOutlined />,
     },
