@@ -275,14 +275,18 @@ export default function Profile({ userName, userToken }) {
           layout="horizontal"
           style={{
             maxWidth: 600,
-            backgroundColor: "#121212", // Dark background
+            backgroundColor: "transparent", // Dark background
             padding: "1.5rem",
             borderRadius: "8px",
             alignItems: "center",
           }}
-          centered
+          initialValues={{
+            name: userName,
+            username: userName + "567",
+            bio: "I love watching movies 🍿 with genre thriller and comedy in general. Lets connect! ❤️",
+          }}
         >
-          <Form.Item>
+          <Form.Item name="name">
             <Input
               style={{
                 backgroundColor: "#1E1E1E",
@@ -294,7 +298,7 @@ export default function Profile({ userName, userToken }) {
             />
           </Form.Item>
 
-          <Form.Item>
+          <Form.Item name="username">
             <Input
               style={{
                 backgroundColor: "#1E1E1E",
@@ -306,7 +310,7 @@ export default function Profile({ userName, userToken }) {
             />
           </Form.Item>
 
-          <Form.Item>
+          <Form.Item name="bio">
             <TextArea
               rows={3}
               style={{
