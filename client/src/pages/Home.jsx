@@ -247,7 +247,9 @@ export default function Home({ userToken }) {
               <div key={recommended.user_id} className="followDialog">
                 <img src={user} alt="User" className="user-avatar" />
                 <div className="userInfo">
-                  <div className="name">{recommended.name}</div>
+                  <Link to={`/profile?id=${recommended.user_id}`}>
+                    <div className="name">{recommended.name}</div>
+                  </Link>
                   <div className="followers">{recommended.count} followers</div>
                 </div>
                 <div className="button">

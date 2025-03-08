@@ -29,6 +29,7 @@ export default function Profile({ userName, userToken }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modal2Open, setModal2Open] = useState(false);
+  const [followerOpen, setFolloweropen] = useState(false);
   const [details, setDetails] = useState({});
   const { TextArea } = Input;
   const key = "updatable";
@@ -65,7 +66,7 @@ export default function Profile({ userName, userToken }) {
         setPosts(data.result);
       });
     });
-  }, []);
+  }, [paramId]);
 
   useEffect(() => {
     fetch(`/api/userinfo/${paramId}`).then((response) => {
@@ -147,7 +148,7 @@ export default function Profile({ userName, userToken }) {
               <img src={user} alt="Profile Picture" />
               <div className="name-user-hero">
                 <span className="name-profile">{details?.name}</span>
-                <span className="username-profile">@aveens</span>
+                <span className="username-profile">{details?.username}</span>
               </div>
               {userToken.id === paramId ? (
                 <Button
@@ -170,7 +171,7 @@ export default function Profile({ userName, userToken }) {
               )}
             </div>
             <div className="user-following-stat">
-              <span>
+              <span onClick={() => setFolloweropen(!followerOpen)}>
                 {follwersInfo.length}{" "}
                 <span className="username-profile">followers</span>
               </span>
@@ -247,7 +248,8 @@ export default function Profile({ userName, userToken }) {
                 <img src={user} alt="Profile Picture" />
                 <div className="profile-post-user-info">
                   <span className="username-profile">
-                    @aveens shares his thoughts on watching {post.content.title}
+                    @{details?.username} shares his thoughts on watching{" "}
+                    {post.content.title}
                   </span>
                   <div className="user-name-time-post">
                     <span className="name-profile">{details?.name}</span>
@@ -307,7 +309,7 @@ export default function Profile({ userName, userToken }) {
           }}
           initialValues={{
             name: userName,
-            username: userName + "567",
+            username: details?.username,
             bio: "I love watching movies 🍿 with genre thriller and comedy in general. Lets connect! ❤️",
           }}
         >
@@ -389,6 +391,14 @@ export default function Profile({ userName, userToken }) {
           </Form.Item>
         </Form>
       </Modal>
+      <Modal
+        title={`${details?.name}'s Followers`}
+        centered
+        open={followerOpen}
+        onOk={() => setFolloweropen(false)}
+        onCancel={() => setFolloweropen(false)}
+        footer={null}
+      ></Modal>
     </>
   );
 }
