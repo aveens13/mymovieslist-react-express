@@ -249,7 +249,11 @@ export default function Home({ userToken }) {
           ) : (
             followers.map((recommended) => (
               <div key={recommended.user_id} className="followDialog">
-                <img src={user} alt="User" className="user-avatar" />
+                <img
+                  src={recommended.imageURL ? recommended.imageURL : user}
+                  alt="User"
+                  className="user-avatar"
+                />
                 <div className="userInfo">
                   <Link to={`/profile?id=${recommended.user_id}`}>
                     <div className="name">{recommended.name}</div>
