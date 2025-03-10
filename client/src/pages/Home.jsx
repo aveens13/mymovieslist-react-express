@@ -143,7 +143,11 @@ export default function Home({ userToken }) {
           posts.map((post) => (
             <div key={post.id} className="feed">
               <div className="feederInfo">
-                <img src={user} alt="User" className="user-avatar" />
+                <img
+                  src={post.author.imageURL ? post.author.imageURL : user}
+                  alt="User"
+                  className="user-avatar"
+                />
                 <div>
                   <Link to={`/profile?id=${post.authorID}`}>
                     <div className="name">{post.author.name}</div>

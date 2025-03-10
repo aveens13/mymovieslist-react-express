@@ -31,6 +31,7 @@ export default function Profile({ userName, userToken }) {
   const [modal2Open, setModal2Open] = useState(false);
   const [followerOpen, setFolloweropen] = useState(false);
   const [details, setDetails] = useState({});
+  const [submitLoader, setSubmitLoader] = useState(false);
   const { TextArea } = Input;
   const key = "updatable";
   const getItems = (postId, deletePost) => [
@@ -138,6 +139,63 @@ export default function Profile({ userName, userToken }) {
     return date.toLocaleDateString();
   };
 
+  const uploadFile = async ({ onSuccess, onError }) => {
+    try {
+      onSuccess("Success");
+    } catch (error) {
+      onError(error);
+    }
+  };
+
+  const onSubmitForm = async (values) => {
+    setSubmitLoader(true);
+    const formData = new FormData();
+    //Since values are not direct child of Form tag due to antdesign
+    //Manually adding values to the form
+
+    Object.keys(values).forEach((key) => {
+      if (key != "profilepic") {
+        formData.append(key, values[key]);
+      }
+    });
+
+    if (values.profilepic && values.profilepic.file) {
+      formData.append("profilepic", values.profilepic.file.originFileObj);
+    }
+
+    try {
+      const response = await fetch(`/api/updateinfo/${userToken.id}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setSubmitLoader(false);
+        messageApi.open({
+          key,
+          type: "error",
+          content: result.result,
+          duration: 2,
+          className: "custom-message",
+        });
+      } else {
+        setSubmitLoader(false);
+        setModal2Open(false);
+        messageApi.open({
+          key,
+          type: "success",
+          content: "User info updated",
+          duration: 2,
+          className: "custom-message",
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   return (
     <>
       {contextHolder}
@@ -145,7 +203,10 @@ export default function Profile({ userName, userToken }) {
         <div className="left-hero-profile">
           <div className="profile-card-hero-main">
             <div className="picture-name-user">
-              <img src={user} alt="Profile Picture" />
+              <img
+                src={details?.imageURL ? details?.imageURL : user}
+                alt="Profile Picture"
+              />
               <div className="name-user-hero">
                 <span className="name-profile">{details?.name}</span>
                 <span className="username-profile">{details?.username}</span>
@@ -181,10 +242,7 @@ export default function Profile({ userName, userToken }) {
               </span>
             </div>
             <div className="user-description-profile">
-              <span className="descrip-profile">
-                I love watching movies 🍿 with genre thriller and comedy in
-                general. Lets connect! ❤️
-              </span>
+              <span className="descrip-profile">{details?.bio}</span>
             </div>
             {userToken.id !== paramId ? (
               <Button
@@ -245,7 +303,10 @@ export default function Profile({ userName, userToken }) {
           {posts.map((post) => (
             <div className="profile-fetched-post" key={post.postID}>
               <div className="title-profile-post-section">
-                <img src={user} alt="Profile Picture" />
+                <img
+                  src={details?.imageURL ? details?.imageURL : user}
+                  alt="Profile Picture"
+                />
                 <div className="profile-post-user-info">
                   <span className="username-profile">
                     @{details?.username} shares his thoughts on watching{" "}
@@ -310,8 +371,9 @@ export default function Profile({ userName, userToken }) {
           initialValues={{
             name: userName,
             username: details?.username,
-            bio: "I love watching movies 🍿 with genre thriller and comedy in general. Lets connect! ❤️",
+            bio: details?.bio,
           }}
+          onFinish={onSubmitForm}
         >
           <Form.Item name="name">
             <Input
@@ -350,10 +412,14 @@ export default function Profile({ userName, userToken }) {
             />
           </Form.Item>
 
-          <Form.Item valuePropName="fileList" getValueFromEvent={normFile}>
+          <Form.Item valuePropName="file" name="profilepic">
             <Upload
               // action="/upload.do"
+              customRequest={uploadFile}
+              showUploadList={true}
               listType="picture-card"
+              accept="image/*"
+              maxCount={1}
               style={{
                 backgroundColor: "#1E1E1E",
                 color: "white",
@@ -378,6 +444,7 @@ export default function Profile({ userName, userToken }) {
             <Button
               type="primary"
               htmlType="submit"
+              loading={submitLoader}
               style={{
                 backgroundColor: "red",
                 border: "none",

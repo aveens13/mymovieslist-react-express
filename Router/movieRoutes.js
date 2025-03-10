@@ -3,6 +3,24 @@ const { requireAuth } = require("../lib/jwt");
 const handlers = require("../lib/handlers");
 const broadcast = require("../lib/broadcastingLogic");
 const router = Router();
+const multer = require("multer");
+const upload = multer({
+  dest: "uploads/",
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
+
+const multerErrorHandler = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).json({
+        success: false,
+        result: "File size too large. Max 2MB allowed.",
+      });
+    }
+    return res.status(400).json({ error: err.message });
+  }
+  next(err);
+};
 
 router.get("/api/movies", requireAuth, handlers.movies); //Gets popular movies list from the tmdb api
 router.get("/api/details/:movieId", requireAuth, handlers.getDetails);
@@ -31,6 +49,14 @@ router.post(
   handlers.deleteList
 );
 router.post("/api/search", requireAuth, handlers.searchMovie);
+router.post("/api/upload/:userId", requireAuth, handlers.uploadpicture);
+router.post(
+  "/api/updateinfo/:userId",
+  requireAuth,
+  upload.single("profilepic"),
+  multerErrorHandler,
+  handlers.updateUserInfo
+);
 router.get(
   "/api/recommededfollowers/:userId",
   requireAuth,

@@ -120,9 +120,14 @@ export default function Signup(props) {
         </div>
         <div className="form--hero">
           <form onSubmit={handleSubmit}>
-            <input type="text" name="name" placeholder="Name" />
-            <input type="email" name="email" placeholder="Email" />
-            <input type="password" name="password" placeholder="Password" />
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
             <input type="submit" value="Create account" />
           </form>
         </div>
