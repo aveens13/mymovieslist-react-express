@@ -19,6 +19,7 @@ import {
   DeleteOutlined,
   EditOutlined,
   CommentOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 
 export default function Profile({ userName, userToken }) {
@@ -71,6 +72,22 @@ export default function Profile({ userName, userToken }) {
         console.log(data.result);
 
         setDetails(data.result);
+      });
+    });
+  }, [paramId]);
+
+  useEffect(() => {
+    const body = JSON.stringify({
+      userID: userToken.id,
+      targetUserID: paramId,
+    });
+    fetch("/api/hasfollowrelation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: body,
+    }).then((resp) => {
+      resp.json().then((data) => {
+        setFollowed(data.follows);
       });
     });
   }, [paramId]);
@@ -261,11 +278,15 @@ export default function Profile({ userName, userToken }) {
                   className="followbutton-profile"
                   style={{
                     color: "white",
-                    backgroundColor: "#e50914",
+                    backgroundColor: "transparent",
                     width: "50%",
+                    borderRadius: "1rem",
+                    border: "1px solid white",
                   }}
+                  disabled={true}
                 >
-                  Unfollow
+                  <CheckOutlined />
+                  Following
                 </Button>
               ) : (
                 <Button

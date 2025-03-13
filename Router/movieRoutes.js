@@ -42,6 +42,7 @@ router.post(
   handlers.updateMovie
 );
 router.post("/api/followuser", requireAuth, handlers.followPost);
+router.post("/api/hasfollowrelation", requireAuth, handlers.hasFollowRelation);
 router.post("/api/sharemovie", requireAuth, handlers.shareMovie);
 router.post(
   "/api/deletefromlist/:movieId/:userId",

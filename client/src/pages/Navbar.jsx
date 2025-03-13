@@ -79,39 +79,70 @@ export default function NavBar(props) {
           //Change options here
           setOptions(
             e.result.map((item) => {
-              const title =
-                item.media_type === "movie"
-                  ? `${item.title} (${item.release_date})`
-                  : item.media_type === "tv"
-                  ? `${item.name} (${item.first_air_date})`
-                  : `${item.name} (${item.known_for_department})`;
-
-              return {
-                value: item.id,
-                label: (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1rem",
-                    }}
-                  >
-                    <img
-                      src={getPosterUrl(item.poster_path || item.profile_path)}
-                      alt={title}
+              if (item.username) {
+                return {
+                  value: item.user_id,
+                  label: (
+                    <div
                       style={{
-                        width: "50px",
-                        height: "70px",
-                        borderRadius: "5px",
-                        objectFit: "cover",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
                       }}
-                    />
-                    <span>{title}</span>
-                  </div>
-                ),
-                title,
-                media_type: item.media_type,
-              };
+                    >
+                      <img
+                        src={item.imageURL}
+                        alt="Profilepic"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <span>{item.name}-Movieridge</span>
+                    </div>
+                  ),
+                  typeof: "movieridge",
+                };
+              } else {
+                const title =
+                  item.media_type === "movie"
+                    ? `${item.title} (${item.release_date})`
+                    : item.media_type === "tv"
+                    ? `${item.name} (${item.first_air_date})`
+                    : `${item.name} (${item.known_for_department})`;
+
+                return {
+                  value: item.id,
+                  label: (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
+                      }}
+                    >
+                      <img
+                        src={getPosterUrl(
+                          item.poster_path || item.profile_path
+                        )}
+                        alt={title}
+                        style={{
+                          width: "50px",
+                          height: "70px",
+                          borderRadius: "5px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <span>{title}</span>
+                    </div>
+                  ),
+                  title,
+                  media_type: item.media_type,
+                  typeof: "tmdb",
+                };
+              }
             })
           );
         });
@@ -139,9 +170,13 @@ export default function NavBar(props) {
   };
 
   const handleSelect = (movieId, option) => {
-    setSelectedMovie(option.title);
-    console.log("Selected movie ID:", movieId, option.media_type);
-    navigate(`/details/${movieId}/${option.media_type}`);
+    if (option.typeof == "movieridge") {
+      navigate(`/profile?id=${movieId}`);
+    } else {
+      setSelectedMovie(option.title);
+      console.log("Selected movie ID:", movieId, option.media_type);
+      navigate(`/details/${movieId}/${option.media_type}`);
+    }
   };
 
   function handleLogout() {

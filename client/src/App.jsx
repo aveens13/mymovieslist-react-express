@@ -19,6 +19,7 @@ const customToastId = "preventingDuplicate";
 function App() {
   const [state, setState] = useState("waiting");
   const [response, setResponse] = useState({});
+  const [follower, setFollower] = useState({});
   const [loading, setLoading] = useState(true);
 
   //check if the user is already logged in or not
@@ -27,9 +28,16 @@ function App() {
     fetch("/api/verifyToken").then((result) => {
       if (result.ok) {
         result.json().then((e) => {
-          setState("verified");
           setResponse(e);
-          setLoading(false);
+          fetch(`/api/recommededfollowers/${e.data.id}`)
+            .then((response) => response.json())
+            .then((data) => {
+              setState("verified");
+
+              setFollower(data.result);
+            })
+            .catch((error) => console.error("Error fetching followers:", error))
+            .finally(() => setLoading(false));
           if (!toast.isActive(customToastId)) {
             toast.success("Logged In Successfully", {
               toastId: customToastId,
@@ -65,7 +73,12 @@ function App() {
             transition={Slide}
           />
           <Routes>
-            <Route path="/" element={<Home userToken={response?.data} />} />
+            <Route
+              path="/"
+              element={
+                <Home userToken={response?.data} followersInfo={follower} />
+              }
+            />
             <Route path="/list" element={<List userToken={response?.data} />} />
             <Route
               path="/movies"

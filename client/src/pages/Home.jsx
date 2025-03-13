@@ -10,23 +10,12 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShareIcon from "@mui/icons-material/Share";
 import { Button, Tag, Skeleton } from "antd";
 
-export default function Home({ userToken }) {
-  const [followers, setFollowers] = useState([]);
+export default function Home({ userToken, followersInfo }) {
+  const [followers, setFollowers] = useState(followersInfo);
   const [activeStreams, setActiveStreams] = useState([]);
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-
-    // Fetch recommended followers
-    fetch(`/api/recommededfollowers/${userToken.id}`)
-      .then((response) => response.json())
-      .then((data) => setFollowers(data.result))
-      .catch((error) => console.error("Error fetching followers:", error))
-      .finally(() => setLoading(false));
-  }, [userToken.id]);
 
   useEffect(() => {
     // Fetch active streams
