@@ -28,6 +28,7 @@ export default function Profile({ userName, userToken }) {
   const [messageApi, contextHolder] = message.useMessage();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [followed, setFollowed] = useState(false);
   const [modal2Open, setModal2Open] = useState(false);
   const [followerOpen, setFolloweropen] = useState(false);
   const [details, setDetails] = useState({});
@@ -52,13 +53,6 @@ export default function Profile({ userName, userToken }) {
       icon: <DeleteOutlined />,
     },
   ];
-
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
 
   useEffect(() => {
     fetch(`/api/posts/${paramId}`).then((response) => {
@@ -196,6 +190,22 @@ export default function Profile({ userName, userToken }) {
     }
   };
 
+  const followUser = async () => {
+    const body = JSON.stringify({
+      userID: userToken.id,
+      targetUserID: paramId,
+    });
+    await fetch(`/api/followuser`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: body,
+    }).then((resp) => {
+      console.log(resp);
+      setLoading(false);
+      setFollowed(true);
+    });
+  };
+
   return (
     <>
       {contextHolder}
@@ -245,19 +255,36 @@ export default function Profile({ userName, userToken }) {
               <span className="descrip-profile">{details?.bio}</span>
             </div>
             {userToken.id !== paramId ? (
-              <Button
-                type="text"
-                className="followbutton-profile"
-                style={{
-                  color: "white",
-                  backgroundColor: "#e50914",
-                  width: "50%",
-                }}
-                loading={loading}
-                onClick={() => setLoading(!loading)}
-              >
-                Follow
-              </Button>
+              followed ? (
+                <Button
+                  type="text"
+                  className="followbutton-profile"
+                  style={{
+                    color: "white",
+                    backgroundColor: "#e50914",
+                    width: "50%",
+                  }}
+                >
+                  Unfollow
+                </Button>
+              ) : (
+                <Button
+                  type="text"
+                  className="followbutton-profile"
+                  style={{
+                    color: "white",
+                    backgroundColor: "#e50914",
+                    width: "50%",
+                  }}
+                  loading={loading}
+                  onClick={() => {
+                    setLoading(!loading);
+                    followUser();
+                  }}
+                >
+                  Follow
+                </Button>
+              )
             ) : (
               <></>
             )}

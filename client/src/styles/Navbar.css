@@ -61,6 +61,14 @@ header {
   /* background-color: #e50914; */
 }
 
+.navBar .form img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: 1rem;
+}
+
 /* .navBar form input[type="search"] {
   font-family: "Poppins", sans-serif;
   font-weight: 500;

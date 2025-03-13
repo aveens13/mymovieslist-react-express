@@ -55,6 +55,7 @@ function App() {
             changeState={() => setState("waiting")}
             queryClick={handleClick}
             userToken={response?.data}
+            imageURL={response?.userImage}
           />
           <ToastContainer
             autoClose={1000}

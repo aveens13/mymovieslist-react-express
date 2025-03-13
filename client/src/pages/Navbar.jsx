@@ -207,7 +207,11 @@ export default function NavBar(props) {
               items,
             }}
           >
-            <AccountCircleRoundedIcon fontSize="large" />
+            {props.imageURL != null ? (
+              <img src={props.imageURL} alt="" />
+            ) : (
+              <AccountCircleRoundedIcon fontSize="large" />
+            )}
           </Dropdown>
         </div>
         <div className="toggle-btn">
